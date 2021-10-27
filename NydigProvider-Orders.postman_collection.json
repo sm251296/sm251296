@@ -1,0 +1,2085 @@
+{
+	"info": {
+		"_postman_id": "5f6297b0-5c11-4d93-a6f5-54fffb208311",
+		"name": "NydigProvider-Orders",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "PostOrders_Buy",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const schema = {\r",
+							"    \"$schema\": \"http://json-schema.org/draft-06/schema#\",\r",
+							"    \"$ref\": \"#/definitions/Welcome5\",\r",
+							"    \"definitions\": {\r",
+							"        \"Welcome5\": {\r",
+							"            \"type\": \"object\",\r",
+							"            \"additionalProperties\": false,\r",
+							"            \"properties\": {\r",
+							"                \"id\": {\r",
+							"                    \"type\": \"string\"\r",
+							"                },\r",
+							"                \"accountId\": {\r",
+							"                    \"type\": \"string\"\r",
+							"                },\r",
+							"                \"userId\": {\r",
+							"                    \"type\": \"string\",\r",
+							"                    \"format\": \"uuid\"\r",
+							"                },\r",
+							"                \"created\": {\r",
+							"                    \"type\": \"string\",\r",
+							"                    \"format\": \"date-time\"\r",
+							"                },\r",
+							"                \"expiration\": {\r",
+							"                    \"type\": \"string\",\r",
+							"                    \"format\": \"date-time\"\r",
+							"                },\r",
+							"                \"status\": {\r",
+							"                    \"type\": \"string\"\r",
+							"                },\r",
+							"                \"symbol\": {\r",
+							"                    \"type\": \"string\"\r",
+							"                },\r",
+							"                \"side\": {\r",
+							"                    \"type\": \"string\"\r",
+							"                },\r",
+							"                \"quantity\": {\r",
+							"                    \"type\": \"number\"\r",
+							"                },\r",
+							"                \"price\": {\r",
+							"                    \"type\": \"number\"\r",
+							"                },\r",
+							"                \"receipt\": {\r",
+							"                    \"$ref\": \"#/definitions/Receipt\"\r",
+							"                }\r",
+							"            },\r",
+							"            \"required\": [\r",
+							"                \"accountId\",\r",
+							"                \"created\",\r",
+							"                \"expiration\",\r",
+							"                \"id\",\r",
+							"                \"price\",\r",
+							"                \"quantity\",\r",
+							"                \"receipt\",\r",
+							"                \"side\",\r",
+							"                \"status\",\r",
+							"                \"symbol\",\r",
+							"                \"userId\"\r",
+							"            ],\r",
+							"            \"title\": \"Welcome5\"\r",
+							"        },\r",
+							"        \"Receipt\": {\r",
+							"            \"type\": \"object\",\r",
+							"            \"additionalProperties\": false,\r",
+							"            \"properties\": {\r",
+							"                \"subtotal\": {\r",
+							"                    \"type\": \"number\"\r",
+							"                },\r",
+							"                \"fee\": {\r",
+							"                    \"type\": \"number\"\r",
+							"                },\r",
+							"                \"total\": {\r",
+							"                    \"type\": \"number\"\r",
+							"                }\r",
+							"            },\r",
+							"            \"required\": [\r",
+							"                \"fee\",\r",
+							"                \"subtotal\",\r",
+							"                \"total\"\r",
+							"            ],\r",
+							"            \"title\": \"Receipt\"\r",
+							"        }\r",
+							"    }\r",
+							"};\r",
+							"\r",
+							"pm.test(\"Verify Status Code: Orders POST - 201\", function () {\r",
+							"    pm.response.to.have.status(201);\r",
+							"});\r",
+							"\r",
+							"var responseJson = pm.response.json();\r",
+							"\r",
+							"pm.test(\"Response Schema validation: Orders POST - 201\", function () {\r",
+							"    var result = tv4.validateResult(responseJson, schema);\r",
+							"    if(!(result.valid)){\r",
+							"        console.log(result);\r",
+							"    }\r",
+							"    pm.expect(result.valid).to.be.true;\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response time is less than 10 seconds\", () => {\r",
+							"  pm.expect(pm.response.responseTime).to.be.below(10000);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "x-institution-id",
+						"value": "{{x-institution-id}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"accountId\": \"829553c1cca04fa081529ad9194da788\",\r\n    \"userId\": \"6a8e01a8-37f0-40e7-bb4e-2b47f1b2745e\",\r\n    \"side\": \"sell\",\r\n    \"symbol\": \"btc\",\r\n    \"quantity\": 1000\r\n}"
+				},
+				"url": {
+					"raw": "{{cpOrdersBaseUrl}}/Orders",
+					"host": [
+						"{{cpOrdersBaseUrl}}"
+					],
+					"path": [
+						"Orders"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PostOrders_Sell",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const schema = {\r",
+							"  \"$schema\": \"http://json-schema.org/draft-04/schema#\",\r",
+							"  \"type\": \"object\",\r",
+							"  \"properties\": {\r",
+							"    \"code\": {\r",
+							"      \"type\": \"string\"\r",
+							"    },\r",
+							"    \"message\": {\r",
+							"      \"type\": \"string\"\r",
+							"    }\r",
+							"  },\r",
+							"  \"required\": [\r",
+							"    \"code\",\r",
+							"    \"message\"\r",
+							"  ]\r",
+							"};\r",
+							"\r",
+							"pm.test(\"Verify Status Code: Orders POST - 201\", function () {\r",
+							"    pm.response.to.have.status(201);\r",
+							"});\r",
+							"\r",
+							"var responseJson = pm.response.json();\r",
+							"\r",
+							"pm.test(\"Response Schema validation: Orders POST - 201\", function () {\r",
+							"    var result = tv4.validateResult(responseJson, schema);\r",
+							"    if(!(result.valid)){\r",
+							"        console.log(result);\r",
+							"    }\r",
+							"    pm.expect(result.valid).to.be.true;\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response time is less than 10 seconds\", () => {\r",
+							"  pm.expect(pm.response.responseTime).to.be.below(10000);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "x-institution-id",
+						"value": "{{x-institution-id}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"accountId\": \"829553c1cca04fa081529ad9194da788\",\r\n    \"userId\": \"6a8e01a8-37f0-40e7-bb4e-2b47f1b2745e\",\r\n    \"side\": \"buy\",\r\n    \"symbol\": \"btc\",\r\n    \"quantity\": 1000\r\n}"
+				},
+				"url": {
+					"raw": "{{cpOrdersBaseUrl}}/Orders",
+					"host": [
+						"{{cpOrdersBaseUrl}}"
+					],
+					"path": [
+						"Orders"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PostOrders_400",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const schema = {\r",
+							"  \"$schema\": \"http://json-schema.org/draft-04/schema#\",\r",
+							"  \"type\": \"object\",\r",
+							"  \"properties\": {\r",
+							"    \"code\": {\r",
+							"      \"type\": \"string\"\r",
+							"    },\r",
+							"    \"message\": {\r",
+							"      \"type\": \"string\"\r",
+							"    }\r",
+							"  },\r",
+							"  \"required\": [\r",
+							"    \"code\",\r",
+							"    \"message\"\r",
+							"  ]\r",
+							"};\r",
+							"\r",
+							"pm.test(\"Verify Status Code: Orders POST - 400\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});\r",
+							"\r",
+							"var responseJson = pm.response.json();\r",
+							"\r",
+							"pm.test(\"Response Schema validation: Orders POST - 400\", function () {\r",
+							"    var result = tv4.validateResult(responseJson, schema);\r",
+							"    if(!(result.valid)){\r",
+							"        console.log(result);\r",
+							"    }\r",
+							"    pm.expect(result.valid).to.be.true;\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response time is less than 10 seconds\", () => {\r",
+							"  pm.expect(pm.response.responseTime).to.be.below(10000);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "x-institution-id",
+						"value": "{{x-institution-id}}",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"accountId\": \"829553c1cca04fa081529ad9194da788\",\r\n    \"userId\": \"6a8e01a8-37f0-40e7-bb4e-2b47f1b2745e\",\r\n    \"side\": \"buy\",\r\n    \"symbol\": \"btc\",\r\n    \"quantity\": 1000\r\n}"
+				},
+				"url": {
+					"raw": "{{cpOrdersBaseUrl}}/Orders",
+					"host": [
+						"{{cpOrdersBaseUrl}}"
+					],
+					"path": [
+						"Orders"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PostOrders_401",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const schema = {\r",
+							"  \"$schema\": \"http://json-schema.org/draft-04/schema#\",\r",
+							"  \"type\": \"object\",\r",
+							"  \"properties\": {\r",
+							"    \"code\": {\r",
+							"      \"type\": \"string\"\r",
+							"    },\r",
+							"    \"message\": {\r",
+							"      \"type\": \"string\"\r",
+							"    }\r",
+							"  },\r",
+							"  \"required\": [\r",
+							"    \"code\",\r",
+							"    \"message\"\r",
+							"  ]\r",
+							"};\r",
+							"\r",
+							"pm.test(\"Verify Status Code: Orders POST - 401\", function () {\r",
+							"    pm.response.to.have.status(401);\r",
+							"});\r",
+							"\r",
+							"var responseJson = pm.response.json();\r",
+							"\r",
+							"pm.test(\"Response Schema validation: Orders POST - 401\", function () {\r",
+							"    var result = tv4.validateResult(responseJson, schema);\r",
+							"    if(!(result.valid)){\r",
+							"        console.log(result);\r",
+							"    }\r",
+							"    pm.expect(result.valid).to.be.true;\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response time is less than 10 seconds\", () => {\r",
+							"  pm.expect(pm.response.responseTime).to.be.below(10000);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "x-institution-id",
+						"value": "{{x-institution-id}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"accountId\": \"829553c1cca04fa081529ad9194da788\",\r\n    \"userId\": \"6a8e01a8-37f0-40e7-bb4e-2b47f1b2745e\",\r\n    \"side\": \"buy\",\r\n    \"symbol\": \"btc\",\r\n    \"quantity\": 1000\r\n}"
+				},
+				"url": {
+					"raw": "{{cpOrdersBaseUrl}}/Orders",
+					"host": [
+						"{{cpOrdersBaseUrl}}"
+					],
+					"path": [
+						"Orders"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PostOrders_403",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const schema = {\r",
+							"  \"$schema\": \"http://json-schema.org/draft-04/schema#\",\r",
+							"  \"type\": \"object\",\r",
+							"  \"properties\": {\r",
+							"    \"code\": {\r",
+							"      \"type\": \"string\"\r",
+							"    },\r",
+							"    \"message\": {\r",
+							"      \"type\": \"string\"\r",
+							"    }\r",
+							"  },\r",
+							"  \"required\": [\r",
+							"    \"code\",\r",
+							"    \"message\"\r",
+							"  ]\r",
+							"};\r",
+							"\r",
+							"pm.test(\"Verify Status Code: Orders POST - 403\", function () {\r",
+							"    pm.response.to.have.status(403);\r",
+							"});\r",
+							"\r",
+							"var responseJson = pm.response.json();\r",
+							"\r",
+							"pm.test(\"Response Schema validation: Orders POST - 403\", function () {\r",
+							"    var result = tv4.validateResult(responseJson, schema);\r",
+							"    if(!(result.valid)){\r",
+							"        console.log(result);\r",
+							"    }\r",
+							"    pm.expect(result.valid).to.be.true;\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response time is less than 10 seconds\", () => {\r",
+							"  pm.expect(pm.response.responseTime).to.be.below(10000);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "x-institution-id",
+						"value": "{{x-institution-id}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"accountId\": \"829553c1cca04fa081529ad9194da788\",\r\n    \"userId\": \"6a8e01a8-37f0-40e7-bb4e-2b47f1b2745e\",\r\n    \"side\": \"buy\",\r\n    \"symbol\": \"btc\",\r\n    \"quantity\": 1000\r\n}"
+				},
+				"url": {
+					"raw": "{{cpOrdersBaseUrl}}/Orders",
+					"host": [
+						"{{cpOrdersBaseUrl}}"
+					],
+					"path": [
+						"Orders"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PostOrders_404",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const schema = {\r",
+							"  \"$schema\": \"http://json-schema.org/draft-04/schema#\",\r",
+							"  \"type\": \"object\",\r",
+							"  \"properties\": {\r",
+							"    \"code\": {\r",
+							"      \"type\": \"string\"\r",
+							"    },\r",
+							"    \"message\": {\r",
+							"      \"type\": \"string\"\r",
+							"    }\r",
+							"  },\r",
+							"  \"required\": [\r",
+							"    \"code\",\r",
+							"    \"message\"\r",
+							"  ]\r",
+							"};\r",
+							"\r",
+							"pm.test(\"Verify Status Code: Orders POST - 404\", function () {\r",
+							"    pm.response.to.have.status(404);\r",
+							"});\r",
+							"\r",
+							"var responseJson = pm.response.json();\r",
+							"\r",
+							"pm.test(\"Response Schema validation: Orders POST - 404\", function () {\r",
+							"    var result = tv4.validateResult(responseJson, schema);\r",
+							"    if(!(result.valid)){\r",
+							"        console.log(result);\r",
+							"    }\r",
+							"    pm.expect(result.valid).to.be.true;\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response time is less than 10 seconds\", () => {\r",
+							"  pm.expect(pm.response.responseTime).to.be.below(10000);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "x-institution-id",
+						"value": "{{x-institution-id}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"accountId\": \"829553c1cca04fa081529ad9194da788\",\r\n    \"userId\": \"6a8e01a8-37f0-40e7-bb4e-2b47f1b2745e\",\r\n    \"side\": \"buy\",\r\n    \"symbol\": \"btc\",\r\n    \"quantity\": 1000\r\n}"
+				},
+				"url": {
+					"raw": "{{cpOrdersBaseUrl}}/Orders",
+					"host": [
+						"{{cpOrdersBaseUrl}}"
+					],
+					"path": [
+						"Orders"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PostOrders_409",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const schema = {\r",
+							"  \"$schema\": \"http://json-schema.org/draft-04/schema#\",\r",
+							"  \"type\": \"object\",\r",
+							"  \"properties\": {\r",
+							"    \"code\": {\r",
+							"      \"type\": \"string\"\r",
+							"    },\r",
+							"    \"message\": {\r",
+							"      \"type\": \"string\"\r",
+							"    }\r",
+							"  },\r",
+							"  \"required\": [\r",
+							"    \"code\",\r",
+							"    \"message\"\r",
+							"  ]\r",
+							"};\r",
+							"\r",
+							"pm.test(\"Verify Status Code: Orders POST - 409\", function () {\r",
+							"    pm.response.to.have.status(409);\r",
+							"});\r",
+							"\r",
+							"var responseJson = pm.response.json();\r",
+							"\r",
+							"pm.test(\"Response Schema validation: Orders POST - 409\", function () {\r",
+							"    var result = tv4.validateResult(responseJson, schema);\r",
+							"    if(!(result.valid)){\r",
+							"        console.log(result);\r",
+							"    }\r",
+							"    pm.expect(result.valid).to.be.true;\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response time is less than 10 seconds\", () => {\r",
+							"  pm.expect(pm.response.responseTime).to.be.below(10000);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "x-institution-id",
+						"value": "{{x-institution-id}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"accountId\": \"829553c1cca04fa081529ad9194da788\",\r\n    \"userId\": \"6a8e01a8-37f0-40e7-bb4e-2b47f1b2745e\",\r\n    \"side\": \"buy\",\r\n    \"symbol\": \"btc\",\r\n    \"quantity\": 1000\r\n}"
+				},
+				"url": {
+					"raw": "{{cpOrdersBaseUrl}}/Orders",
+					"host": [
+						"{{cpOrdersBaseUrl}}"
+					],
+					"path": [
+						"Orders"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetOrders",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const schema = {\r",
+							"    \"$schema\": \"http://json-schema.org/draft-06/schema#\",\r",
+							"    \"$ref\": \"#/definitions/Welcome8\",\r",
+							"    \"definitions\": {\r",
+							"        \"Welcome8\": {\r",
+							"            \"type\": \"object\",\r",
+							"            \"additionalProperties\": false,\r",
+							"            \"properties\": {\r",
+							"                \"results\": {\r",
+							"                    \"type\": \"array\",\r",
+							"                    \"items\": {\r",
+							"                        \"$ref\": \"#/definitions/Result\"\r",
+							"                    }\r",
+							"                }\r",
+							"            },\r",
+							"            \"required\": [\r",
+							"                \"results\"\r",
+							"            ],\r",
+							"            \"title\": \"Welcome8\"\r",
+							"        },\r",
+							"        \"Result\": {\r",
+							"            \"type\": \"object\",\r",
+							"            \"additionalProperties\": false,\r",
+							"            \"properties\": {\r",
+							"                \"id\": {\r",
+							"                    \"type\": \"string\"\r",
+							"                },\r",
+							"                \"accountId\": {\r",
+							"                    \"type\": \"string\"\r",
+							"                },\r",
+							"                \"userId\": {\r",
+							"                    \"type\": \"string\",\r",
+							"                    \"format\": \"uuid\"\r",
+							"                },\r",
+							"                \"created\": {\r",
+							"                    \"type\": \"string\",\r",
+							"                    \"format\": \"date-time\"\r",
+							"                },\r",
+							"                \"expiration\": {\r",
+							"                    \"type\": \"string\",\r",
+							"                    \"format\": \"date-time\"\r",
+							"                },\r",
+							"                \"status\": {\r",
+							"                    \"type\": \"string\"\r",
+							"                },\r",
+							"                \"symbol\": {\r",
+							"                    \"type\": \"string\"\r",
+							"                },\r",
+							"                \"side\": {\r",
+							"                    \"type\": \"string\"\r",
+							"                },\r",
+							"                \"quantity\": {\r",
+							"                    \"type\": \"number\"\r",
+							"                },\r",
+							"                \"price\": {\r",
+							"                    \"type\": \"number\"\r",
+							"                }\r",
+							"            },\r",
+							"            \"required\": [\r",
+							"                \"accountId\",\r",
+							"                \"created\",\r",
+							"                \"expiration\",\r",
+							"                \"id\",\r",
+							"                \"price\",\r",
+							"                \"quantity\",\r",
+							"                \"side\",\r",
+							"                \"status\",\r",
+							"                \"symbol\",\r",
+							"                \"userId\"\r",
+							"            ],\r",
+							"            \"title\": \"Result\"\r",
+							"        }\r",
+							"    }\r",
+							"};\r",
+							"\r",
+							"pm.test(\"Verify Status Code: Orders GET - 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"var responseJson = pm.response.json();\r",
+							"\r",
+							"pm.test(\"Response Schema validation: Orders GET - 200\", function () {\r",
+							"    var result = tv4.validateResult(responseJson, schema);\r",
+							"    if(!(result.valid)){\r",
+							"        console.log(result);\r",
+							"    }\r",
+							"    pm.expect(result.valid).to.be.true;\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response time is less than 10 seconds\", () => {\r",
+							"  pm.expect(pm.response.responseTime).to.be.below(10000);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "x-institution-id",
+						"value": "{{x-institution-id}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{cpOrdersBaseUrl}}/Orders?accountId={{ordersAccountId}}&status={{ordersStatus}}",
+					"host": [
+						"{{cpOrdersBaseUrl}}"
+					],
+					"path": [
+						"Orders"
+					],
+					"query": [
+						{
+							"key": "accountId",
+							"value": "{{ordersAccountId}}"
+						},
+						{
+							"key": "status",
+							"value": "{{ordersStatus}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetOrders_400",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const schema = {\r",
+							"  \"$schema\": \"http://json-schema.org/draft-04/schema#\",\r",
+							"  \"type\": \"object\",\r",
+							"  \"properties\": {\r",
+							"    \"code\": {\r",
+							"      \"type\": \"string\"\r",
+							"    },\r",
+							"    \"message\": {\r",
+							"      \"type\": \"string\"\r",
+							"    }\r",
+							"  },\r",
+							"  \"required\": [\r",
+							"    \"code\",\r",
+							"    \"message\"\r",
+							"  ]\r",
+							"};\r",
+							"\r",
+							"pm.test(\"Verify Status Code: Orders GET - 400\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});\r",
+							"\r",
+							"var responseJson = pm.response.json();\r",
+							"\r",
+							"pm.test(\"Response Schema validation: Orders GET - 400\", function () {\r",
+							"    var result = tv4.validateResult(responseJson, schema);\r",
+							"    if(!(result.valid)){\r",
+							"        console.log(result);\r",
+							"    }\r",
+							"    pm.expect(result.valid).to.be.true;\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response time is less than 10 seconds\", () => {\r",
+							"  pm.expect(pm.response.responseTime).to.be.below(10000);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "x-institution-id",
+						"value": "{{x-institution-id}}",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"url": {
+					"raw": "{{cpOrdersBaseUrl}}/Orders?accountId={{ordersAccountId}}&status={{ordersStatus}}",
+					"host": [
+						"{{cpOrdersBaseUrl}}"
+					],
+					"path": [
+						"Orders"
+					],
+					"query": [
+						{
+							"key": "accountId",
+							"value": "{{ordersAccountId}}"
+						},
+						{
+							"key": "status",
+							"value": "{{ordersStatus}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetOrders_401",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const schema = {\r",
+							"  \"$schema\": \"http://json-schema.org/draft-04/schema#\",\r",
+							"  \"type\": \"object\",\r",
+							"  \"properties\": {\r",
+							"    \"code\": {\r",
+							"      \"type\": \"string\"\r",
+							"    },\r",
+							"    \"message\": {\r",
+							"      \"type\": \"string\"\r",
+							"    }\r",
+							"  },\r",
+							"  \"required\": [\r",
+							"    \"code\",\r",
+							"    \"message\"\r",
+							"  ]\r",
+							"};\r",
+							"\r",
+							"pm.test(\"Verify Status Code: Orders GET - 401\", function () {\r",
+							"    pm.response.to.have.status(401);\r",
+							"});\r",
+							"\r",
+							"var responseJson = pm.response.json();\r",
+							"\r",
+							"pm.test(\"Response Schema validation: Orders GET - 401\", function () {\r",
+							"    var result = tv4.validateResult(responseJson, schema);\r",
+							"    if(!(result.valid)){\r",
+							"        console.log(result);\r",
+							"    }\r",
+							"    pm.expect(result.valid).to.be.true;\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response time is less than 10 seconds\", () => {\r",
+							"  pm.expect(pm.response.responseTime).to.be.below(10000);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "x-institution-id",
+						"value": "{{x-institution-id}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{cpOrdersBaseUrl}}/Orders?accountId={{ordersAccountId}}&status={{ordersStatus}}",
+					"host": [
+						"{{cpOrdersBaseUrl}}"
+					],
+					"path": [
+						"Orders"
+					],
+					"query": [
+						{
+							"key": "accountId",
+							"value": "{{ordersAccountId}}"
+						},
+						{
+							"key": "status",
+							"value": "{{ordersStatus}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetOrders_403",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const schema = {\r",
+							"  \"$schema\": \"http://json-schema.org/draft-04/schema#\",\r",
+							"  \"type\": \"object\",\r",
+							"  \"properties\": {\r",
+							"    \"code\": {\r",
+							"      \"type\": \"string\"\r",
+							"    },\r",
+							"    \"message\": {\r",
+							"      \"type\": \"string\"\r",
+							"    }\r",
+							"  },\r",
+							"  \"required\": [\r",
+							"    \"code\",\r",
+							"    \"message\"\r",
+							"  ]\r",
+							"};\r",
+							"\r",
+							"pm.test(\"Verify Status Code: Orders GET - 403\", function () {\r",
+							"    pm.response.to.have.status(403);\r",
+							"});\r",
+							"\r",
+							"var responseJson = pm.response.json();\r",
+							"\r",
+							"pm.test(\"Response Schema validation: Orders GET - 403\", function () {\r",
+							"    var result = tv4.validateResult(responseJson, schema);\r",
+							"    if(!(result.valid)){\r",
+							"        console.log(result);\r",
+							"    }\r",
+							"    pm.expect(result.valid).to.be.true;\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response time is less than 10 seconds\", () => {\r",
+							"  pm.expect(pm.response.responseTime).to.be.below(10000);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "x-institution-id",
+						"value": "{{x-institution-id}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{cpOrdersBaseUrl}}/Orders?accountId={{ordersAccountId}}&status={{ordersStatus}}",
+					"host": [
+						"{{cpOrdersBaseUrl}}"
+					],
+					"path": [
+						"Orders"
+					],
+					"query": [
+						{
+							"key": "accountId",
+							"value": "{{ordersAccountId}}"
+						},
+						{
+							"key": "status",
+							"value": "{{ordersStatus}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetOrders_404",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const schema = {\r",
+							"  \"$schema\": \"http://json-schema.org/draft-04/schema#\",\r",
+							"  \"type\": \"object\",\r",
+							"  \"properties\": {\r",
+							"    \"code\": {\r",
+							"      \"type\": \"string\"\r",
+							"    },\r",
+							"    \"message\": {\r",
+							"      \"type\": \"string\"\r",
+							"    }\r",
+							"  },\r",
+							"  \"required\": [\r",
+							"    \"code\",\r",
+							"    \"message\"\r",
+							"  ]\r",
+							"};\r",
+							"\r",
+							"pm.test(\"Verify Status Code: Orders GET - 404\", function () {\r",
+							"    pm.response.to.have.status(404);\r",
+							"});\r",
+							"\r",
+							"var responseJson = pm.response.json();\r",
+							"\r",
+							"pm.test(\"Response Schema validation: Orders GET - 404\", function () {\r",
+							"    var result = tv4.validateResult(responseJson, schema);\r",
+							"    if(!(result.valid)){\r",
+							"        console.log(result);\r",
+							"    }\r",
+							"    pm.expect(result.valid).to.be.true;\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response time is less than 10 seconds\", () => {\r",
+							"  pm.expect(pm.response.responseTime).to.be.below(10000);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "x-institution-id",
+						"value": "{{x-institution-id}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{cpOrdersBaseUrl}}/Orders?accountId={{ordersAccountId}}&status={{ordersStatus}}",
+					"host": [
+						"{{cpOrdersBaseUrl}}"
+					],
+					"path": [
+						"Orders"
+					],
+					"query": [
+						{
+							"key": "accountId",
+							"value": "{{ordersAccountId}}"
+						},
+						{
+							"key": "status",
+							"value": "{{ordersStatus}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetOrder",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const schema = {\r",
+							"    \"$schema\": \"http://json-schema.org/draft-06/schema#\",\r",
+							"    \"$ref\": \"#/definitions/Welcome6\",\r",
+							"    \"definitions\": {\r",
+							"        \"Welcome6\": {\r",
+							"            \"type\": \"object\",\r",
+							"            \"additionalProperties\": false,\r",
+							"            \"properties\": {\r",
+							"                \"id\": {\r",
+							"                    \"type\": \"string\"\r",
+							"                },\r",
+							"                \"accountId\": {\r",
+							"                    \"type\": \"string\"\r",
+							"                },\r",
+							"                \"userId\": {\r",
+							"                    \"type\": \"string\",\r",
+							"                    \"format\": \"uuid\"\r",
+							"                },\r",
+							"                \"created\": {\r",
+							"                    \"type\": \"string\",\r",
+							"                    \"format\": \"date-time\"\r",
+							"                },\r",
+							"                \"expiration\": {\r",
+							"                    \"type\": \"string\",\r",
+							"                    \"format\": \"date-time\"\r",
+							"                },\r",
+							"                \"status\": {\r",
+							"                    \"type\": \"string\"\r",
+							"                },\r",
+							"                \"symbol\": {\r",
+							"                    \"type\": \"string\"\r",
+							"                },\r",
+							"                \"side\": {\r",
+							"                    \"type\": \"string\"\r",
+							"                },\r",
+							"                \"quantity\": {\r",
+							"                    \"type\": \"number\"\r",
+							"                },\r",
+							"                \"price\": {\r",
+							"                    \"type\": \"number\"\r",
+							"                },\r",
+							"                \"receipt\": {\r",
+							"                    \"$ref\": \"#/definitions/Receipt\"\r",
+							"                }\r",
+							"            },\r",
+							"            \"required\": [\r",
+							"                \"accountId\",\r",
+							"                \"created\",\r",
+							"                \"expiration\",\r",
+							"                \"id\",\r",
+							"                \"price\",\r",
+							"                \"quantity\",\r",
+							"                \"receipt\",\r",
+							"                \"side\",\r",
+							"                \"status\",\r",
+							"                \"symbol\",\r",
+							"                \"userId\"\r",
+							"            ],\r",
+							"            \"title\": \"Welcome6\"\r",
+							"        },\r",
+							"        \"Receipt\": {\r",
+							"            \"type\": \"object\",\r",
+							"            \"additionalProperties\": false,\r",
+							"            \"properties\": {\r",
+							"                \"subtotal\": {\r",
+							"                    \"type\": \"number\"\r",
+							"                },\r",
+							"                \"fee\": {\r",
+							"                    \"type\": \"number\"\r",
+							"                },\r",
+							"                \"total\": {\r",
+							"                    \"type\": \"number\"\r",
+							"                }\r",
+							"            },\r",
+							"            \"required\": [\r",
+							"                \"fee\",\r",
+							"                \"subtotal\",\r",
+							"                \"total\"\r",
+							"            ],\r",
+							"            \"title\": \"Receipt\"\r",
+							"        }\r",
+							"    }\r",
+							"};\r",
+							"\r",
+							"pm.test(\"Verify Status Code: Order GET - 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"var responseJson = pm.response.json();\r",
+							"\r",
+							"pm.test(\"Response Schema validation: Order GET - 200\", function () {\r",
+							"    var result = tv4.validateResult(responseJson, schema);\r",
+							"    if(!(result.valid)){\r",
+							"        console.log(result);\r",
+							"    }\r",
+							"    pm.expect(result.valid).to.be.true;\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response time is less than 10 seconds\", () => {\r",
+							"  pm.expect(pm.response.responseTime).to.be.below(10000);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "x-institution-id",
+						"value": "{{x-institution-id}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{cpOrdersBaseUrl}}/Orders/{{orderId}}",
+					"host": [
+						"{{cpOrdersBaseUrl}}"
+					],
+					"path": [
+						"Orders",
+						"{{orderId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetOrder_400",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const schema = {\r",
+							"  \"$schema\": \"http://json-schema.org/draft-04/schema#\",\r",
+							"  \"type\": \"object\",\r",
+							"  \"properties\": {\r",
+							"    \"code\": {\r",
+							"      \"type\": \"string\"\r",
+							"    },\r",
+							"    \"message\": {\r",
+							"      \"type\": \"string\"\r",
+							"    }\r",
+							"  },\r",
+							"  \"required\": [\r",
+							"    \"code\",\r",
+							"    \"message\"\r",
+							"  ]\r",
+							"};\r",
+							"\r",
+							"pm.test(\"Verify Status Code: Order GET - 400\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});\r",
+							"\r",
+							"var responseJson = pm.response.json();\r",
+							"\r",
+							"pm.test(\"Response Schema validation: Order GET - 400\", function () {\r",
+							"    var result = tv4.validateResult(responseJson, schema);\r",
+							"    if(!(result.valid)){\r",
+							"        console.log(result);\r",
+							"    }\r",
+							"    pm.expect(result.valid).to.be.true;\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response time is less than 10 seconds\", () => {\r",
+							"  pm.expect(pm.response.responseTime).to.be.below(10000);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "x-institution-id",
+						"value": "{{x-institution-id}}",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"url": {
+					"raw": "{{cpOrdersBaseUrl}}/Orders/{{orderId}}",
+					"host": [
+						"{{cpOrdersBaseUrl}}"
+					],
+					"path": [
+						"Orders",
+						"{{orderId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetOrder_401",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const schema = {\r",
+							"  \"$schema\": \"http://json-schema.org/draft-04/schema#\",\r",
+							"  \"type\": \"object\",\r",
+							"  \"properties\": {\r",
+							"    \"code\": {\r",
+							"      \"type\": \"string\"\r",
+							"    },\r",
+							"    \"message\": {\r",
+							"      \"type\": \"string\"\r",
+							"    }\r",
+							"  },\r",
+							"  \"required\": [\r",
+							"    \"code\",\r",
+							"    \"message\"\r",
+							"  ]\r",
+							"};\r",
+							"\r",
+							"pm.test(\"Verify Status Code: Order GET - 401\", function () {\r",
+							"    pm.response.to.have.status(401);\r",
+							"});\r",
+							"\r",
+							"var responseJson = pm.response.json();\r",
+							"\r",
+							"pm.test(\"Response Schema validation: Order GET - 401\", function () {\r",
+							"    var result = tv4.validateResult(responseJson, schema);\r",
+							"    if(!(result.valid)){\r",
+							"        console.log(result);\r",
+							"    }\r",
+							"    pm.expect(result.valid).to.be.true;\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response time is less than 10 seconds\", () => {\r",
+							"  pm.expect(pm.response.responseTime).to.be.below(10000);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "x-institution-id",
+						"value": "{{x-institution-id}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{cpOrdersBaseUrl}}/Orders/{{orderId}}",
+					"host": [
+						"{{cpOrdersBaseUrl}}"
+					],
+					"path": [
+						"Orders",
+						"{{orderId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetOrder_403",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const schema = {\r",
+							"  \"$schema\": \"http://json-schema.org/draft-04/schema#\",\r",
+							"  \"type\": \"object\",\r",
+							"  \"properties\": {\r",
+							"    \"code\": {\r",
+							"      \"type\": \"string\"\r",
+							"    },\r",
+							"    \"message\": {\r",
+							"      \"type\": \"string\"\r",
+							"    }\r",
+							"  },\r",
+							"  \"required\": [\r",
+							"    \"code\",\r",
+							"    \"message\"\r",
+							"  ]\r",
+							"};\r",
+							"\r",
+							"pm.test(\"Verify Status Code: Order GET - 403\", function () {\r",
+							"    pm.response.to.have.status(403);\r",
+							"});\r",
+							"\r",
+							"var responseJson = pm.response.json();\r",
+							"\r",
+							"pm.test(\"Response Schema validation: Order GET - 403\", function () {\r",
+							"    var result = tv4.validateResult(responseJson, schema);\r",
+							"    if(!(result.valid)){\r",
+							"        console.log(result);\r",
+							"    }\r",
+							"    pm.expect(result.valid).to.be.true;\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response time is less than 10 seconds\", () => {\r",
+							"  pm.expect(pm.response.responseTime).to.be.below(10000);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "x-institution-id",
+						"value": "{{x-institution-id}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{cpOrdersBaseUrl}}/Orders/{{orderId}}",
+					"host": [
+						"{{cpOrdersBaseUrl}}"
+					],
+					"path": [
+						"Orders",
+						"{{orderId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetOrder_404",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const schema = {\r",
+							"  \"$schema\": \"http://json-schema.org/draft-04/schema#\",\r",
+							"  \"type\": \"object\",\r",
+							"  \"properties\": {\r",
+							"    \"code\": {\r",
+							"      \"type\": \"string\"\r",
+							"    },\r",
+							"    \"message\": {\r",
+							"      \"type\": \"string\"\r",
+							"    }\r",
+							"  },\r",
+							"  \"required\": [\r",
+							"    \"code\",\r",
+							"    \"message\"\r",
+							"  ]\r",
+							"};\r",
+							"\r",
+							"pm.test(\"Verify Status Code: Order GET - 404\", function () {\r",
+							"    pm.response.to.have.status(404);\r",
+							"});\r",
+							"\r",
+							"var responseJson = pm.response.json();\r",
+							"\r",
+							"pm.test(\"Response Schema validation: Order GET - 404\", function () {\r",
+							"    var result = tv4.validateResult(responseJson, schema);\r",
+							"    if(!(result.valid)){\r",
+							"        console.log(result);\r",
+							"    }\r",
+							"    pm.expect(result.valid).to.be.true;\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response time is less than 10 seconds\", () => {\r",
+							"  pm.expect(pm.response.responseTime).to.be.below(10000);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "x-institution-id",
+						"value": "{{x-institution-id}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{cpOrdersBaseUrl}}/Orders/{{orderId}}",
+					"host": [
+						"{{cpOrdersBaseUrl}}"
+					],
+					"path": [
+						"Orders",
+						"{{orderId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PostOrdersExecute",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const schema = {\r",
+							"    \"$schema\": \"http://json-schema.org/draft-06/schema#\",\r",
+							"    \"$ref\": \"#/definitions/Welcome3\",\r",
+							"    \"definitions\": {\r",
+							"        \"Welcome3\": {\r",
+							"            \"type\": \"object\",\r",
+							"            \"additionalProperties\": false,\r",
+							"            \"properties\": {\r",
+							"                \"id\": {\r",
+							"                    \"type\": \"string\"\r",
+							"                },\r",
+							"                \"accountId\": {\r",
+							"                    \"type\": \"string\"\r",
+							"                },\r",
+							"                \"userId\": {\r",
+							"                    \"type\": \"string\",\r",
+							"                    \"format\": \"uuid\"\r",
+							"                },\r",
+							"                \"created\": {\r",
+							"                    \"type\": \"string\",\r",
+							"                    \"format\": \"date-time\"\r",
+							"                },\r",
+							"                \"expiration\": {\r",
+							"                    \"type\": \"string\",\r",
+							"                    \"format\": \"date-time\"\r",
+							"                },\r",
+							"                \"status\": {\r",
+							"                    \"type\": \"string\"\r",
+							"                },\r",
+							"                \"symbol\": {\r",
+							"                    \"type\": \"string\"\r",
+							"                },\r",
+							"                \"side\": {\r",
+							"                    \"type\": \"string\"\r",
+							"                },\r",
+							"                \"quantity\": {\r",
+							"                    \"type\": \"number\"\r",
+							"                },\r",
+							"                \"price\": {\r",
+							"                    \"type\": \"number\"\r",
+							"                },\r",
+							"                \"receipt\": {\r",
+							"                    \"$ref\": \"#/definitions/Receipt\"\r",
+							"                }\r",
+							"            },\r",
+							"            \"required\": [\r",
+							"                \"accountId\",\r",
+							"                \"created\",\r",
+							"                \"expiration\",\r",
+							"                \"id\",\r",
+							"                \"price\",\r",
+							"                \"quantity\",\r",
+							"                \"receipt\",\r",
+							"                \"side\",\r",
+							"                \"status\",\r",
+							"                \"symbol\",\r",
+							"                \"userId\"\r",
+							"            ],\r",
+							"            \"title\": \"Welcome3\"\r",
+							"        },\r",
+							"        \"Receipt\": {\r",
+							"            \"type\": \"object\",\r",
+							"            \"additionalProperties\": false,\r",
+							"            \"properties\": {\r",
+							"                \"subtotal\": {\r",
+							"                    \"type\": \"number\"\r",
+							"                },\r",
+							"                \"fee\": {\r",
+							"                    \"type\": \"number\"\r",
+							"                },\r",
+							"                \"total\": {\r",
+							"                    \"type\": \"number\"\r",
+							"                }\r",
+							"            },\r",
+							"            \"required\": [\r",
+							"                \"fee\",\r",
+							"                \"subtotal\",\r",
+							"                \"total\"\r",
+							"            ],\r",
+							"            \"title\": \"Receipt\"\r",
+							"        }\r",
+							"    }\r",
+							"};\r",
+							"\r",
+							"pm.test(\"Verify Status Code: Orders Execute POST - 201\", function () {\r",
+							"    pm.response.to.have.status(201);\r",
+							"});\r",
+							"\r",
+							"var responseJson = pm.response.json();\r",
+							"\r",
+							"pm.test(\"Response Schema validation: Orders Execute POST - 201\", function () {\r",
+							"    var result = tv4.validateResult(responseJson, schema);\r",
+							"    if(!(result.valid)){\r",
+							"        console.log(result);\r",
+							"    }\r",
+							"    pm.expect(result.valid).to.be.true;\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response time is less than 10 seconds\", () => {\r",
+							"  pm.expect(pm.response.responseTime).to.be.below(10000);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "x-institution-id",
+						"value": "{{x-institution-id}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"accountId\": \"6a8e01a8-37f0-40e7-bb4e-2b47f1b2745e\",\r\n    \"userId\": \"673c71f3-0a7a-4f9d-9f0a-c076994f8120\",\r\n    \"userInfo\": {\r\n        \"line1\": \"123 Main St\",\r\n        \"city\": \"New York\",\r\n        \"stateProvinceRegion\": \"NY\",\r\n        \"zipCode\": \"10092\",\r\n        \"country\": \"US\",\r\n        \"email\": \"jon-odin+35@example.com\",\r\n        \"phone\": \"+15559876543\"\r\n    }\r\n}"
+				},
+				"url": {
+					"raw": "{{cpOrdersBaseUrl}}/Orders/{{orderIdExecute}}/execute",
+					"host": [
+						"{{cpOrdersBaseUrl}}"
+					],
+					"path": [
+						"Orders",
+						"{{orderIdExecute}}",
+						"execute"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PostOrdersExecute_400",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const schema = {\r",
+							"  \"$schema\": \"http://json-schema.org/draft-04/schema#\",\r",
+							"  \"type\": \"object\",\r",
+							"  \"properties\": {\r",
+							"    \"code\": {\r",
+							"      \"type\": \"string\"\r",
+							"    },\r",
+							"    \"message\": {\r",
+							"      \"type\": \"string\"\r",
+							"    }\r",
+							"  },\r",
+							"  \"required\": [\r",
+							"    \"code\",\r",
+							"    \"message\"\r",
+							"  ]\r",
+							"};\r",
+							"\r",
+							"pm.test(\"Verify Status Code: Orders Execute POST - 400\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});\r",
+							"\r",
+							"var responseJson = pm.response.json();\r",
+							"\r",
+							"pm.test(\"Response Schema validation: Orders Execute POST - 400\", function () {\r",
+							"    var result = tv4.validateResult(responseJson, schema);\r",
+							"    if(!(result.valid)){\r",
+							"        console.log(result);\r",
+							"    }\r",
+							"    pm.expect(result.valid).to.be.true;\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response time is less than 10 seconds\", () => {\r",
+							"  pm.expect(pm.response.responseTime).to.be.below(10000);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "x-institution-id",
+						"value": "{{x-institution-id}}",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"accountId\": \"6a8e01a8-37f0-40e7-bb4e-2b47f1b2745e\",\r\n    \"userId\": \"673c71f3-0a7a-4f9d-9f0a-c076994f8120\",\r\n    \"userInfo\": {\r\n        \"line1\": \"123 Main St\",\r\n        \"city\": \"New York\",\r\n        \"stateProvinceRegion\": \"NY\",\r\n        \"zipCode\": \"10092\",\r\n        \"country\": \"US\",\r\n        \"email\": \"jon-odin+35@example.com\",\r\n        \"phone\": \"+15559876543\"\r\n    }\r\n}"
+				},
+				"url": {
+					"raw": "{{cpOrdersBaseUrl}}/Orders/{{orderIdExecute}}/execute",
+					"host": [
+						"{{cpOrdersBaseUrl}}"
+					],
+					"path": [
+						"Orders",
+						"{{orderIdExecute}}",
+						"execute"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PostOrdersExecute_401",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const schema = {\r",
+							"  \"$schema\": \"http://json-schema.org/draft-04/schema#\",\r",
+							"  \"type\": \"object\",\r",
+							"  \"properties\": {\r",
+							"    \"code\": {\r",
+							"      \"type\": \"string\"\r",
+							"    },\r",
+							"    \"message\": {\r",
+							"      \"type\": \"string\"\r",
+							"    }\r",
+							"  },\r",
+							"  \"required\": [\r",
+							"    \"code\",\r",
+							"    \"message\"\r",
+							"  ]\r",
+							"};\r",
+							"\r",
+							"pm.test(\"Verify Status Code: Orders Execute POST - 401\", function () {\r",
+							"    pm.response.to.have.status(401);\r",
+							"});\r",
+							"\r",
+							"var responseJson = pm.response.json();\r",
+							"\r",
+							"pm.test(\"Response Schema validation: Orders Execute POST - 401\", function () {\r",
+							"    var result = tv4.validateResult(responseJson, schema);\r",
+							"    if(!(result.valid)){\r",
+							"        console.log(result);\r",
+							"    }\r",
+							"    pm.expect(result.valid).to.be.true;\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response time is less than 10 seconds\", () => {\r",
+							"  pm.expect(pm.response.responseTime).to.be.below(10000);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "x-institution-id",
+						"value": "{{x-institution-id}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"accountId\": \"6a8e01a8-37f0-40e7-bb4e-2b47f1b2745e\",\r\n    \"userId\": \"673c71f3-0a7a-4f9d-9f0a-c076994f8120\",\r\n    \"userInfo\": {\r\n        \"line1\": \"123 Main St\",\r\n        \"city\": \"New York\",\r\n        \"stateProvinceRegion\": \"NY\",\r\n        \"zipCode\": \"10092\",\r\n        \"country\": \"US\",\r\n        \"email\": \"jon-odin+35@example.com\",\r\n        \"phone\": \"+15559876543\"\r\n    }\r\n}"
+				},
+				"url": {
+					"raw": "{{cpOrdersBaseUrl}}/Orders/{{orderIdExecute}}/execute",
+					"host": [
+						"{{cpOrdersBaseUrl}}"
+					],
+					"path": [
+						"Orders",
+						"{{orderIdExecute}}",
+						"execute"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PostOrdersExecute_403",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const schema = {\r",
+							"  \"$schema\": \"http://json-schema.org/draft-04/schema#\",\r",
+							"  \"type\": \"object\",\r",
+							"  \"properties\": {\r",
+							"    \"code\": {\r",
+							"      \"type\": \"string\"\r",
+							"    },\r",
+							"    \"message\": {\r",
+							"      \"type\": \"string\"\r",
+							"    }\r",
+							"  },\r",
+							"  \"required\": [\r",
+							"    \"code\",\r",
+							"    \"message\"\r",
+							"  ]\r",
+							"};\r",
+							"\r",
+							"pm.test(\"Verify Status Code: Orders Execute POST - 403\", function () {\r",
+							"    pm.response.to.have.status(403);\r",
+							"});\r",
+							"\r",
+							"var responseJson = pm.response.json();\r",
+							"\r",
+							"pm.test(\"Response Schema validation: Orders Execute POST - 403\", function () {\r",
+							"    var result = tv4.validateResult(responseJson, schema);\r",
+							"    if(!(result.valid)){\r",
+							"        console.log(result);\r",
+							"    }\r",
+							"    pm.expect(result.valid).to.be.true;\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response time is less than 10 seconds\", () => {\r",
+							"  pm.expect(pm.response.responseTime).to.be.below(10000);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "x-institution-id",
+						"value": "{{x-institution-id}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"accountId\": \"6a8e01a8-37f0-40e7-bb4e-2b47f1b2745e\",\r\n    \"userId\": \"673c71f3-0a7a-4f9d-9f0a-c076994f8120\",\r\n    \"userInfo\": {\r\n        \"line1\": \"123 Main St\",\r\n        \"city\": \"New York\",\r\n        \"stateProvinceRegion\": \"NY\",\r\n        \"zipCode\": \"10092\",\r\n        \"country\": \"US\",\r\n        \"email\": \"jon-odin+35@example.com\",\r\n        \"phone\": \"+15559876543\"\r\n    }\r\n}"
+				},
+				"url": {
+					"raw": "{{cpOrdersBaseUrl}}/Orders/{{orderIdExecute}}/execute",
+					"host": [
+						"{{cpOrdersBaseUrl}}"
+					],
+					"path": [
+						"Orders",
+						"{{orderIdExecute}}",
+						"execute"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PostOrdersExecute_404",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const schema = {\r",
+							"  \"$schema\": \"http://json-schema.org/draft-04/schema#\",\r",
+							"  \"type\": \"object\",\r",
+							"  \"properties\": {\r",
+							"    \"code\": {\r",
+							"      \"type\": \"string\"\r",
+							"    },\r",
+							"    \"message\": {\r",
+							"      \"type\": \"string\"\r",
+							"    }\r",
+							"  },\r",
+							"  \"required\": [\r",
+							"    \"code\",\r",
+							"    \"message\"\r",
+							"  ]\r",
+							"};\r",
+							"\r",
+							"pm.test(\"Verify Status Code: Orders Execute POST - 404\", function () {\r",
+							"    pm.response.to.have.status(404);\r",
+							"});\r",
+							"\r",
+							"var responseJson = pm.response.json();\r",
+							"\r",
+							"pm.test(\"Response Schema validation: Orders Execute POST - 404\", function () {\r",
+							"    var result = tv4.validateResult(responseJson, schema);\r",
+							"    if(!(result.valid)){\r",
+							"        console.log(result);\r",
+							"    }\r",
+							"    pm.expect(result.valid).to.be.true;\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response time is less than 10 seconds\", () => {\r",
+							"  pm.expect(pm.response.responseTime).to.be.below(10000);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "x-institution-id",
+						"value": "{{x-institution-id}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"accountId\": \"6a8e01a8-37f0-40e7-bb4e-2b47f1b2745e\",\r\n    \"userId\": \"673c71f3-0a7a-4f9d-9f0a-c076994f8120\",\r\n    \"userInfo\": {\r\n        \"line1\": \"123 Main St\",\r\n        \"city\": \"New York\",\r\n        \"stateProvinceRegion\": \"NY\",\r\n        \"zipCode\": \"10092\",\r\n        \"country\": \"US\",\r\n        \"email\": \"jon-odin+35@example.com\",\r\n        \"phone\": \"+15559876543\"\r\n    }\r\n}"
+				},
+				"url": {
+					"raw": "{{cpOrdersBaseUrl}}/Orders/{{orderIdExecute}}/execute",
+					"host": [
+						"{{cpOrdersBaseUrl}}"
+					],
+					"path": [
+						"Orders",
+						"{{orderIdExecute}}",
+						"execute"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PostOrdersExecute_409",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const schema = {\r",
+							"  \"$schema\": \"http://json-schema.org/draft-04/schema#\",\r",
+							"  \"type\": \"object\",\r",
+							"  \"properties\": {\r",
+							"    \"code\": {\r",
+							"      \"type\": \"string\"\r",
+							"    },\r",
+							"    \"message\": {\r",
+							"      \"type\": \"string\"\r",
+							"    }\r",
+							"  },\r",
+							"  \"required\": [\r",
+							"    \"code\",\r",
+							"    \"message\"\r",
+							"  ]\r",
+							"};\r",
+							"\r",
+							"pm.test(\"Verify Status Code: Orders Execute POST - 409\", function () {\r",
+							"    pm.response.to.have.status(409);\r",
+							"});\r",
+							"\r",
+							"var responseJson = pm.response.json();\r",
+							"\r",
+							"pm.test(\"Response Schema validation: Orders Execute POST - 409\", function () {\r",
+							"    var result = tv4.validateResult(responseJson, schema);\r",
+							"    if(!(result.valid)){\r",
+							"        console.log(result);\r",
+							"    }\r",
+							"    pm.expect(result.valid).to.be.true;\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response time is less than 10 seconds\", () => {\r",
+							"  pm.expect(pm.response.responseTime).to.be.below(10000);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "x-institution-id",
+						"value": "{{x-institution-id}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"accountId\": \"6a8e01a8-37f0-40e7-bb4e-2b47f1b2745e\",\r\n    \"userId\": \"673c71f3-0a7a-4f9d-9f0a-c076994f8120\",\r\n    \"userInfo\": {\r\n        \"line1\": \"123 Main St\",\r\n        \"city\": \"New York\",\r\n        \"stateProvinceRegion\": \"NY\",\r\n        \"zipCode\": \"10092\",\r\n        \"country\": \"US\",\r\n        \"email\": \"jon-odin+35@example.com\",\r\n        \"phone\": \"+15559876543\"\r\n    }\r\n}"
+				},
+				"url": {
+					"raw": "{{cpOrdersBaseUrl}}/Orders/{{orderIdExecute}}/execute",
+					"host": [
+						"{{cpOrdersBaseUrl}}"
+					],
+					"path": [
+						"Orders",
+						"{{orderIdExecute}}",
+						"execute"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "https://tbd"
+		},
+		{
+			"key": "relationshipInstitutionId",
+			"value": ""
+		},
+		{
+			"key": "cryptoProviderId",
+			"value": ""
+		},
+		{
+			"key": "userId",
+			"value": ""
+		}
+	]
+}

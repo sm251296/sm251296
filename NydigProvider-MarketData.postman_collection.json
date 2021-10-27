@@ -1,0 +1,952 @@
+{
+	"info": {
+		"_postman_id": "ca0e3c03-4a85-4e8a-a21a-9db5550042f9",
+		"name": "NydigProvider-MarketData",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "GetTicker",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const schema = {\r",
+							"    \"$schema\": \"http://json-schema.org/draft-06/schema#\",\r",
+							"    \"$ref\": \"#/definitions/getTicker\",\r",
+							"    \"definitions\": {\r",
+							"        \"Welcome3\": {\r",
+							"            \"type\": \"object\",\r",
+							"            \"additionalProperties\": false,\r",
+							"            \"properties\": {\r",
+							"                \"symbol\": {\r",
+							"                    \"type\": \"string\"\r",
+							"                },\r",
+							"                \"currency\": {\r",
+							"                    \"type\": \"string\"\r",
+							"                },\r",
+							"                \"price\": {\r",
+							"                    \"type\": \"number\"\r",
+							"                }\r",
+							"            },\r",
+							"            \"required\": [\r",
+							"                \"currency\",\r",
+							"                \"price\",\r",
+							"                \"symbol\"\r",
+							"            ],\r",
+							"            \"title\": \"getTicker\"\r",
+							"        }\r",
+							"    }\r",
+							"};\r",
+							"\r",
+							"pm.test(\"Verify Status Code: Market Ticker GET - 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"var responseJson = pm.response.json();\r",
+							"\r",
+							"pm.test(\"Response Schema validation: Market Ticker GET\", function () {\r",
+							"    var result = tv4.validateResult(responseJson, schema);\r",
+							"    if(!(result.valid)){\r",
+							"        console.log(result);\r",
+							"    }\r",
+							"    pm.expect(result.valid).to.be.true;\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response time is less than 10 seconds\", () => {\r",
+							"  pm.expect(pm.response.responseTime).to.be.below(10000);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "x-institution-id",
+						"value": "{{x-institution-id}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{cpMarketDataBaseUrl}}/ticker/{{symbolBTC}}?toCurrency={{toCurrency}}",
+					"host": [
+						"{{cpMarketDataBaseUrl}}"
+					],
+					"path": [
+						"ticker",
+						"{{symbolBTC}}"
+					],
+					"query": [
+						{
+							"key": "toCurrency",
+							"value": "{{toCurrency}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetTicker_400",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const schema = {\r",
+							"  \"$schema\": \"http://json-schema.org/draft-04/schema#\",\r",
+							"  \"type\": \"object\",\r",
+							"  \"properties\": {\r",
+							"    \"code\": {\r",
+							"      \"type\": \"string\"\r",
+							"    },\r",
+							"    \"message\": {\r",
+							"      \"type\": \"string\"\r",
+							"    }\r",
+							"  },\r",
+							"  \"required\": [\r",
+							"    \"code\",\r",
+							"    \"message\"\r",
+							"  ]\r",
+							"};\r",
+							"\r",
+							"pm.test(\"Verify Status Code: Market Ticker GET - 400\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});\r",
+							"\r",
+							"var responseJson = pm.response.json();\r",
+							"\r",
+							"pm.test(\"Response Schema validation: Market Ticker GET - 400\", function () {\r",
+							"    var result = tv4.validateResult(responseJson, schema);\r",
+							"    if(!(result.valid)){\r",
+							"        console.log(result);\r",
+							"    }\r",
+							"    pm.expect(result.valid).to.be.true;\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response time is less than 10 seconds\", () => {\r",
+							"  pm.expect(pm.response.responseTime).to.be.below(10000);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "x-institution-id",
+						"value": "{{x-institution-id}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{cpMarketDataBaseUrl}}/ticker/{{symbolBTC}}?toCurrency={{toCurrency}}",
+					"host": [
+						"{{cpMarketDataBaseUrl}}"
+					],
+					"path": [
+						"ticker",
+						"{{symbolBTC}}"
+					],
+					"query": [
+						{
+							"key": "toCurrency",
+							"value": "{{toCurrency}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetTicker_401",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const schema = {\r",
+							"  \"$schema\": \"http://json-schema.org/draft-04/schema#\",\r",
+							"  \"type\": \"object\",\r",
+							"  \"properties\": {\r",
+							"    \"code\": {\r",
+							"      \"type\": \"string\"\r",
+							"    },\r",
+							"    \"message\": {\r",
+							"      \"type\": \"string\"\r",
+							"    }\r",
+							"  },\r",
+							"  \"required\": [\r",
+							"    \"code\",\r",
+							"    \"message\"\r",
+							"  ]\r",
+							"};\r",
+							"\r",
+							"pm.test(\"Verify Status Code: Market Ticker GET - 401\", function () {\r",
+							"    pm.response.to.have.status(401);\r",
+							"});\r",
+							"\r",
+							"var responseJson = pm.response.json();\r",
+							"\r",
+							"pm.test(\"Response Schema validation: Market Ticker GET - 401\", function () {\r",
+							"    var result = tv4.validateResult(responseJson, schema);\r",
+							"    if(!(result.valid)){\r",
+							"        console.log(result);\r",
+							"    }\r",
+							"    pm.expect(result.valid).to.be.true;\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response time is less than 10 seconds\", () => {\r",
+							"  pm.expect(pm.response.responseTime).to.be.below(10000);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{cpMarketDataBaseUrl}}/ticker/{{symbolBTC}}?toCurrency={{toCurrency}}",
+					"host": [
+						"{{cpMarketDataBaseUrl}}"
+					],
+					"path": [
+						"ticker",
+						"{{symbolBTC}}"
+					],
+					"query": [
+						{
+							"key": "toCurrency",
+							"value": "{{toCurrency}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetTicker_403",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const schema = {\r",
+							"  \"$schema\": \"http://json-schema.org/draft-04/schema#\",\r",
+							"  \"type\": \"object\",\r",
+							"  \"properties\": {\r",
+							"    \"code\": {\r",
+							"      \"type\": \"string\"\r",
+							"    },\r",
+							"    \"message\": {\r",
+							"      \"type\": \"string\"\r",
+							"    }\r",
+							"  },\r",
+							"  \"required\": [\r",
+							"    \"code\",\r",
+							"    \"message\"\r",
+							"  ]\r",
+							"};\r",
+							"\r",
+							"pm.test(\"Verify Status Code: Market Ticker GET - 403\", function () {\r",
+							"    pm.response.to.have.status(403);\r",
+							"});\r",
+							"\r",
+							"var responseJson = pm.response.json();\r",
+							"\r",
+							"pm.test(\"Response Schema validation: Market Ticker GET - 403\", function () {\r",
+							"    var result = tv4.validateResult(responseJson, schema);\r",
+							"    if(!(result.valid)){\r",
+							"        console.log(result);\r",
+							"    }\r",
+							"    pm.expect(result.valid).to.be.true;\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response time is less than 10 seconds\", () => {\r",
+							"  pm.expect(pm.response.responseTime).to.be.below(10000);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "x-institution-id",
+						"value": "{{x-institution-id}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{cpMarketDataBaseUrl}}/ticker/{{symbolBTC}}?toCurrency={{toCurrency}}",
+					"host": [
+						"{{cpMarketDataBaseUrl}}"
+					],
+					"path": [
+						"ticker",
+						"{{symbolBTC}}"
+					],
+					"query": [
+						{
+							"key": "toCurrency",
+							"value": "{{toCurrency}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetTicker_404",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const schema = {\r",
+							"  \"$schema\": \"http://json-schema.org/draft-04/schema#\",\r",
+							"  \"type\": \"object\",\r",
+							"  \"properties\": {\r",
+							"    \"code\": {\r",
+							"      \"type\": \"string\"\r",
+							"    },\r",
+							"    \"message\": {\r",
+							"      \"type\": \"string\"\r",
+							"    }\r",
+							"  },\r",
+							"  \"required\": [\r",
+							"    \"code\",\r",
+							"    \"message\"\r",
+							"  ]\r",
+							"};\r",
+							"\r",
+							"pm.test(\"Verify Status Code: Market Ticker GET - 404\", function () {\r",
+							"    pm.response.to.have.status(404);\r",
+							"});\r",
+							"\r",
+							"var responseJson = pm.response.json();\r",
+							"\r",
+							"pm.test(\"Response Schema validation: Market Ticker GET - 404\", function () {\r",
+							"    var result = tv4.validateResult(responseJson, schema);\r",
+							"    if(!(result.valid)){\r",
+							"        console.log(result);\r",
+							"    }\r",
+							"    pm.expect(result.valid).to.be.true;\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response time is less than 10 seconds\", () => {\r",
+							"  pm.expect(pm.response.responseTime).to.be.below(10000);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "x-institution-id",
+						"value": "{{x-institution-id}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{cpMarketDataBaseUrl}}/ticker/{{symbolBTC}}?toCurrency={{toCurrency}}1",
+					"host": [
+						"{{cpMarketDataBaseUrl}}"
+					],
+					"path": [
+						"ticker",
+						"{{symbolBTC}}"
+					],
+					"query": [
+						{
+							"key": "toCurrency",
+							"value": "{{toCurrency}}1"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetTickerHistory",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const schema = {\r",
+							"    \"$schema\": \"http://json-schema.org/draft-06/schema#\",\r",
+							"    \"$ref\": \"#/definitions/Welcome9\",\r",
+							"    \"definitions\": {\r",
+							"        \"Welcome9\": {\r",
+							"            \"type\": \"object\",\r",
+							"            \"additionalProperties\": false,\r",
+							"            \"properties\": {\r",
+							"                \"symbol\": {\r",
+							"                    \"type\": \"string\"\r",
+							"                },\r",
+							"                \"currency\": {\r",
+							"                    \"type\": \"string\"\r",
+							"                },\r",
+							"                \"data\": {\r",
+							"                    \"type\": \"array\",\r",
+							"                    \"items\": {\r",
+							"                        \"$ref\": \"#/definitions/Datum\"\r",
+							"                    }\r",
+							"                }\r",
+							"            },\r",
+							"            \"required\": [\r",
+							"                \"currency\",\r",
+							"                \"data\",\r",
+							"                \"symbol\"\r",
+							"            ],\r",
+							"            \"title\": \"Welcome9\"\r",
+							"        },\r",
+							"        \"Datum\": {\r",
+							"            \"type\": \"object\",\r",
+							"            \"additionalProperties\": false,\r",
+							"            \"properties\": {\r",
+							"                \"price\": {\r",
+							"                    \"type\": \"number\"\r",
+							"                },\r",
+							"                \"timestamp\": {\r",
+							"                    \"type\": \"string\",\r",
+							"                    \"format\": \"date-time\"\r",
+							"                }\r",
+							"            },\r",
+							"            \"required\": [\r",
+							"                \"price\",\r",
+							"                \"timestamp\"\r",
+							"            ],\r",
+							"            \"title\": \"Datum\"\r",
+							"        }\r",
+							"    }\r",
+							"};\r",
+							"\r",
+							"pm.test(\"Verify Status Code: Market Ticker History GET - 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"var responseJson = pm.response.json();\r",
+							"\r",
+							"pm.test(\"Response Schema validation: Market Ticker History GET - 200\", function () {\r",
+							"    var result = tv4.validateResult(responseJson, schema);\r",
+							"    if(!(result.valid)){\r",
+							"        console.log(result);\r",
+							"    }\r",
+							"    pm.expect(result.valid).to.be.true;\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response time is less than 10 seconds\", () => {\r",
+							"  pm.expect(pm.response.responseTime).to.be.below(10000);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "x-institution-id",
+						"value": "{{x-institution-id}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{cpMarketDataBaseUrl}}/ticker/{{symbolBTC}}/history?frequency={{frequency_oneMinute}}&lookback={{lookback_day}}&toCurrency={{toCurrency}}",
+					"host": [
+						"{{cpMarketDataBaseUrl}}"
+					],
+					"path": [
+						"ticker",
+						"{{symbolBTC}}",
+						"history"
+					],
+					"query": [
+						{
+							"key": "frequency",
+							"value": "{{frequency_oneMinute}}"
+						},
+						{
+							"key": "lookback",
+							"value": "{{lookback_day}}"
+						},
+						{
+							"key": "toCurrency",
+							"value": "{{toCurrency}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetTickerHistory_400",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const schema = {\r",
+							"  \"$schema\": \"http://json-schema.org/draft-04/schema#\",\r",
+							"  \"type\": \"object\",\r",
+							"  \"properties\": {\r",
+							"    \"code\": {\r",
+							"      \"type\": \"string\"\r",
+							"    },\r",
+							"    \"message\": {\r",
+							"      \"type\": \"string\"\r",
+							"    }\r",
+							"  },\r",
+							"  \"required\": [\r",
+							"    \"code\",\r",
+							"    \"message\"\r",
+							"  ]\r",
+							"};\r",
+							"\r",
+							"pm.test(\"Verify Status Code: Market Ticker History GET - 400\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});\r",
+							"\r",
+							"var responseJson = pm.response.json();\r",
+							"\r",
+							"pm.test(\"Response Schema validation: Market Ticker History GET - 400\", function () {\r",
+							"    var result = tv4.validateResult(responseJson, schema);\r",
+							"    if(!(result.valid)){\r",
+							"        console.log(result);\r",
+							"    }\r",
+							"    pm.expect(result.valid).to.be.true;\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response time is less than 10 seconds\", () => {\r",
+							"  pm.expect(pm.response.responseTime).to.be.below(10000);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "x-institution-id",
+						"value": "{{x-institution-id}}",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"url": {
+					"raw": "{{cpMarketDataBaseUrl}}/ticker/{{symbolBTC}}/history?frequency={{frequency_oneMinute}}&lookback={{lookback_day}}&toCurrency={{toCurrency}}",
+					"host": [
+						"{{cpMarketDataBaseUrl}}"
+					],
+					"path": [
+						"ticker",
+						"{{symbolBTC}}",
+						"history"
+					],
+					"query": [
+						{
+							"key": "frequency",
+							"value": "{{frequency_oneMinute}}"
+						},
+						{
+							"key": "lookback",
+							"value": "{{lookback_day}}"
+						},
+						{
+							"key": "toCurrency",
+							"value": "{{toCurrency}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetTickerHistory_401",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const schema = {\r",
+							"  \"$schema\": \"http://json-schema.org/draft-04/schema#\",\r",
+							"  \"type\": \"object\",\r",
+							"  \"properties\": {\r",
+							"    \"code\": {\r",
+							"      \"type\": \"string\"\r",
+							"    },\r",
+							"    \"message\": {\r",
+							"      \"type\": \"string\"\r",
+							"    }\r",
+							"  },\r",
+							"  \"required\": [\r",
+							"    \"code\",\r",
+							"    \"message\"\r",
+							"  ]\r",
+							"};\r",
+							"\r",
+							"pm.test(\"Verify Status Code: Market Ticker History GET - 401\", function () {\r",
+							"    pm.response.to.have.status(401);\r",
+							"});\r",
+							"\r",
+							"var responseJson = pm.response.json();\r",
+							"\r",
+							"pm.test(\"Response Schema validation: Market Ticker History GET - 401 \", function () {\r",
+							"    var result = tv4.validateResult(responseJson, schema);\r",
+							"    if(!(result.valid)){\r",
+							"        console.log(result);\r",
+							"    }\r",
+							"    pm.expect(result.valid).to.be.true;\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response time is less than 10 seconds\", () => {\r",
+							"  pm.expect(pm.response.responseTime).to.be.below(10000);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{cpMarketDataBaseUrl}}/ticker/{{symbolBTC}}/history?frequency={{frequency_oneMinute}}&lookback={{lookback_day}}&toCurrency={{toCurrency}}",
+					"host": [
+						"{{cpMarketDataBaseUrl}}"
+					],
+					"path": [
+						"ticker",
+						"{{symbolBTC}}",
+						"history"
+					],
+					"query": [
+						{
+							"key": "frequency",
+							"value": "{{frequency_oneMinute}}"
+						},
+						{
+							"key": "lookback",
+							"value": "{{lookback_day}}"
+						},
+						{
+							"key": "toCurrency",
+							"value": "{{toCurrency}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetTickerHistory_403",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const schema = {\r",
+							"  \"$schema\": \"http://json-schema.org/draft-04/schema#\",\r",
+							"  \"type\": \"object\",\r",
+							"  \"properties\": {\r",
+							"    \"code\": {\r",
+							"      \"type\": \"string\"\r",
+							"    },\r",
+							"    \"message\": {\r",
+							"      \"type\": \"string\"\r",
+							"    }\r",
+							"  },\r",
+							"  \"required\": [\r",
+							"    \"code\",\r",
+							"    \"message\"\r",
+							"  ]\r",
+							"};\r",
+							"\r",
+							"pm.test(\"Verify Status Code: Market Ticker History GET - 403\", function () {\r",
+							"    pm.response.to.have.status(403);\r",
+							"});\r",
+							"\r",
+							"var responseJson = pm.response.json();\r",
+							"\r",
+							"pm.test(\"Response Schema validation: Market Ticker History GET - 403\", function () {\r",
+							"    var result = tv4.validateResult(responseJson, schema);\r",
+							"    if(!(result.valid)){\r",
+							"        console.log(result);\r",
+							"    }\r",
+							"    pm.expect(result.valid).to.be.true;\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response time is less than 10 seconds\", () => {\r",
+							"  pm.expect(pm.response.responseTime).to.be.below(10000);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "x-institution-id",
+						"value": "{{x-institution-id}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{cpMarketDataBaseUrl}}/ticker/{{symbolBTC}}/history?frequency={{frequency_oneMinute}}&lookback={{lookback_day}}&toCurrency={{toCurrency}}",
+					"host": [
+						"{{cpMarketDataBaseUrl}}"
+					],
+					"path": [
+						"ticker",
+						"{{symbolBTC}}",
+						"history"
+					],
+					"query": [
+						{
+							"key": "frequency",
+							"value": "{{frequency_oneMinute}}"
+						},
+						{
+							"key": "lookback",
+							"value": "{{lookback_day}}"
+						},
+						{
+							"key": "toCurrency",
+							"value": "{{toCurrency}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetTickerHistory_404",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const schema = {\r",
+							"  \"$schema\": \"http://json-schema.org/draft-04/schema#\",\r",
+							"  \"type\": \"object\",\r",
+							"  \"properties\": {\r",
+							"    \"code\": {\r",
+							"      \"type\": \"string\"\r",
+							"    },\r",
+							"    \"message\": {\r",
+							"      \"type\": \"string\"\r",
+							"    }\r",
+							"  },\r",
+							"  \"required\": [\r",
+							"    \"code\",\r",
+							"    \"message\"\r",
+							"  ]\r",
+							"};\r",
+							"\r",
+							"pm.test(\"Verify Status Code: Market Ticker History GET - 404\", function () {\r",
+							"    pm.response.to.have.status(404);\r",
+							"});\r",
+							"\r",
+							"var responseJson = pm.response.json();\r",
+							"\r",
+							"pm.test(\"Response Schema validation: Market Ticker History GET - 404\", function () {\r",
+							"    var result = tv4.validateResult(responseJson, schema);\r",
+							"    if(!(result.valid)){\r",
+							"        console.log(result);\r",
+							"    }\r",
+							"    pm.expect(result.valid).to.be.true;\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response time is less than 10 seconds\", () => {\r",
+							"  pm.expect(pm.response.responseTime).to.be.below(10000);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "x-institution-id",
+						"value": "{{x-institution-id}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{cpMarketDataBaseUrl}}/ticker/{{symbolBTC}}/history?frequency={{frequency_oneMinute}}&lookback={{lookback_day}}&toCurrency={{toCurrency}}p",
+					"host": [
+						"{{cpMarketDataBaseUrl}}"
+					],
+					"path": [
+						"ticker",
+						"{{symbolBTC}}",
+						"history"
+					],
+					"query": [
+						{
+							"key": "frequency",
+							"value": "{{frequency_oneMinute}}"
+						},
+						{
+							"key": "lookback",
+							"value": "{{lookback_day}}"
+						},
+						{
+							"key": "toCurrency",
+							"value": "{{toCurrency}}p"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "https://tbd"
+		},
+		{
+			"key": "relationshipInstitutionId",
+			"value": ""
+		},
+		{
+			"key": "cryptoProviderId",
+			"value": ""
+		},
+		{
+			"key": "userId",
+			"value": ""
+		}
+	]
+}

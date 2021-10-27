@@ -1,0 +1,1785 @@
+{
+	"info": {
+		"_postman_id": "41a096a1-2a27-4abc-9000-de84b3d2aa08",
+		"name": "NydigProvider-Users",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "PostUsers",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const schema = {\r",
+							"    \"$schema\": \"http://json-schema.org/draft-06/schema#\",\r",
+							"    \"$ref\": \"#/definitions/Welcome5\",\r",
+							"    \"definitions\": {\r",
+							"        \"Welcome5\": {\r",
+							"            \"type\": \"object\",\r",
+							"            \"additionalProperties\": false,\r",
+							"            \"properties\": {\r",
+							"                \"taxWithholding\": {\r",
+							"                    \"type\": \"boolean\"\r",
+							"                },\r",
+							"                \"address\": {\r",
+							"                    \"$ref\": \"#/definitions/Address\"\r",
+							"                },\r",
+							"                \"id\": {\r",
+							"                    \"type\": \"string\"\r",
+							"                },\r",
+							"                \"created\": {\r",
+							"                    \"type\": \"string\",\r",
+							"                    \"format\": \"date-time\"\r",
+							"                }\r",
+							"            },\r",
+							"            \"required\": [\r",
+							"                \"address\",\r",
+							"                \"created\",\r",
+							"                \"id\",\r",
+							"                \"taxWithholding\"\r",
+							"            ],\r",
+							"            \"title\": \"Welcome5\"\r",
+							"        },\r",
+							"        \"Address\": {\r",
+							"            \"type\": \"object\",\r",
+							"            \"additionalProperties\": false,\r",
+							"            \"properties\": {\r",
+							"                \"stateProvinceRegion\": {\r",
+							"                    \"type\": \"string\"\r",
+							"                }\r",
+							"            },\r",
+							"            \"required\": [\r",
+							"                \"stateProvinceRegion\"\r",
+							"            ],\r",
+							"            \"title\": \"Address\"\r",
+							"        }\r",
+							"    }\r",
+							"};\r",
+							"var responseJson = pm.response.json();\r",
+							"pm.collectionVariables.set(\"userIdForGet\", responseJson.id);\r",
+							"pm.collectionVariables.set(\"userIdForPut\", responseJson.id);\r",
+							"\r",
+							"pm.test(\"Verify Status Code: Users POST - 201\", function () {\r",
+							"    pm.response.to.have.status(201);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response Schema validation: Users POST - 201\", function () {\r",
+							"    var result = tv4.validateResult(responseJson, schema);\r",
+							"    if(!(result.valid)){\r",
+							"        console.log(result);\r",
+							"    }\r",
+							"    pm.expect(result.valid).to.be.true;\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response time is less than 10 seconds\", () => {\r",
+							"  pm.expect(pm.response.responseTime).to.be.below(10000);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var uniqueUserId = Date.now();\r",
+							"pm.environment.set(\"uniqueUserId\", uniqueUserId);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "x-institution-id",
+						"value": "{{x-institution-id}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"institutionUserId\": \"{{uniqueUserId}}\",\r\n    \"legalName\": \"{{legalName}}\",\r\n    \"preferredName\": \"{{firstName}}\",\r\n    \"taxWithholding\": false,\r\n    \"address\": {\r\n        \"line1\": \"123 Main St\",\r\n        \"city\": \"New York\",\r\n        \"stateProvinceRegion\": \"NY\",\r\n        \"zipCode\": \"10092\",\r\n        \"country\": \"US\"\r\n    },\r\n    \"email\": \"{{firstName}}Testing@example.com\",\r\n    \"phone\": \"+19049055000\"\r\n}"
+				},
+				"url": {
+					"raw": "{{cpUsersBaseUrl}}/users",
+					"host": [
+						"{{cpUsersBaseUrl}}"
+					],
+					"path": [
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PostUsers_400",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const schema = {\r",
+							"  \"$schema\": \"http://json-schema.org/draft-04/schema#\",\r",
+							"  \"type\": \"object\",\r",
+							"  \"properties\": {\r",
+							"    \"code\": {\r",
+							"      \"type\": \"string\"\r",
+							"    },\r",
+							"    \"message\": {\r",
+							"      \"type\": \"string\"\r",
+							"    }\r",
+							"  },\r",
+							"  \"required\": [\r",
+							"    \"code\",\r",
+							"    \"message\"\r",
+							"  ]\r",
+							"};\r",
+							"\r",
+							"pm.test(\"Verify Status Code: Users POST - 400\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});\r",
+							"\r",
+							"var responseJson = pm.response.json();\r",
+							"\r",
+							"pm.test(\"Response Schema validation: Users POST - 400\", function () {\r",
+							"    var result = tv4.validateResult(responseJson, schema);\r",
+							"    if(!(result.valid)){\r",
+							"        console.log(result);\r",
+							"    }\r",
+							"    pm.expect(result.valid).to.be.true;\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response time is less than 10 seconds\", () => {\r",
+							"  pm.expect(pm.response.responseTime).to.be.below(10000);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "x-institution-id",
+						"value": "{{x-institution-id}}",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"institutionUser\": \"123456789\",\r\n    \"legalName\": \"Jonâthan Edwörd Sçott Odínson\",\r\n    \"preferredName\": \"Jon\",\r\n    \"taxWithholding\": false,\r\n    \"address\": {\r\n        \"line1\": \"123 Main St\",\r\n        \"city\": \"New York\",\r\n        \"stateProvinceRegion\": \"NY\",\r\n        \"zipCode\": \"10092\",\r\n        \"country\": \"US\",\r\n        \"email\": \"jon-odin+35@example.com\",\r\n        \"phone\": \"+15559876543\"\r\n    }\r\n}"
+				},
+				"url": {
+					"raw": "{{cpUsersBaseUrl}}/users",
+					"host": [
+						"{{cpUsersBaseUrl}}"
+					],
+					"path": [
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PostUsers_401",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const schema = {\r",
+							"  \"$schema\": \"http://json-schema.org/draft-04/schema#\",\r",
+							"  \"type\": \"object\",\r",
+							"  \"properties\": {\r",
+							"    \"code\": {\r",
+							"      \"type\": \"string\"\r",
+							"    },\r",
+							"    \"message\": {\r",
+							"      \"type\": \"string\"\r",
+							"    }\r",
+							"  },\r",
+							"  \"required\": [\r",
+							"    \"code\",\r",
+							"    \"message\"\r",
+							"  ]\r",
+							"};\r",
+							"\r",
+							"pm.test(\"Verify Status Code: Users POST - 401\", function () {\r",
+							"    pm.response.to.have.status(401);\r",
+							"});\r",
+							"\r",
+							"var responseJson = pm.response.json();\r",
+							"\r",
+							"pm.test(\"Response Schema validation: Users POST - 401\", function () {\r",
+							"    var result = tv4.validateResult(responseJson, schema);\r",
+							"    if(!(result.valid)){\r",
+							"        console.log(result);\r",
+							"    }\r",
+							"    pm.expect(result.valid).to.be.true;\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response time is less than 10 seconds\", () => {\r",
+							"  pm.expect(pm.response.responseTime).to.be.below(10000);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"institutionUserId\": \"{{uniqueUserId}}1\",\r\n    \"legalName\": \"{{legalName}}\",\r\n    \"preferredName\": \"{{firstName}}\",\r\n    \"taxWithholding\": false,\r\n    \"address\": {\r\n        \"line1\": \"123 Main St\",\r\n        \"city\": \"New York\",\r\n        \"stateProvinceRegion\": \"NY\",\r\n        \"zipCode\": \"10092\",\r\n        \"country\": \"US\"\r\n    },\r\n    \"email\": \"{{firstName}}Testing@example.com\",\r\n    \"phone\": \"+19049055000\"\r\n}"
+				},
+				"url": {
+					"raw": "{{cpUsersBaseUrl}}/users",
+					"host": [
+						"{{cpUsersBaseUrl}}"
+					],
+					"path": [
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PostUsers_403",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const schema = {\r",
+							"  \"$schema\": \"http://json-schema.org/draft-04/schema#\",\r",
+							"  \"type\": \"object\",\r",
+							"  \"properties\": {\r",
+							"    \"code\": {\r",
+							"      \"type\": \"string\"\r",
+							"    },\r",
+							"    \"message\": {\r",
+							"      \"type\": \"string\"\r",
+							"    }\r",
+							"  },\r",
+							"  \"required\": [\r",
+							"    \"code\",\r",
+							"    \"message\"\r",
+							"  ]\r",
+							"};\r",
+							"\r",
+							"pm.test(\"Verify Status Code: Users POST - 403\", function () {\r",
+							"    pm.response.to.have.status(403);\r",
+							"});\r",
+							"\r",
+							"var responseJson = pm.response.json();\r",
+							"\r",
+							"pm.test(\"Response Schema validation: Users POST - 403\", function () {\r",
+							"    var result = tv4.validateResult(responseJson, schema);\r",
+							"    if(!(result.valid)){\r",
+							"        console.log(result);\r",
+							"    }\r",
+							"    pm.expect(result.valid).to.be.true;\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response time is less than 10 seconds\", () => {\r",
+							"  pm.expect(pm.response.responseTime).to.be.below(10000);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "x-institution-id",
+						"value": "{{x-institution-id}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"institutionUserId\": \"123456789\",\r\n    \"legalName\": \"Jonâthan Edwörd Sçott Odínson\",\r\n    \"preferredName\": \"Jon\",\r\n    \"taxWithholding\": false,\r\n    \"address\": {\r\n        \"line1\": \"123 Main St\",\r\n        \"city\": \"New York\",\r\n        \"stateProvinceRegion\": \"NY\",\r\n        \"zipCode\": \"10092\",\r\n        \"country\": \"US\",\r\n        \"email\": \"jon-odin+35@example.com\",\r\n        \"phone\": \"+15559876543\"\r\n    }\r\n}"
+				},
+				"url": {
+					"raw": "{{cpUsersBaseUrl}}/users",
+					"host": [
+						"{{cpUsersBaseUrl}}"
+					],
+					"path": [
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PostUsers_404",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const schema = {\r",
+							"  \"$schema\": \"http://json-schema.org/draft-04/schema#\",\r",
+							"  \"type\": \"object\",\r",
+							"  \"properties\": {\r",
+							"    \"code\": {\r",
+							"      \"type\": \"string\"\r",
+							"    },\r",
+							"    \"message\": {\r",
+							"      \"type\": \"string\"\r",
+							"    }\r",
+							"  },\r",
+							"  \"required\": [\r",
+							"    \"code\",\r",
+							"    \"message\"\r",
+							"  ]\r",
+							"};\r",
+							"\r",
+							"pm.test(\"Verify Status Code: Users POST - 404\", function () {\r",
+							"    pm.response.to.have.status(404);\r",
+							"});\r",
+							"\r",
+							"var responseJson = pm.response.json();\r",
+							"\r",
+							"pm.test(\"Response Schema validation: Users POST - 404\", function () {\r",
+							"    var result = tv4.validateResult(responseJson, schema);\r",
+							"    if(!(result.valid)){\r",
+							"        console.log(result);\r",
+							"    }\r",
+							"    pm.expect(result.valid).to.be.true;\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response time is less than 10 seconds\", () => {\r",
+							"  pm.expect(pm.response.responseTime).to.be.below(10000);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "x-institution-id",
+						"value": "{{x-institution-id}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"institutionUserId\": \"{{uniqueUserId}}0\",\r\n    \"legalName\": \"{{legalName}}\",\r\n    \"preferredName\": \"{{firstName}}\",\r\n    \"taxWithholding\": false,\r\n    \"address\": {\r\n        \"line1\": \"123 Main St\",\r\n        \"city\": \"New York\",\r\n        \"stateProvinceRegion\": \"NY\",\r\n        \"zipCode\": \"10092\",\r\n        \"country\": \"US\"\r\n    },\r\n    \"email\": \"{{firstName}}Testing@example.com\",\r\n    \"phone\": \"+19049055000\"\r\n}"
+				},
+				"url": {
+					"raw": "{{cpUsersBaseUrl}}/users/NoRout/5",
+					"host": [
+						"{{cpUsersBaseUrl}}"
+					],
+					"path": [
+						"users",
+						"NoRout",
+						"5"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PostUsers_409",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const schema = {\r",
+							"  \"$schema\": \"http://json-schema.org/draft-04/schema#\",\r",
+							"  \"type\": \"object\",\r",
+							"  \"properties\": {\r",
+							"    \"code\": {\r",
+							"      \"type\": \"string\"\r",
+							"    },\r",
+							"    \"message\": {\r",
+							"      \"type\": \"string\"\r",
+							"    }\r",
+							"  },\r",
+							"  \"required\": [\r",
+							"    \"code\",\r",
+							"    \"message\"\r",
+							"  ]\r",
+							"};\r",
+							"\r",
+							"pm.test(\"Verify Status Code: Users POST - 409\", function () {\r",
+							"    pm.response.to.have.status(409);\r",
+							"});\r",
+							"\r",
+							"var responseJson = pm.response.json();\r",
+							"\r",
+							"pm.test(\"Response Schema validation: Users POST - 409\", function () {\r",
+							"    var result = tv4.validateResult(responseJson, schema);\r",
+							"    if(!(result.valid)){\r",
+							"        console.log(result);\r",
+							"    }\r",
+							"    pm.expect(result.valid).to.be.true;\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response time is less than 10 seconds\", () => {\r",
+							"  pm.expect(pm.response.responseTime).to.be.below(10000);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "x-institution-id",
+						"value": "{{x-institution-id}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"institutionUserId\": \"{{uniqueUserId}}\",\r\n    \"legalName\": \"{{legalName}}\",\r\n    \"preferredName\": \"{{firstName}}\",\r\n    \"taxWithholding\": false,\r\n    \"address\": {\r\n        \"line1\": \"123 Main St\",\r\n        \"city\": \"New York\",\r\n        \"stateProvinceRegion\": \"NY\",\r\n        \"zipCode\": \"10092\",\r\n        \"country\": \"US\"\r\n    },\r\n    \"email\": \"{{firstName}}Testing@example.com\",\r\n    \"phone\": \"+19049055000\"\r\n}"
+				},
+				"url": {
+					"raw": "{{cpUsersBaseUrl}}/users",
+					"host": [
+						"{{cpUsersBaseUrl}}"
+					],
+					"path": [
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetUsers",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const schema = {\r",
+							"    \"$schema\": \"http://json-schema.org/draft-06/schema#\",\r",
+							"    \"$ref\": \"#/definitions/Welcome5\",\r",
+							"    \"definitions\": {\r",
+							"        \"Welcome5\": {\r",
+							"            \"type\": \"object\",\r",
+							"            \"additionalProperties\": false,\r",
+							"            \"properties\": {\r",
+							"                \"taxWithholding\": {\r",
+							"                    \"type\": \"boolean\"\r",
+							"                },\r",
+							"                \"address\": {\r",
+							"                    \"$ref\": \"#/definitions/Address\"\r",
+							"                },\r",
+							"                \"id\": {\r",
+							"                    \"type\": \"string\"\r",
+							"                },\r",
+							"                \"created\": {\r",
+							"                    \"type\": \"string\",\r",
+							"                    \"format\": \"date-time\"\r",
+							"                }\r",
+							"            },\r",
+							"            \"required\": [\r",
+							"                \"address\",\r",
+							"                \"created\",\r",
+							"                \"id\",\r",
+							"                \"taxWithholding\"\r",
+							"            ],\r",
+							"            \"title\": \"Welcome5\"\r",
+							"        },\r",
+							"        \"Address\": {\r",
+							"            \"type\": \"object\",\r",
+							"            \"additionalProperties\": false,\r",
+							"            \"properties\": {\r",
+							"                \"stateProvinceRegion\": {\r",
+							"                    \"type\": \"string\"\r",
+							"                }\r",
+							"            },\r",
+							"            \"required\": [\r",
+							"                \"stateProvinceRegion\"\r",
+							"            ],\r",
+							"            \"title\": \"Address\"\r",
+							"        }\r",
+							"    }\r",
+							"};\r",
+							"\r",
+							"pm.test(\"Verify Status Code: Users GET - 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"var responseJson = pm.response.json();\r",
+							"\r",
+							"pm.test(\"Response Schema validation: Users GET - 200\", function () {\r",
+							"    var result = tv4.validateResult(responseJson, schema);\r",
+							"    if(!(result.valid)){\r",
+							"        console.log(result);\r",
+							"    }\r",
+							"    pm.expect(result.valid).to.be.true;\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response time is less than 10 seconds\", () => {\r",
+							"  pm.expect(pm.response.responseTime).to.be.below(10000);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "x-institution-id",
+						"value": "{{x-institution-id}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{cpUsersBaseUrl}}/users/{{userIdForGet}}",
+					"host": [
+						"{{cpUsersBaseUrl}}"
+					],
+					"path": [
+						"users",
+						"{{userIdForGet}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetUsers_400",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const schema = {\r",
+							"  \"$schema\": \"http://json-schema.org/draft-04/schema#\",\r",
+							"  \"type\": \"object\",\r",
+							"  \"properties\": {\r",
+							"    \"code\": {\r",
+							"      \"type\": \"string\"\r",
+							"    },\r",
+							"    \"message\": {\r",
+							"      \"type\": \"string\"\r",
+							"    }\r",
+							"  },\r",
+							"  \"required\": [\r",
+							"    \"code\",\r",
+							"    \"message\"\r",
+							"  ]\r",
+							"};\r",
+							"\r",
+							"pm.test(\"Verify Status Code: Users GET - 400\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});\r",
+							"\r",
+							"var responseJson = pm.response.json();\r",
+							"\r",
+							"pm.test(\"Response Schema validation: Users GET - 400\", function () {\r",
+							"    var result = tv4.validateResult(responseJson, schema);\r",
+							"    if(!(result.valid)){\r",
+							"        console.log(result);\r",
+							"    }\r",
+							"    pm.expect(result.valid).to.be.true;\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response time is less than 10 seconds\", () => {\r",
+							"  pm.expect(pm.response.responseTime).to.be.below(10000);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "x-institution-id",
+						"value": "{{x-institution-id}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{cpUsersBaseUrl}}/users/{{uniqueUserId}}",
+					"host": [
+						"{{cpUsersBaseUrl}}"
+					],
+					"path": [
+						"users",
+						"{{uniqueUserId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetUsers_401",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const schema = {\r",
+							"  \"$schema\": \"http://json-schema.org/draft-04/schema#\",\r",
+							"  \"type\": \"object\",\r",
+							"  \"properties\": {\r",
+							"    \"code\": {\r",
+							"      \"type\": \"string\"\r",
+							"    },\r",
+							"    \"message\": {\r",
+							"      \"type\": \"string\"\r",
+							"    }\r",
+							"  },\r",
+							"  \"required\": [\r",
+							"    \"code\",\r",
+							"    \"message\"\r",
+							"  ]\r",
+							"};\r",
+							"\r",
+							"pm.test(\"Verify Status Code: Users GET - 401\", function () {\r",
+							"    pm.response.to.have.status(401);\r",
+							"});\r",
+							"\r",
+							"var responseJson = pm.response.json();\r",
+							"\r",
+							"pm.test(\"Response Schema validation: Users GET - 401\", function () {\r",
+							"    var result = tv4.validateResult(responseJson, schema);\r",
+							"    if(!(result.valid)){\r",
+							"        console.log(result);\r",
+							"    }\r",
+							"    pm.expect(result.valid).to.be.true;\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response time is less than 10 seconds\", () => {\r",
+							"  pm.expect(pm.response.responseTime).to.be.below(10000);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "x-institution-id",
+						"value": "{{x-institution-id}}",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"url": {
+					"raw": "{{cpUsersBaseUrl}}/users/{{uniqueUserId}}",
+					"host": [
+						"{{cpUsersBaseUrl}}"
+					],
+					"path": [
+						"users",
+						"{{uniqueUserId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetUsers_403",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const schema = {\r",
+							"  \"$schema\": \"http://json-schema.org/draft-04/schema#\",\r",
+							"  \"type\": \"object\",\r",
+							"  \"properties\": {\r",
+							"    \"code\": {\r",
+							"      \"type\": \"string\"\r",
+							"    },\r",
+							"    \"message\": {\r",
+							"      \"type\": \"string\"\r",
+							"    }\r",
+							"  },\r",
+							"  \"required\": [\r",
+							"    \"code\",\r",
+							"    \"message\"\r",
+							"  ]\r",
+							"};\r",
+							"\r",
+							"pm.test(\"Verify Status Code: Users GET - 403\", function () {\r",
+							"    pm.response.to.have.status(403);\r",
+							"});\r",
+							"\r",
+							"var responseJson = pm.response.json();\r",
+							"\r",
+							"pm.test(\"Response Schema validation: Users GET - 403\", function () {\r",
+							"    var result = tv4.validateResult(responseJson, schema);\r",
+							"    if(!(result.valid)){\r",
+							"        console.log(result);\r",
+							"    }\r",
+							"    pm.expect(result.valid).to.be.true;\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response time is less than 10 seconds\", () => {\r",
+							"  pm.expect(pm.response.responseTime).to.be.below(10000);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "x-institution-id",
+						"value": "{{x-institution-id}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{cpUsersBaseUrl}}/users/{{userId}}",
+					"host": [
+						"{{cpUsersBaseUrl}}"
+					],
+					"path": [
+						"users",
+						"{{userId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetUsers_404",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const schema = {\r",
+							"  \"$schema\": \"http://json-schema.org/draft-04/schema#\",\r",
+							"  \"type\": \"object\",\r",
+							"  \"properties\": {\r",
+							"    \"code\": {\r",
+							"      \"type\": \"string\"\r",
+							"    },\r",
+							"    \"message\": {\r",
+							"      \"type\": \"string\"\r",
+							"    }\r",
+							"  },\r",
+							"  \"required\": [\r",
+							"    \"code\",\r",
+							"    \"message\"\r",
+							"  ]\r",
+							"};\r",
+							"\r",
+							"pm.test(\"Verify Status Code: Users GET - 404\", function () {\r",
+							"    pm.response.to.have.status(404);\r",
+							"});\r",
+							"\r",
+							"var responseJson = pm.response.json();\r",
+							"\r",
+							"pm.test(\"Response Schema validation: Users GET - 404\", function () {\r",
+							"    var result = tv4.validateResult(responseJson, schema);\r",
+							"    if(!(result.valid)){\r",
+							"        console.log(result);\r",
+							"    }\r",
+							"    pm.expect(result.valid).to.be.true;\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response time is less than 10 seconds\", () => {\r",
+							"  pm.expect(pm.response.responseTime).to.be.below(10000);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "x-institution-id",
+						"value": "{{x-institution-id}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{cpUsersBaseUrl}}/users/{{uniqueUserId}}/7",
+					"host": [
+						"{{cpUsersBaseUrl}}"
+					],
+					"path": [
+						"users",
+						"{{uniqueUserId}}",
+						"7"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PutUser",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const schema = {};\r",
+							"\r",
+							"pm.test(\"Verify Status Code: Users PUT - 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response Schema validation: Users PUT - 200\", function () {\r",
+							"    pm.expect(pm.response).to.not.be.undefined;\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response time is less than 10 seconds\", () => {\r",
+							"  pm.expect(pm.response.responseTime).to.be.below(10000);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "x-institution-id",
+						"value": "{{x-institution-id}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"institutionUserId\": \"{{uniqueUserId}}\",\r\n    \"legalName\": \"{{legalName}}\",\r\n    \"preferredName\": \"{{firstName}}Updated\",\r\n    \"taxWithholding\": false,\r\n    \"address\": {\r\n        \"line1\": \"123 Main St\",\r\n        \"city\": \"New York\",\r\n        \"stateProvinceRegion\": \"NY\",\r\n        \"zipCode\": \"10092\",\r\n        \"country\": \"US\"\r\n    },\r\n    \"email\": \"{{firstName}}Testing@example.com\",\r\n    \"phone\": \"+19049055000\"\r\n}"
+				},
+				"url": {
+					"raw": "{{cpUsersBaseUrl}}/users/{{userIdForPut}}",
+					"host": [
+						"{{cpUsersBaseUrl}}"
+					],
+					"path": [
+						"users",
+						"{{userIdForPut}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PutUser_400",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const schema = {\r",
+							"  \"$schema\": \"http://json-schema.org/draft-04/schema#\",\r",
+							"  \"type\": \"object\",\r",
+							"  \"properties\": {\r",
+							"    \"code\": {\r",
+							"      \"type\": \"string\"\r",
+							"    },\r",
+							"    \"message\": {\r",
+							"      \"type\": \"string\"\r",
+							"    }\r",
+							"  },\r",
+							"  \"required\": [\r",
+							"    \"code\",\r",
+							"    \"message\"\r",
+							"  ]\r",
+							"};\r",
+							"\r",
+							"pm.test(\"Verify Status Code: Users PUT - 400\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});\r",
+							"\r",
+							"var responseJson = pm.response.json();\r",
+							"\r",
+							"pm.test(\"Response Schema validation: Users PUT - 400\", function () {\r",
+							"    var result = tv4.validateResult(responseJson, schema);\r",
+							"    if(!(result.valid)){\r",
+							"        console.log(result);\r",
+							"    }\r",
+							"    pm.expect(result.valid).to.be.true;\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response time is less than 10 seconds\", () => {\r",
+							"  pm.expect(pm.response.responseTime).to.be.below(10000);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "x-institution-id",
+						"value": "{{x-institution-id}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"institutionUserId\": \"{{uniqueUserId}}\",\r\n    \"legalName\": \"{{legalName}}\",\r\n    \"preferredName\": \"{{firstName}}Updated\",\r\n    \"taxWithholding\": false,\r\n    \"address\": {\r\n        \"line1\": \"123 Main St\",\r\n        \"city\": \"New York\",\r\n        \"stateProvinceRegion\": \"NY\",\r\n        \"zipCode\": \"10092\",\r\n        \"country\": \"US\"\r\n    }\r\n}"
+				},
+				"url": {
+					"raw": "{{cpUsersBaseUrl}}/users/{{userIdForPut}}",
+					"host": [
+						"{{cpUsersBaseUrl}}"
+					],
+					"path": [
+						"users",
+						"{{userIdForPut}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PutUser_401",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const schema = {\r",
+							"  \"$schema\": \"http://json-schema.org/draft-04/schema#\",\r",
+							"  \"type\": \"object\",\r",
+							"  \"properties\": {\r",
+							"    \"code\": {\r",
+							"      \"type\": \"string\"\r",
+							"    },\r",
+							"    \"message\": {\r",
+							"      \"type\": \"string\"\r",
+							"    }\r",
+							"  },\r",
+							"  \"required\": [\r",
+							"    \"code\",\r",
+							"    \"message\"\r",
+							"  ]\r",
+							"};\r",
+							"\r",
+							"pm.test(\"Verify Status Code: Users PUT - 401\", function () {\r",
+							"    pm.response.to.have.status(401);\r",
+							"});\r",
+							"\r",
+							"var responseJson = pm.response.json();\r",
+							"\r",
+							"pm.test(\"Response Schema validation: Users PUT - 401\", function () {\r",
+							"    var result = tv4.validateResult(responseJson, schema);\r",
+							"    if(!(result.valid)){\r",
+							"        console.log(result);\r",
+							"    }\r",
+							"    pm.expect(result.valid).to.be.true;\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response time is less than 10 seconds\", () => {\r",
+							"  pm.expect(pm.response.responseTime).to.be.below(10000);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "x-institution-id",
+						"value": "{{x-institution-id}}",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"institutionUserId\": \"{{uniqueUserId}}\",\r\n    \"legalName\": \"{{legalName}}\",\r\n    \"preferredName\": \"{{firstName}}Updated\",\r\n    \"taxWithholding\": false,\r\n    \"address\": {\r\n        \"line1\": \"123 Main St\",\r\n        \"city\": \"New York\",\r\n        \"stateProvinceRegion\": \"NY\",\r\n        \"zipCode\": \"10092\",\r\n        \"country\": \"US\"\r\n    },\r\n    \"email\": \"{{firstName}}Testing@example.com\",\r\n    \"phone\": \"+19049055000\"\r\n}"
+				},
+				"url": {
+					"raw": "{{cpUsersBaseUrl}}/users/{{userIdForPut}}",
+					"host": [
+						"{{cpUsersBaseUrl}}"
+					],
+					"path": [
+						"users",
+						"{{userIdForPut}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PutUser_403",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const schema = {\r",
+							"  \"$schema\": \"http://json-schema.org/draft-04/schema#\",\r",
+							"  \"type\": \"object\",\r",
+							"  \"properties\": {\r",
+							"    \"code\": {\r",
+							"      \"type\": \"string\"\r",
+							"    },\r",
+							"    \"message\": {\r",
+							"      \"type\": \"string\"\r",
+							"    }\r",
+							"  },\r",
+							"  \"required\": [\r",
+							"    \"code\",\r",
+							"    \"message\"\r",
+							"  ]\r",
+							"};\r",
+							"\r",
+							"pm.test(\"Verify Status Code: Users PUT - 403\", function () {\r",
+							"    pm.response.to.have.status(403);\r",
+							"});\r",
+							"\r",
+							"var responseJson = pm.response.json();\r",
+							"\r",
+							"pm.test(\"Response Schema validation: Users PUT - 403\", function () {\r",
+							"    var result = tv4.validateResult(responseJson, schema);\r",
+							"    if(!(result.valid)){\r",
+							"        console.log(result);\r",
+							"    }\r",
+							"    pm.expect(result.valid).to.be.true;\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response time is less than 10 seconds\", () => {\r",
+							"  pm.expect(pm.response.responseTime).to.be.below(10000);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "x-institution-id",
+						"value": "{{x-institution-id}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"institutionUserId\": \"123456789\",\r\n    \"legalName\": \"Jonâthan Edwörd Sçott Odínson\",\r\n    \"preferredName\": \"Jon\",\r\n    \"taxWithholding\": false,\r\n    \"address\": {\r\n        \"line1\": \"123 Main St\",\r\n        \"city\": \"New York\",\r\n        \"stateProvinceRegion\": \"NY\",\r\n        \"zipCode\": \"10092\",\r\n        \"country\": \"US\",\r\n        \"email\": \"jon-odin+35@example.com\",\r\n        \"phone\": \"+15559876543\"\r\n    }\r\n}"
+				},
+				"url": {
+					"raw": "{{cpUsersBaseUrl}}/users/{{userIdForPut}}",
+					"host": [
+						"{{cpUsersBaseUrl}}"
+					],
+					"path": [
+						"users",
+						"{{userIdForPut}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PutUser_404",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const schema = {\r",
+							"  \"$schema\": \"http://json-schema.org/draft-04/schema#\",\r",
+							"  \"type\": \"object\",\r",
+							"  \"properties\": {\r",
+							"    \"code\": {\r",
+							"      \"type\": \"string\"\r",
+							"    },\r",
+							"    \"message\": {\r",
+							"      \"type\": \"string\"\r",
+							"    }\r",
+							"  },\r",
+							"  \"required\": [\r",
+							"    \"code\",\r",
+							"    \"message\"\r",
+							"  ]\r",
+							"};\r",
+							"\r",
+							"pm.test(\"Verify Status Code: Users PUT - 404\", function () {\r",
+							"    pm.response.to.have.status(404);\r",
+							"});\r",
+							"\r",
+							"var responseJson = pm.response.json();\r",
+							"\r",
+							"pm.test(\"Response Schema validation: Users PUT - 404\", function () {\r",
+							"    var result = tv4.validateResult(responseJson, schema);\r",
+							"    if(!(result.valid)){\r",
+							"        console.log(result);\r",
+							"    }\r",
+							"    pm.expect(result.valid).to.be.true;\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response time is less than 10 seconds\", () => {\r",
+							"  pm.expect(pm.response.responseTime).to.be.below(10000);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "x-institution-id",
+						"value": "{{x-institution-id}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"institutionUserId\": \"{{uniqueUserId}}\",\r\n    \"legalName\": \"{{legalName}}\",\r\n    \"preferredName\": \"{{firstName}}Updated\",\r\n    \"taxWithholding\": false,\r\n    \"address\": {\r\n        \"line1\": \"123 Main St\",\r\n        \"city\": \"New York\",\r\n        \"stateProvinceRegion\": \"NY\",\r\n        \"zipCode\": \"10092\",\r\n        \"country\": \"US\"\r\n    },\r\n    \"email\": \"{{firstName}}Testing@example.com\",\r\n    \"phone\": \"+19049055000\"\r\n}"
+				},
+				"url": {
+					"raw": "{{cpUsersBaseUrl}}/users/nep/{{userIdForPut}}",
+					"host": [
+						"{{cpUsersBaseUrl}}"
+					],
+					"path": [
+						"users",
+						"nep",
+						"{{userIdForPut}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PostEligibility",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const schema = {\r",
+							"    \"$schema\": \"http://json-schema.org/draft-06/schema#\",\r",
+							"    \"$ref\": \"#/definitions/Welcome4\",\r",
+							"    \"definitions\": {\r",
+							"        \"Welcome4\": {\r",
+							"            \"type\": \"object\",\r",
+							"            \"additionalProperties\": false,\r",
+							"            \"properties\": {\r",
+							"                \"eligible\": {\r",
+							"                    \"type\": \"boolean\"\r",
+							"                }\r",
+							"            },\r",
+							"            \"required\": [\r",
+							"                \"eligible\"\r",
+							"            ],\r",
+							"            \"title\": \"Welcome4\"\r",
+							"        }\r",
+							"    }\r",
+							"};\r",
+							"\r",
+							"pm.test(\"Verify Status Code: Eligibility POST - 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"var responseJson = pm.response.json();\r",
+							"\r",
+							"pm.test(\"Response Schema validation: Eligibility POST - 200\", function () {\r",
+							"    var result = tv4.validateResult(responseJson, schema);\r",
+							"    if(!(result.valid)){\r",
+							"        console.log(result);\r",
+							"    }\r",
+							"    pm.expect(result.valid).to.be.true;\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response time is less than 10 seconds\", () => {\r",
+							"  pm.expect(pm.response.responseTime).to.be.below(10000);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "x-institution-id",
+						"value": "{{x-institution-id}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"dob\": \"1985-01-01\",\r\n    \"stateProvinceRegion\": \"IL\",\r\n    \"ageCheckOverride\": false\r\n}"
+				},
+				"url": {
+					"raw": "{{cpUsersBaseUrl}}/eligibility",
+					"host": [
+						"{{cpUsersBaseUrl}}"
+					],
+					"path": [
+						"eligibility"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PostEligibility_400",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const schema = {\r",
+							"  \"$schema\": \"http://json-schema.org/draft-04/schema#\",\r",
+							"  \"type\": \"object\",\r",
+							"  \"properties\": {\r",
+							"    \"code\": {\r",
+							"      \"type\": \"string\"\r",
+							"    },\r",
+							"    \"message\": {\r",
+							"      \"type\": \"string\"\r",
+							"    }\r",
+							"  },\r",
+							"  \"required\": [\r",
+							"    \"code\",\r",
+							"    \"message\"\r",
+							"  ]\r",
+							"};\r",
+							"\r",
+							"pm.test(\"Verify Status Code: Eligibility POST - 400\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});\r",
+							"\r",
+							"var responseJson = pm.response.json();\r",
+							"\r",
+							"pm.test(\"Response Schema validation: Eligibility POST - 400\", function () {\r",
+							"    var result = tv4.validateResult(responseJson, schema);\r",
+							"    if(!(result.valid)){\r",
+							"        console.log(result);\r",
+							"    }\r",
+							"    pm.expect(result.valid).to.be.true;\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response time is less than 10 seconds\", () => {\r",
+							"  pm.expect(pm.response.responseTime).to.be.below(10000);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "x-institution-id",
+						"value": "{{x-institution-id}}",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"dob\": \"1985-01-01\",\r\n    \"stateProvinceRegion\": \"IL\",\r\n    \"ageCheckOverride\": false\r\n}"
+				},
+				"url": {
+					"raw": "{{cpUsersBaseUrl}}/eligibility",
+					"host": [
+						"{{cpUsersBaseUrl}}"
+					],
+					"path": [
+						"eligibility"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PostEligibility_401",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const schema = {\r",
+							"  \"$schema\": \"http://json-schema.org/draft-04/schema#\",\r",
+							"  \"type\": \"object\",\r",
+							"  \"properties\": {\r",
+							"    \"code\": {\r",
+							"      \"type\": \"string\"\r",
+							"    },\r",
+							"    \"message\": {\r",
+							"      \"type\": \"string\"\r",
+							"    }\r",
+							"  },\r",
+							"  \"required\": [\r",
+							"    \"code\",\r",
+							"    \"message\"\r",
+							"  ]\r",
+							"};\r",
+							"\r",
+							"pm.test(\"Verify Status Code: Eligibility POST - 401\", function () {\r",
+							"    pm.response.to.have.status(401);\r",
+							"});\r",
+							"\r",
+							"var responseJson = pm.response.json();\r",
+							"\r",
+							"pm.test(\"Response Schema validation: Eligibility POST - 401\", function () {\r",
+							"    var result = tv4.validateResult(responseJson, schema);\r",
+							"    if(!(result.valid)){\r",
+							"        console.log(result);\r",
+							"    }\r",
+							"    pm.expect(result.valid).to.be.true;\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response time is less than 10 seconds\", () => {\r",
+							"  pm.expect(pm.response.responseTime).to.be.below(10000);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST_401",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "x-institution-id",
+						"value": "{{x-institution-id}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"dob\": \"1985-01-01\",\r\n    \"stateProvinceRegion\": \"IL\",\r\n    \"ageCheckOverride\": false\r\n}"
+				},
+				"url": {
+					"raw": "{{cpUsersBaseUrl}}/eligibility",
+					"host": [
+						"{{cpUsersBaseUrl}}"
+					],
+					"path": [
+						"eligibility"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PostEligibility_403",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const schema = {\r",
+							"  \"$schema\": \"http://json-schema.org/draft-04/schema#\",\r",
+							"  \"type\": \"object\",\r",
+							"  \"properties\": {\r",
+							"    \"code\": {\r",
+							"      \"type\": \"string\"\r",
+							"    },\r",
+							"    \"message\": {\r",
+							"      \"type\": \"string\"\r",
+							"    }\r",
+							"  },\r",
+							"  \"required\": [\r",
+							"    \"code\",\r",
+							"    \"message\"\r",
+							"  ]\r",
+							"};\r",
+							"\r",
+							"pm.test(\"Verify Status Code: Eligibility POST - 403\", function () {\r",
+							"    pm.response.to.have.status(403);\r",
+							"});\r",
+							"\r",
+							"var responseJson = pm.response.json();\r",
+							"\r",
+							"pm.test(\"Response Schema validation: Eligibility POST - 403\", function () {\r",
+							"    var result = tv4.validateResult(responseJson, schema);\r",
+							"    if(!(result.valid)){\r",
+							"        console.log(result);\r",
+							"    }\r",
+							"    pm.expect(result.valid).to.be.true;\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response time is less than 10 seconds\", () => {\r",
+							"  pm.expect(pm.response.responseTime).to.be.below(10000);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "x-institution-id",
+						"value": "{{x-institution-id}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"dob\": \"1985-01-01\",\r\n    \"stateProvinceRegion\": \"IL\",\r\n    \"ageCheckOverride\": false\r\n}"
+				},
+				"url": {
+					"raw": "{{cpUsersBaseUrl}}/eligibility",
+					"host": [
+						"{{cpUsersBaseUrl}}"
+					],
+					"path": [
+						"eligibility"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PostEligibility_404",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const schema = {\r",
+							"  \"$schema\": \"http://json-schema.org/draft-04/schema#\",\r",
+							"  \"type\": \"object\",\r",
+							"  \"properties\": {\r",
+							"    \"code\": {\r",
+							"      \"type\": \"string\"\r",
+							"    },\r",
+							"    \"message\": {\r",
+							"      \"type\": \"string\"\r",
+							"    }\r",
+							"  },\r",
+							"  \"required\": [\r",
+							"    \"code\",\r",
+							"    \"message\"\r",
+							"  ]\r",
+							"};\r",
+							"\r",
+							"pm.test(\"Verify Status Code: Eligibility POST - 404\", function () {\r",
+							"    pm.response.to.have.status(404);\r",
+							"});\r",
+							"\r",
+							"var responseJson = pm.response.json();\r",
+							"\r",
+							"pm.test(\"Response Schema validation: Eligibility POST - 404\", function () {\r",
+							"    var result = tv4.validateResult(responseJson, schema);\r",
+							"    if(!(result.valid)){\r",
+							"        console.log(result);\r",
+							"    }\r",
+							"    pm.expect(result.valid).to.be.true;\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response time is less than 10 seconds\", () => {\r",
+							"  pm.expect(pm.response.responseTime).to.be.below(10000);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "x-institution-id",
+						"value": "{{x-institution-id}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"dob\": \"1985-01-01\",\r\n    \"stateProvinceRegion\": \"IL\",\r\n    \"ageCheckOverride\": false\r\n}"
+				},
+				"url": {
+					"raw": "{{cpUsersBaseUrl}}/eligibility",
+					"host": [
+						"{{cpUsersBaseUrl}}"
+					],
+					"path": [
+						"eligibility"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PostEligibility_409",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const schema = {\r",
+							"  \"$schema\": \"http://json-schema.org/draft-04/schema#\",\r",
+							"  \"type\": \"object\",\r",
+							"  \"properties\": {\r",
+							"    \"code\": {\r",
+							"      \"type\": \"string\"\r",
+							"    },\r",
+							"    \"message\": {\r",
+							"      \"type\": \"string\"\r",
+							"    }\r",
+							"  },\r",
+							"  \"required\": [\r",
+							"    \"code\",\r",
+							"    \"message\"\r",
+							"  ]\r",
+							"};\r",
+							"\r",
+							"pm.test(\"Verify Status Code: Eligibility POST - 409\", function () {\r",
+							"    pm.response.to.have.status(409);\r",
+							"});\r",
+							"\r",
+							"var responseJson = pm.response.json();\r",
+							"\r",
+							"pm.test(\"Response Schema validation: Eligibility POST - 409\", function () {\r",
+							"    var result = tv4.validateResult(responseJson, schema);\r",
+							"    if(!(result.valid)){\r",
+							"        console.log(result);\r",
+							"    }\r",
+							"    pm.expect(result.valid).to.be.true;\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response time is less than 10 seconds\", () => {\r",
+							"  pm.expect(pm.response.responseTime).to.be.below(10000);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "x-institution-id",
+						"value": "{{x-institution-id}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"dob\": \"1985-01-01\",\r\n    \"stateProvinceRegion\": \"IL\",\r\n    \"ageCheckOverride\": false\r\n}"
+				},
+				"url": {
+					"raw": "{{cpUsersBaseUrl}}/eligibility",
+					"host": [
+						"{{cpUsersBaseUrl}}"
+					],
+					"path": [
+						"eligibility"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					"pm.collectionVariables.set(\"legalName\", pm.variables.replaceIn(\"{{$randomFullName}}\"));",
+					"pm.collectionVariables.set(\"phoneNumber\", pm.variables.replaceIn(\"{{$randomPhoneNumber}}\"));",
+					"pm.collectionVariables.set(\"firstName\", pm.variables.replaceIn(\"{{$randomFirstName}}\"));"
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "https://tbd"
+		},
+		{
+			"key": "relationshipInstitutionId",
+			"value": ""
+		},
+		{
+			"key": "cryptoProviderId",
+			"value": ""
+		},
+		{
+			"key": "uniqueUserId",
+			"value": ""
+		},
+		{
+			"key": "legalName",
+			"value": ""
+		},
+		{
+			"key": "phoneNumber",
+			"value": ""
+		},
+		{
+			"key": "firstName",
+			"value": ""
+		},
+		{
+			"key": "userIdForGet",
+			"value": ""
+		},
+		{
+			"key": "userIdForPut",
+			"value": ""
+		}
+	]
+}
