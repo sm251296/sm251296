@@ -28,5 +28,5 @@ jobs:
         cache: 'npm'
     - run: npm update
     - run: npm audit fix
-    - run: node newman-run.js "./NydigProvider-MarketData.postman_collection.json" "./NCR.postman_globals.json" "./NydigProvider_$env.postman_environment.json"
+    - run: node newman-run.js "./NydigProvider-MarketData.postman_collection.json" "./NCR.postman_globals.json" "./NydigProvider_local.postman_environment.json"
 
