@@ -29,6 +29,7 @@ jobs:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
     - run: npm update
-    - run: npm audit fix
+    - name: Fixito
+      run: npm audit fix
     - run: node newman-run.js "./NydigProvider-MarketData.postman_collection.json" "./NCR.postman_globals.json" "./NydigProvider_local.postman_environment.json"
 
