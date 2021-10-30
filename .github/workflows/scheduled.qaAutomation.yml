@@ -1,11 +1,11 @@
 # This workflow will do a clean install of node dependencies, cache/restore them, build the source code and run tests across different versions of node
 # For more information see: https://help.github.com/actions/language-and-framework-guides/using-nodejs-with-github-actions
 
-name: Scheduled Every 15 minutes API Automation
+name: Nightly Weekdays API Automation
 
 on:
   schedule:
-    - cron: "*/15 * * * *"
+    - cron: "01 22 1-31 * 0-6"
     
 jobs:
   build:
