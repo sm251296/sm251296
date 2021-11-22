@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "41a096a1-2a27-4abc-9000-de84b3d2aa08",
+		"_postman_id": "3833bc73-8021-43b9-8ea7-22f512577f87",
 		"name": "NydigProvider-Users",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -57,7 +57,7 @@
 							"        }\r",
 							"    }\r",
 							"};\r",
-							"var responseJson = pm.response.json();\r",
+							"const responseJson = pm.response.json();\r",
 							"pm.collectionVariables.set(\"userIdForGet\", responseJson.id);\r",
 							"pm.collectionVariables.set(\"userIdForPut\", responseJson.id);\r",
 							"\r",
@@ -102,6 +102,11 @@
 					{
 						"key": "x-institution-id",
 						"value": "{{x-institution-id}}",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{usersBearerToken}}",
 						"type": "text"
 					}
 				],
@@ -149,7 +154,7 @@
 							"    pm.response.to.have.status(400);\r",
 							"});\r",
 							"\r",
-							"var responseJson = pm.response.json();\r",
+							"const responseJson = pm.response.json();\r",
 							"\r",
 							"pm.test(\"Response Schema validation: Users POST - 400\", function () {\r",
 							"    var result = tv4.validateResult(responseJson, schema);\r",
@@ -172,14 +177,18 @@
 				"header": [
 					{
 						"key": "Content-Type",
-						"value": "application/json",
+						"value": "foo/text",
 						"type": "text"
 					},
 					{
 						"key": "x-institution-id",
 						"value": "{{x-institution-id}}",
-						"type": "text",
-						"disabled": true
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{usersBearerToken}}",
+						"type": "text"
 					}
 				],
 				"body": {
@@ -226,7 +235,7 @@
 							"    pm.response.to.have.status(401);\r",
 							"});\r",
 							"\r",
-							"var responseJson = pm.response.json();\r",
+							"const responseJson = pm.response.json();\r",
 							"\r",
 							"pm.test(\"Response Schema validation: Users POST - 401\", function () {\r",
 							"    var result = tv4.validateResult(responseJson, schema);\r",
@@ -250,6 +259,11 @@
 					{
 						"key": "Content-Type",
 						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{usersBearerToken}}",
 						"type": "text"
 					}
 				],
@@ -277,27 +291,42 @@
 					"script": {
 						"exec": [
 							"const schema = {\r",
-							"  \"$schema\": \"http://json-schema.org/draft-04/schema#\",\r",
-							"  \"type\": \"object\",\r",
-							"  \"properties\": {\r",
-							"    \"code\": {\r",
-							"      \"type\": \"string\"\r",
-							"    },\r",
-							"    \"message\": {\r",
-							"      \"type\": \"string\"\r",
+							"    \"$schema\": \"http://json-schema.org/draft-06/schema#\",\r",
+							"    \"$ref\": \"#/definitions/Welcome2\",\r",
+							"    \"definitions\": {\r",
+							"        \"Welcome2\": {\r",
+							"            \"type\": \"object\",\r",
+							"            \"additionalProperties\": false,\r",
+							"            \"properties\": {\r",
+							"                \"timestamp\": {\r",
+							"                    \"type\": \"string\",\r",
+							"                    \"format\": \"date-time\"\r",
+							"                },\r",
+							"                \"status\": {\r",
+							"                    \"type\": \"integer\"\r",
+							"                },\r",
+							"                \"error\": {\r",
+							"                    \"type\": \"string\"\r",
+							"                },\r",
+							"                \"path\": {\r",
+							"                    \"type\": \"string\"\r",
+							"                }\r",
+							"            },\r",
+							"            \"required\": [\r",
+							"                \"error\",\r",
+							"                \"path\",\r",
+							"                \"status\",\r",
+							"                \"timestamp\"\r",
+							"            ],\r",
+							"            \"title\": \"Welcome2\"\r",
+							"        }\r",
 							"    }\r",
-							"  },\r",
-							"  \"required\": [\r",
-							"    \"code\",\r",
-							"    \"message\"\r",
-							"  ]\r",
 							"};\r",
-							"\r",
 							"pm.test(\"Verify Status Code: Users POST - 403\", function () {\r",
 							"    pm.response.to.have.status(403);\r",
 							"});\r",
 							"\r",
-							"var responseJson = pm.response.json();\r",
+							"const responseJson = pm.response.json();\r",
 							"\r",
 							"pm.test(\"Response Schema validation: Users POST - 403\", function () {\r",
 							"    var result = tv4.validateResult(responseJson, schema);\r",
@@ -326,6 +355,11 @@
 					{
 						"key": "x-institution-id",
 						"value": "{{x-institution-id}}",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{invalidBearerToken}}",
 						"type": "text"
 					}
 				],
@@ -373,7 +407,7 @@
 							"    pm.response.to.have.status(404);\r",
 							"});\r",
 							"\r",
-							"var responseJson = pm.response.json();\r",
+							"const responseJson = pm.response.json();\r",
 							"\r",
 							"pm.test(\"Response Schema validation: Users POST - 404\", function () {\r",
 							"    var result = tv4.validateResult(responseJson, schema);\r",
@@ -403,21 +437,24 @@
 						"key": "x-institution-id",
 						"value": "{{x-institution-id}}",
 						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{usersBearerToken}}",
+						"type": "text"
 					}
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"institutionUserId\": \"{{uniqueUserId}}0\",\r\n    \"legalName\": \"{{legalName}}\",\r\n    \"preferredName\": \"{{firstName}}\",\r\n    \"taxWithholding\": false,\r\n    \"address\": {\r\n        \"line1\": \"123 Main St\",\r\n        \"city\": \"New York\",\r\n        \"stateProvinceRegion\": \"NY\",\r\n        \"zipCode\": \"10092\",\r\n        \"country\": \"US\"\r\n    },\r\n    \"email\": \"{{firstName}}Testing@example.com\",\r\n    \"phone\": \"+19049055000\"\r\n}"
+					"raw": "{\r\n    \"institutionUserId\": \"{{uniqueUserId}}1\",\r\n    \"legalName\": \"{{legalName}}\",\r\n    \"preferredName\": \"{{firstName}}\",\r\n    \"taxWithholding\": true,\r\n    \"address\": {\r\n        \"line1\": \"123 Main St\",\r\n        \"city\": \"New York\",\r\n        \"stateProvinceRegion\": \"NY\",\r\n        \"zipCode\": \"10092\",\r\n        \"country\": \"US\"\r\n    },\r\n    \"email\": \"{{firstName}}Testing@example.com\",\r\n    \"phone\": \"+19049055000\"\r\n}"
 				},
 				"url": {
-					"raw": "{{cpUsersBaseUrl}}/users/NoRout/5",
+					"raw": "{{cpUsersBaseUrl}}/users",
 					"host": [
 						"{{cpUsersBaseUrl}}"
 					],
 					"path": [
-						"users",
-						"NoRout",
-						"5"
+						"users"
 					]
 				}
 			},
@@ -451,7 +488,7 @@
 							"    pm.response.to.have.status(409);\r",
 							"});\r",
 							"\r",
-							"var responseJson = pm.response.json();\r",
+							"const responseJson = pm.response.json();\r",
 							"\r",
 							"pm.test(\"Response Schema validation: Users POST - 409\", function () {\r",
 							"    var result = tv4.validateResult(responseJson, schema);\r",
@@ -480,6 +517,11 @@
 					{
 						"key": "x-institution-id",
 						"value": "{{x-institution-id}}",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{usersBearerToken}}",
 						"type": "text"
 					}
 				],
@@ -556,7 +598,7 @@
 							"    pm.response.to.have.status(200);\r",
 							"});\r",
 							"\r",
-							"var responseJson = pm.response.json();\r",
+							"const responseJson = pm.response.json();\r",
 							"\r",
 							"pm.test(\"Response Schema validation: Users GET - 200\", function () {\r",
 							"    var result = tv4.validateResult(responseJson, schema);\r",
@@ -585,6 +627,11 @@
 					{
 						"key": "x-institution-id",
 						"value": "{{x-institution-id}}",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{usersBearerToken}}",
 						"type": "text"
 					}
 				],
@@ -629,7 +676,7 @@
 							"    pm.response.to.have.status(400);\r",
 							"});\r",
 							"\r",
-							"var responseJson = pm.response.json();\r",
+							"const responseJson = pm.response.json();\r",
 							"\r",
 							"pm.test(\"Response Schema validation: Users GET - 400\", function () {\r",
 							"    var result = tv4.validateResult(responseJson, schema);\r",
@@ -658,6 +705,11 @@
 					{
 						"key": "x-institution-id",
 						"value": "{{x-institution-id}}",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{usersBearerToken}}",
 						"type": "text"
 					}
 				],
@@ -702,7 +754,7 @@
 							"    pm.response.to.have.status(401);\r",
 							"});\r",
 							"\r",
-							"var responseJson = pm.response.json();\r",
+							"const responseJson = pm.response.json();\r",
 							"\r",
 							"pm.test(\"Response Schema validation: Users GET - 401\", function () {\r",
 							"    var result = tv4.validateResult(responseJson, schema);\r",
@@ -729,10 +781,9 @@
 						"type": "text"
 					},
 					{
-						"key": "x-institution-id",
-						"value": "{{x-institution-id}}",
-						"type": "text",
-						"disabled": true
+						"key": "Authorization",
+						"value": "Bearer {{usersBearerToken}}",
+						"type": "text"
 					}
 				],
 				"url": {
@@ -756,27 +807,42 @@
 					"script": {
 						"exec": [
 							"const schema = {\r",
-							"  \"$schema\": \"http://json-schema.org/draft-04/schema#\",\r",
-							"  \"type\": \"object\",\r",
-							"  \"properties\": {\r",
-							"    \"code\": {\r",
-							"      \"type\": \"string\"\r",
-							"    },\r",
-							"    \"message\": {\r",
-							"      \"type\": \"string\"\r",
+							"    \"$schema\": \"http://json-schema.org/draft-06/schema#\",\r",
+							"    \"$ref\": \"#/definitions/Welcome2\",\r",
+							"    \"definitions\": {\r",
+							"        \"Welcome2\": {\r",
+							"            \"type\": \"object\",\r",
+							"            \"additionalProperties\": false,\r",
+							"            \"properties\": {\r",
+							"                \"timestamp\": {\r",
+							"                    \"type\": \"string\",\r",
+							"                    \"format\": \"date-time\"\r",
+							"                },\r",
+							"                \"status\": {\r",
+							"                    \"type\": \"integer\"\r",
+							"                },\r",
+							"                \"error\": {\r",
+							"                    \"type\": \"string\"\r",
+							"                },\r",
+							"                \"path\": {\r",
+							"                    \"type\": \"string\"\r",
+							"                }\r",
+							"            },\r",
+							"            \"required\": [\r",
+							"                \"error\",\r",
+							"                \"path\",\r",
+							"                \"status\",\r",
+							"                \"timestamp\"\r",
+							"            ],\r",
+							"            \"title\": \"Welcome2\"\r",
+							"        }\r",
 							"    }\r",
-							"  },\r",
-							"  \"required\": [\r",
-							"    \"code\",\r",
-							"    \"message\"\r",
-							"  ]\r",
 							"};\r",
-							"\r",
 							"pm.test(\"Verify Status Code: Users GET - 403\", function () {\r",
 							"    pm.response.to.have.status(403);\r",
 							"});\r",
 							"\r",
-							"var responseJson = pm.response.json();\r",
+							"const responseJson = pm.response.json();\r",
 							"\r",
 							"pm.test(\"Response Schema validation: Users GET - 403\", function () {\r",
 							"    var result = tv4.validateResult(responseJson, schema);\r",
@@ -806,16 +872,21 @@
 						"key": "x-institution-id",
 						"value": "{{x-institution-id}}",
 						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{invalidBearerToken}}",
+						"type": "text"
 					}
 				],
 				"url": {
-					"raw": "{{cpUsersBaseUrl}}/users/{{userId}}",
+					"raw": "{{cpUsersBaseUrl}}/users/{{uniqueUserId}}",
 					"host": [
 						"{{cpUsersBaseUrl}}"
 					],
 					"path": [
 						"users",
-						"{{userId}}"
+						"{{uniqueUserId}}"
 					]
 				}
 			},
@@ -849,7 +920,7 @@
 							"    pm.response.to.have.status(404);\r",
 							"});\r",
 							"\r",
-							"var responseJson = pm.response.json();\r",
+							"const responseJson = pm.response.json();\r",
 							"\r",
 							"pm.test(\"Response Schema validation: Users GET - 404\", function () {\r",
 							"    var result = tv4.validateResult(responseJson, schema);\r",
@@ -877,19 +948,23 @@
 					},
 					{
 						"key": "x-institution-id",
-						"value": "{{x-institution-id}}",
+						"value": "{{x-institution-id}}1",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{usersBearerToken}}",
 						"type": "text"
 					}
 				],
 				"url": {
-					"raw": "{{cpUsersBaseUrl}}/users/{{uniqueUserId}}/7",
+					"raw": "{{cpUsersBaseUrl}}/users/{{uniqueUserId}}",
 					"host": [
 						"{{cpUsersBaseUrl}}"
 					],
 					"path": [
 						"users",
-						"{{uniqueUserId}}",
-						"7"
+						"{{uniqueUserId}}"
 					]
 				}
 			},
@@ -931,6 +1006,11 @@
 					{
 						"key": "x-institution-id",
 						"value": "{{x-institution-id}}",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{usersBearerToken}}",
 						"type": "text"
 					}
 				],
@@ -979,7 +1059,7 @@
 							"    pm.response.to.have.status(400);\r",
 							"});\r",
 							"\r",
-							"var responseJson = pm.response.json();\r",
+							"const responseJson = pm.response.json();\r",
 							"\r",
 							"pm.test(\"Response Schema validation: Users PUT - 400\", function () {\r",
 							"    var result = tv4.validateResult(responseJson, schema);\r",
@@ -1008,6 +1088,11 @@
 					{
 						"key": "x-institution-id",
 						"value": "{{x-institution-id}}",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{usersBearerToken}}",
 						"type": "text"
 					}
 				],
@@ -1056,7 +1141,7 @@
 							"    pm.response.to.have.status(401);\r",
 							"});\r",
 							"\r",
-							"var responseJson = pm.response.json();\r",
+							"const responseJson = pm.response.json();\r",
 							"\r",
 							"pm.test(\"Response Schema validation: Users PUT - 401\", function () {\r",
 							"    var result = tv4.validateResult(responseJson, schema);\r",
@@ -1083,10 +1168,9 @@
 						"type": "text"
 					},
 					{
-						"key": "x-institution-id",
-						"value": "{{x-institution-id}}",
-						"type": "text",
-						"disabled": true
+						"key": "Authorization",
+						"value": "Bearer {{usersBearerToken}}",
+						"type": "text"
 					}
 				],
 				"body": {
@@ -1114,27 +1198,43 @@
 					"script": {
 						"exec": [
 							"const schema = {\r",
-							"  \"$schema\": \"http://json-schema.org/draft-04/schema#\",\r",
-							"  \"type\": \"object\",\r",
-							"  \"properties\": {\r",
-							"    \"code\": {\r",
-							"      \"type\": \"string\"\r",
-							"    },\r",
-							"    \"message\": {\r",
-							"      \"type\": \"string\"\r",
+							"    \"$schema\": \"http://json-schema.org/draft-06/schema#\",\r",
+							"    \"$ref\": \"#/definitions/Welcome2\",\r",
+							"    \"definitions\": {\r",
+							"        \"Welcome2\": {\r",
+							"            \"type\": \"object\",\r",
+							"            \"additionalProperties\": false,\r",
+							"            \"properties\": {\r",
+							"                \"timestamp\": {\r",
+							"                    \"type\": \"string\",\r",
+							"                    \"format\": \"date-time\"\r",
+							"                },\r",
+							"                \"status\": {\r",
+							"                    \"type\": \"integer\"\r",
+							"                },\r",
+							"                \"error\": {\r",
+							"                    \"type\": \"string\"\r",
+							"                },\r",
+							"                \"path\": {\r",
+							"                    \"type\": \"string\"\r",
+							"                }\r",
+							"            },\r",
+							"            \"required\": [\r",
+							"                \"error\",\r",
+							"                \"path\",\r",
+							"                \"status\",\r",
+							"                \"timestamp\"\r",
+							"            ],\r",
+							"            \"title\": \"Welcome2\"\r",
+							"        }\r",
 							"    }\r",
-							"  },\r",
-							"  \"required\": [\r",
-							"    \"code\",\r",
-							"    \"message\"\r",
-							"  ]\r",
 							"};\r",
 							"\r",
 							"pm.test(\"Verify Status Code: Users PUT - 403\", function () {\r",
 							"    pm.response.to.have.status(403);\r",
 							"});\r",
 							"\r",
-							"var responseJson = pm.response.json();\r",
+							"const responseJson = pm.response.json();\r",
 							"\r",
 							"pm.test(\"Response Schema validation: Users PUT - 403\", function () {\r",
 							"    var result = tv4.validateResult(responseJson, schema);\r",
@@ -1163,6 +1263,11 @@
 					{
 						"key": "x-institution-id",
 						"value": "{{x-institution-id}}",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{invalidBearerToken}}",
 						"type": "text"
 					}
 				],
@@ -1211,7 +1316,7 @@
 							"    pm.response.to.have.status(404);\r",
 							"});\r",
 							"\r",
-							"var responseJson = pm.response.json();\r",
+							"const responseJson = pm.response.json();\r",
 							"\r",
 							"pm.test(\"Response Schema validation: Users PUT - 404\", function () {\r",
 							"    var result = tv4.validateResult(responseJson, schema);\r",
@@ -1223,7 +1328,9 @@
 							"\r",
 							"pm.test(\"Response time is less than 10 seconds\", () => {\r",
 							"  pm.expect(pm.response.responseTime).to.be.below(10000);\r",
-							"});"
+							"});\r",
+							"\r",
+							""
 						],
 						"type": "text/javascript"
 					}
@@ -1241,21 +1348,25 @@
 						"key": "x-institution-id",
 						"value": "{{x-institution-id}}",
 						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{usersBearerToken}}",
+						"type": "text"
 					}
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"institutionUserId\": \"{{uniqueUserId}}\",\r\n    \"legalName\": \"{{legalName}}\",\r\n    \"preferredName\": \"{{firstName}}Updated\",\r\n    \"taxWithholding\": false,\r\n    \"address\": {\r\n        \"line1\": \"123 Main St\",\r\n        \"city\": \"New York\",\r\n        \"stateProvinceRegion\": \"NY\",\r\n        \"zipCode\": \"10092\",\r\n        \"country\": \"US\"\r\n    },\r\n    \"email\": \"{{firstName}}Testing@example.com\",\r\n    \"phone\": \"+19049055000\"\r\n}"
+					"raw": "{\r\n    \"institutionUserId\": \"{{uniqueUserId}}\",\r\n    \"legalName\": \"{{legalName}}\",\r\n    \"preferredName\": \"{{firstName}}\",\r\n    \"taxWithholding\": false,\r\n    \"address\": {\r\n        \"line1\": \"123 Main St\",\r\n        \"city\": \"New York\",\r\n        \"stateProvinceRegion\": \"NY\",\r\n        \"zipCode\": \"10092\",\r\n        \"country\": \"US\"\r\n    },\r\n    \"email\": \"{{firstName}}Testing@example.com\",\r\n    \"phone\": \"+19049055000\"\r\n}"
 				},
 				"url": {
-					"raw": "{{cpUsersBaseUrl}}/users/nep/{{userIdForPut}}",
+					"raw": "{{cpUsersBaseUrl}}/users/{{inCorrectUserIdForPut}}",
 					"host": [
 						"{{cpUsersBaseUrl}}"
 					],
 					"path": [
 						"users",
-						"nep",
-						"{{userIdForPut}}"
+						"{{inCorrectUserIdForPut}}"
 					]
 				}
 			},
@@ -1292,7 +1403,7 @@
 							"    pm.response.to.have.status(200);\r",
 							"});\r",
 							"\r",
-							"var responseJson = pm.response.json();\r",
+							"const responseJson = pm.response.json();\r",
 							"\r",
 							"pm.test(\"Response Schema validation: Eligibility POST - 200\", function () {\r",
 							"    var result = tv4.validateResult(responseJson, schema);\r",
@@ -1321,6 +1432,11 @@
 					{
 						"key": "x-institution-id",
 						"value": "{{x-institution-id}}",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{usersBearerToken}}",
 						"type": "text"
 					}
 				],
@@ -1368,7 +1484,7 @@
 							"    pm.response.to.have.status(400);\r",
 							"});\r",
 							"\r",
-							"var responseJson = pm.response.json();\r",
+							"const responseJson = pm.response.json();\r",
 							"\r",
 							"pm.test(\"Response Schema validation: Eligibility POST - 400\", function () {\r",
 							"    var result = tv4.validateResult(responseJson, schema);\r",
@@ -1397,8 +1513,12 @@
 					{
 						"key": "x-institution-id",
 						"value": "{{x-institution-id}}",
-						"type": "text",
-						"disabled": true
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{usersBearerToken}}",
+						"type": "text"
 					}
 				],
 				"body": {
@@ -1445,7 +1565,7 @@
 							"    pm.response.to.have.status(401);\r",
 							"});\r",
 							"\r",
-							"var responseJson = pm.response.json();\r",
+							"const responseJson = pm.response.json();\r",
 							"\r",
 							"pm.test(\"Response Schema validation: Eligibility POST - 401\", function () {\r",
 							"    var result = tv4.validateResult(responseJson, schema);\r",
@@ -1472,8 +1592,8 @@
 						"type": "text"
 					},
 					{
-						"key": "x-institution-id",
-						"value": "{{x-institution-id}}",
+						"key": "Authorization",
+						"value": "Bearer {{usersBearerToken}}",
 						"type": "text"
 					}
 				],
@@ -1501,27 +1621,43 @@
 					"script": {
 						"exec": [
 							"const schema = {\r",
-							"  \"$schema\": \"http://json-schema.org/draft-04/schema#\",\r",
-							"  \"type\": \"object\",\r",
-							"  \"properties\": {\r",
-							"    \"code\": {\r",
-							"      \"type\": \"string\"\r",
-							"    },\r",
-							"    \"message\": {\r",
-							"      \"type\": \"string\"\r",
+							"    \"$schema\": \"http://json-schema.org/draft-06/schema#\",\r",
+							"    \"$ref\": \"#/definitions/Welcome2\",\r",
+							"    \"definitions\": {\r",
+							"        \"Welcome2\": {\r",
+							"            \"type\": \"object\",\r",
+							"            \"additionalProperties\": false,\r",
+							"            \"properties\": {\r",
+							"                \"timestamp\": {\r",
+							"                    \"type\": \"string\",\r",
+							"                    \"format\": \"date-time\"\r",
+							"                },\r",
+							"                \"status\": {\r",
+							"                    \"type\": \"integer\"\r",
+							"                },\r",
+							"                \"error\": {\r",
+							"                    \"type\": \"string\"\r",
+							"                },\r",
+							"                \"path\": {\r",
+							"                    \"type\": \"string\"\r",
+							"                }\r",
+							"            },\r",
+							"            \"required\": [\r",
+							"                \"error\",\r",
+							"                \"path\",\r",
+							"                \"status\",\r",
+							"                \"timestamp\"\r",
+							"            ],\r",
+							"            \"title\": \"Welcome2\"\r",
+							"        }\r",
 							"    }\r",
-							"  },\r",
-							"  \"required\": [\r",
-							"    \"code\",\r",
-							"    \"message\"\r",
-							"  ]\r",
 							"};\r",
 							"\r",
 							"pm.test(\"Verify Status Code: Eligibility POST - 403\", function () {\r",
 							"    pm.response.to.have.status(403);\r",
 							"});\r",
 							"\r",
-							"var responseJson = pm.response.json();\r",
+							"const responseJson = pm.response.json();\r",
 							"\r",
 							"pm.test(\"Response Schema validation: Eligibility POST - 403\", function () {\r",
 							"    var result = tv4.validateResult(responseJson, schema);\r",
@@ -1550,6 +1686,11 @@
 					{
 						"key": "x-institution-id",
 						"value": "{{x-institution-id}}",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{invalidBearerToken}}",
 						"type": "text"
 					}
 				],
@@ -1597,7 +1738,7 @@
 							"    pm.response.to.have.status(404);\r",
 							"});\r",
 							"\r",
-							"var responseJson = pm.response.json();\r",
+							"const responseJson = pm.response.json();\r",
 							"\r",
 							"pm.test(\"Response Schema validation: Eligibility POST - 404\", function () {\r",
 							"    var result = tv4.validateResult(responseJson, schema);\r",
@@ -1627,81 +1768,10 @@
 						"key": "x-institution-id",
 						"value": "{{x-institution-id}}",
 						"type": "text"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n    \"dob\": \"1985-01-01\",\r\n    \"stateProvinceRegion\": \"IL\",\r\n    \"ageCheckOverride\": false\r\n}"
-				},
-				"url": {
-					"raw": "{{cpUsersBaseUrl}}/eligibility",
-					"host": [
-						"{{cpUsersBaseUrl}}"
-					],
-					"path": [
-						"eligibility"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "PostEligibility_409",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"const schema = {\r",
-							"  \"$schema\": \"http://json-schema.org/draft-04/schema#\",\r",
-							"  \"type\": \"object\",\r",
-							"  \"properties\": {\r",
-							"    \"code\": {\r",
-							"      \"type\": \"string\"\r",
-							"    },\r",
-							"    \"message\": {\r",
-							"      \"type\": \"string\"\r",
-							"    }\r",
-							"  },\r",
-							"  \"required\": [\r",
-							"    \"code\",\r",
-							"    \"message\"\r",
-							"  ]\r",
-							"};\r",
-							"\r",
-							"pm.test(\"Verify Status Code: Eligibility POST - 409\", function () {\r",
-							"    pm.response.to.have.status(409);\r",
-							"});\r",
-							"\r",
-							"var responseJson = pm.response.json();\r",
-							"\r",
-							"pm.test(\"Response Schema validation: Eligibility POST - 409\", function () {\r",
-							"    var result = tv4.validateResult(responseJson, schema);\r",
-							"    if(!(result.valid)){\r",
-							"        console.log(result);\r",
-							"    }\r",
-							"    pm.expect(result.valid).to.be.true;\r",
-							"});\r",
-							"\r",
-							"pm.test(\"Response time is less than 10 seconds\", () => {\r",
-							"  pm.expect(pm.response.responseTime).to.be.below(10000);\r",
-							"});"
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"method": "POST",
-				"header": [
-					{
-						"key": "Content-Type",
-						"value": "application/json",
-						"type": "text"
 					},
 					{
-						"key": "x-institution-id",
-						"value": "{{x-institution-id}}",
+						"key": "Authorization",
+						"value": "Bearer {{usersBearerToken}}",
 						"type": "text"
 					}
 				],
@@ -1730,7 +1800,29 @@
 				"exec": [
 					"pm.collectionVariables.set(\"legalName\", pm.variables.replaceIn(\"{{$randomFullName}}\"));",
 					"pm.collectionVariables.set(\"phoneNumber\", pm.variables.replaceIn(\"{{$randomPhoneNumber}}\"));",
-					"pm.collectionVariables.set(\"firstName\", pm.variables.replaceIn(\"{{$randomFirstName}}\"));"
+					"pm.collectionVariables.set(\"firstName\", pm.variables.replaceIn(\"{{$randomFirstName}}\"));",
+					"",
+					"const authBody = 'client_id=7168155c594e45fbabf9e8fe1560aae6&client_secret=4ce94149b9244c59811953477d4db499&grant_type=client_credentials'",
+					"",
+					"const tokenPostRequest = {",
+					"    url: \"https://ncrdev-dev.apigee.net/security/access-key-authentication/oauth2/token\",",
+					"    method: 'POST',",
+					"    header: { 'Content-type': 'application/x-www-form-urlencoded' },",
+					"    body: {",
+					"        mode: 'raw',",
+					"        raw: authBody",
+					"    }",
+					"}; ",
+					"",
+					"pm.sendRequest(tokenPostRequest, function (err, res) {",
+					"    if (err) {",
+					"        console.log(err);",
+					"    }",
+					"    else {",
+					"        var jsonResponseData = res.json();",
+					"        pm.environment.set(\"usersBearerToken\", jsonResponseData.access_token);",
+					"    }",
+					"});"
 				]
 			}
 		},
@@ -1739,16 +1831,18 @@
 			"script": {
 				"type": "text/javascript",
 				"exec": [
-					""
+					"const possibleErrorKeywords = pm.globals.get(\"errorKeywords\").split(\"~\");",
+					"",
+					"pm.test(\"Verify stack trace\", () => {",
+					"    for (var i = 0; i < possibleErrorKeywords.length; i++) {",
+					"        pm.expect(pm.response.text()).to.not.include(possibleErrorKeywords[i]);  ",
+					"    }      ",
+					"});"
 				]
 			}
 		}
 	],
 	"variable": [
-		{
-			"key": "baseUrl",
-			"value": "https://tbd"
-		},
 		{
 			"key": "relationshipInstitutionId",
 			"value": ""
@@ -1771,15 +1865,19 @@
 		},
 		{
 			"key": "firstName",
-			"value": ""
+			"value": "Tavares"
 		},
 		{
 			"key": "userIdForGet",
-			"value": ""
+			"value": "cu-01fm0c0nxyadcpcejmgvd6kqcr"
 		},
 		{
 			"key": "userIdForPut",
-			"value": ""
+			"value": "cu-01fm0c0nxyadcpcejmgvd6kqcr"
+		},
+		{
+			"key": "inCorrectUserIdForPut",
+			"value": "cu-01fm0c0nxyadcpcejmgvd6kqca"
 		}
 	]
 }

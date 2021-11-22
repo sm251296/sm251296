@@ -11,7 +11,7 @@ module.exports = {
     if (matchedFiles.length === 0) {
       return;
     }
-
+ 
     var totalRequests = {};
     var totalAssertions = {};
     var failures = [];

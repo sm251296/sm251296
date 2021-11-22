@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "ca0e3c03-4a85-4e8a-a21a-9db5550042f9",
+		"_postman_id": "71cf2b3f-35b3-41c7-8bfa-4e14d43267a2",
 		"name": "NydigProvider-MarketData",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -44,7 +44,7 @@
 							"    pm.response.to.have.status(200);\r",
 							"});\r",
 							"\r",
-							"var responseJson = pm.response.json();\r",
+							"const responseJson = pm.response.json();\r",
 							"\r",
 							"pm.test(\"Response Schema validation: Market Ticker GET\", function () {\r",
 							"    var result = tv4.validateResult(responseJson, schema);\r",
@@ -57,6 +57,15 @@
 							"pm.test(\"Response time is less than 10 seconds\", () => {\r",
 							"  pm.expect(pm.response.responseTime).to.be.below(10000);\r",
 							"});"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
 						],
 						"type": "text/javascript"
 					}
@@ -73,6 +82,11 @@
 					{
 						"key": "x-institution-id",
 						"value": "{{x-institution-id}}",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{marketDataBearerToken}}",
 						"type": "text"
 					}
 				],
@@ -123,7 +137,7 @@
 							"    pm.response.to.have.status(400);\r",
 							"});\r",
 							"\r",
-							"var responseJson = pm.response.json();\r",
+							"const responseJson = pm.response.json();\r",
 							"\r",
 							"pm.test(\"Response Schema validation: Market Ticker GET - 400\", function () {\r",
 							"    var result = tv4.validateResult(responseJson, schema);\r",
@@ -136,6 +150,15 @@
 							"pm.test(\"Response time is less than 10 seconds\", () => {\r",
 							"  pm.expect(pm.response.responseTime).to.be.below(10000);\r",
 							"});"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
 						],
 						"type": "text/javascript"
 					}
@@ -153,10 +176,15 @@
 						"key": "x-institution-id",
 						"value": "{{x-institution-id}}",
 						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{marketDataBearerToken}}",
+						"type": "text"
 					}
 				],
 				"url": {
-					"raw": "{{cpMarketDataBaseUrl}}/ticker/{{symbolBTC}}?toCurrency={{toCurrency}}",
+					"raw": "{{cpMarketDataBaseUrl}}/ticker/{{symbolBTC}}?toCurrency={{toCurrency}}1",
 					"host": [
 						"{{cpMarketDataBaseUrl}}"
 					],
@@ -167,7 +195,7 @@
 					"query": [
 						{
 							"key": "toCurrency",
-							"value": "{{toCurrency}}"
+							"value": "{{toCurrency}}1"
 						}
 					]
 				}
@@ -202,7 +230,7 @@
 							"    pm.response.to.have.status(401);\r",
 							"});\r",
 							"\r",
-							"var responseJson = pm.response.json();\r",
+							"const responseJson = pm.response.json();\r",
 							"\r",
 							"pm.test(\"Response Schema validation: Market Ticker GET - 401\", function () {\r",
 							"    var result = tv4.validateResult(responseJson, schema);\r",
@@ -218,6 +246,15 @@
 						],
 						"type": "text/javascript"
 					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
 				}
 			],
 			"request": {
@@ -226,6 +263,11 @@
 					{
 						"key": "Content-Type",
 						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{marketDataBearerToken}}",
 						"type": "text"
 					}
 				],
@@ -256,27 +298,43 @@
 					"script": {
 						"exec": [
 							"const schema = {\r",
-							"  \"$schema\": \"http://json-schema.org/draft-04/schema#\",\r",
-							"  \"type\": \"object\",\r",
-							"  \"properties\": {\r",
-							"    \"code\": {\r",
-							"      \"type\": \"string\"\r",
-							"    },\r",
-							"    \"message\": {\r",
-							"      \"type\": \"string\"\r",
+							"    \"$schema\": \"http://json-schema.org/draft-06/schema#\",\r",
+							"    \"$ref\": \"#/definitions/Welcome2\",\r",
+							"    \"definitions\": {\r",
+							"        \"Welcome2\": {\r",
+							"            \"type\": \"object\",\r",
+							"            \"additionalProperties\": false,\r",
+							"            \"properties\": {\r",
+							"                \"timestamp\": {\r",
+							"                    \"type\": \"string\",\r",
+							"                    \"format\": \"date-time\"\r",
+							"                },\r",
+							"                \"status\": {\r",
+							"                    \"type\": \"integer\"\r",
+							"                },\r",
+							"                \"error\": {\r",
+							"                    \"type\": \"string\"\r",
+							"                },\r",
+							"                \"path\": {\r",
+							"                    \"type\": \"string\"\r",
+							"                }\r",
+							"            },\r",
+							"            \"required\": [\r",
+							"                \"error\",\r",
+							"                \"path\",\r",
+							"                \"status\",\r",
+							"                \"timestamp\"\r",
+							"            ],\r",
+							"            \"title\": \"Welcome2\"\r",
+							"        }\r",
 							"    }\r",
-							"  },\r",
-							"  \"required\": [\r",
-							"    \"code\",\r",
-							"    \"message\"\r",
-							"  ]\r",
 							"};\r",
 							"\r",
 							"pm.test(\"Verify Status Code: Market Ticker GET - 403\", function () {\r",
 							"    pm.response.to.have.status(403);\r",
 							"});\r",
 							"\r",
-							"var responseJson = pm.response.json();\r",
+							"const responseJson = pm.response.json();\r",
 							"\r",
 							"pm.test(\"Response Schema validation: Market Ticker GET - 403\", function () {\r",
 							"    var result = tv4.validateResult(responseJson, schema);\r",
@@ -305,6 +363,11 @@
 					{
 						"key": "x-institution-id",
 						"value": "{{x-institution-id}}",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{invalidBearerToken}}",
 						"type": "text"
 					}
 				],
@@ -355,7 +418,7 @@
 							"    pm.response.to.have.status(404);\r",
 							"});\r",
 							"\r",
-							"var responseJson = pm.response.json();\r",
+							"const responseJson = pm.response.json();\r",
 							"\r",
 							"pm.test(\"Response Schema validation: Market Ticker GET - 404\", function () {\r",
 							"    var result = tv4.validateResult(responseJson, schema);\r",
@@ -383,12 +446,17 @@
 					},
 					{
 						"key": "x-institution-id",
-						"value": "{{x-institution-id}}",
+						"value": "{{x-institution-id}}1",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{marketDataBearerToken}}",
 						"type": "text"
 					}
 				],
 				"url": {
-					"raw": "{{cpMarketDataBaseUrl}}/ticker/{{symbolBTC}}?toCurrency={{toCurrency}}1",
+					"raw": "{{cpMarketDataBaseUrl}}/ticker/{{symbolBTC}}?toCurrency={{toCurrency}}",
 					"host": [
 						"{{cpMarketDataBaseUrl}}"
 					],
@@ -399,7 +467,7 @@
 					"query": [
 						{
 							"key": "toCurrency",
-							"value": "{{toCurrency}}1"
+							"value": "{{toCurrency}}"
 						}
 					]
 				}
@@ -466,7 +534,7 @@
 							"    pm.response.to.have.status(200);\r",
 							"});\r",
 							"\r",
-							"var responseJson = pm.response.json();\r",
+							"const responseJson = pm.response.json();\r",
 							"\r",
 							"pm.test(\"Response Schema validation: Market Ticker History GET - 200\", function () {\r",
 							"    var result = tv4.validateResult(responseJson, schema);\r",
@@ -495,6 +563,11 @@
 					{
 						"key": "x-institution-id",
 						"value": "{{x-institution-id}}",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{marketDataBearerToken}}",
 						"type": "text"
 					}
 				],
@@ -563,7 +636,7 @@
 							"    pm.response.to.have.status(400);\r",
 							"});\r",
 							"\r",
-							"var responseJson = pm.response.json();\r",
+							"const responseJson = pm.response.json();\r",
 							"\r",
 							"pm.test(\"Response Schema validation: Market Ticker History GET - 400\", function () {\r",
 							"    var result = tv4.validateResult(responseJson, schema);\r",
@@ -592,12 +665,16 @@
 					{
 						"key": "x-institution-id",
 						"value": "{{x-institution-id}}",
-						"type": "text",
-						"disabled": true
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{marketDataBearerToken}}",
+						"type": "text"
 					}
 				],
 				"url": {
-					"raw": "{{cpMarketDataBaseUrl}}/ticker/{{symbolBTC}}/history?frequency={{frequency_oneMinute}}&lookback={{lookback_day}}&toCurrency={{toCurrency}}",
+					"raw": "{{cpMarketDataBaseUrl}}/ticker/{{symbolBTC}}/history?frequency={{frequency_oneMinute}}&lookback={{lookback_day}}&toCurrency={{toCurrency}}1",
 					"host": [
 						"{{cpMarketDataBaseUrl}}"
 					],
@@ -617,7 +694,7 @@
 						},
 						{
 							"key": "toCurrency",
-							"value": "{{toCurrency}}"
+							"value": "{{toCurrency}}1"
 						}
 					]
 				}
@@ -661,7 +738,7 @@
 							"    pm.response.to.have.status(401);\r",
 							"});\r",
 							"\r",
-							"var responseJson = pm.response.json();\r",
+							"const responseJson = pm.response.json();\r",
 							"\r",
 							"pm.test(\"Response Schema validation: Market Ticker History GET - 401 \", function () {\r",
 							"    var result = tv4.validateResult(responseJson, schema);\r",
@@ -685,6 +762,11 @@
 					{
 						"key": "Content-Type",
 						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{marketDataBearerToken}}",
 						"type": "text"
 					}
 				],
@@ -733,27 +815,43 @@
 					"script": {
 						"exec": [
 							"const schema = {\r",
-							"  \"$schema\": \"http://json-schema.org/draft-04/schema#\",\r",
-							"  \"type\": \"object\",\r",
-							"  \"properties\": {\r",
-							"    \"code\": {\r",
-							"      \"type\": \"string\"\r",
-							"    },\r",
-							"    \"message\": {\r",
-							"      \"type\": \"string\"\r",
+							"    \"$schema\": \"http://json-schema.org/draft-06/schema#\",\r",
+							"    \"$ref\": \"#/definitions/Welcome2\",\r",
+							"    \"definitions\": {\r",
+							"        \"Welcome2\": {\r",
+							"            \"type\": \"object\",\r",
+							"            \"additionalProperties\": false,\r",
+							"            \"properties\": {\r",
+							"                \"timestamp\": {\r",
+							"                    \"type\": \"string\",\r",
+							"                    \"format\": \"date-time\"\r",
+							"                },\r",
+							"                \"status\": {\r",
+							"                    \"type\": \"integer\"\r",
+							"                },\r",
+							"                \"error\": {\r",
+							"                    \"type\": \"string\"\r",
+							"                },\r",
+							"                \"path\": {\r",
+							"                    \"type\": \"string\"\r",
+							"                }\r",
+							"            },\r",
+							"            \"required\": [\r",
+							"                \"error\",\r",
+							"                \"path\",\r",
+							"                \"status\",\r",
+							"                \"timestamp\"\r",
+							"            ],\r",
+							"            \"title\": \"Welcome2\"\r",
+							"        }\r",
 							"    }\r",
-							"  },\r",
-							"  \"required\": [\r",
-							"    \"code\",\r",
-							"    \"message\"\r",
-							"  ]\r",
 							"};\r",
 							"\r",
 							"pm.test(\"Verify Status Code: Market Ticker History GET - 403\", function () {\r",
 							"    pm.response.to.have.status(403);\r",
 							"});\r",
 							"\r",
-							"var responseJson = pm.response.json();\r",
+							"const responseJson = pm.response.json();\r",
 							"\r",
 							"pm.test(\"Response Schema validation: Market Ticker History GET - 403\", function () {\r",
 							"    var result = tv4.validateResult(responseJson, schema);\r",
@@ -782,6 +880,11 @@
 					{
 						"key": "x-institution-id",
 						"value": "{{x-institution-id}}",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{invalidBearerToken}}",
 						"type": "text"
 					}
 				],
@@ -850,7 +953,7 @@
 							"    pm.response.to.have.status(404);\r",
 							"});\r",
 							"\r",
-							"var responseJson = pm.response.json();\r",
+							"const responseJson = pm.response.json();\r",
 							"\r",
 							"pm.test(\"Response Schema validation: Market Ticker History GET - 404\", function () {\r",
 							"    var result = tv4.validateResult(responseJson, schema);\r",
@@ -878,12 +981,17 @@
 					},
 					{
 						"key": "x-institution-id",
-						"value": "{{x-institution-id}}",
+						"value": "{{x-institution-id}}p",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{marketDataBearerToken}}",
 						"type": "text"
 					}
 				],
 				"url": {
-					"raw": "{{cpMarketDataBaseUrl}}/ticker/{{symbolBTC}}/history?frequency={{frequency_oneMinute}}&lookback={{lookback_day}}&toCurrency={{toCurrency}}p",
+					"raw": "{{cpMarketDataBaseUrl}}/ticker/{{symbolBTC}}/history?frequency={{frequency_oneMinute}}&lookback={{lookback_day}}&toCurrency={{toCurrency}}",
 					"host": [
 						"{{cpMarketDataBaseUrl}}"
 					],
@@ -903,7 +1011,7 @@
 						},
 						{
 							"key": "toCurrency",
-							"value": "{{toCurrency}}p"
+							"value": "{{toCurrency}}"
 						}
 					]
 				}
@@ -917,7 +1025,27 @@
 			"script": {
 				"type": "text/javascript",
 				"exec": [
-					""
+					"const authBody = 'client_id=7168155c594e45fbabf9e8fe1560aae6&client_secret=4ce94149b9244c59811953477d4db499&grant_type=client_credentials'",
+					"",
+					"const tokenPostRequest = {",
+					"    url: \"https://ncrdev-dev.apigee.net/security/access-key-authentication/oauth2/token\",",
+					"    method: 'POST',",
+					"    header: { 'Content-type': 'application/x-www-form-urlencoded' },",
+					"    body: {",
+					"        mode: 'raw',",
+					"        raw: authBody",
+					"    }",
+					"}; ",
+					"",
+					"pm.sendRequest(tokenPostRequest, function (err, res) {",
+					"    if (err) {",
+					"        console.log(err);",
+					"    }",
+					"    else {",
+					"        var jsonResponseData = res.json();",
+					"        pm.environment.set(\"marketDataBearerToken\", jsonResponseData.access_token);",
+					"    }",
+					"});"
 				]
 			}
 		},
@@ -926,27 +1054,15 @@
 			"script": {
 				"type": "text/javascript",
 				"exec": [
-					""
+					"let possibleErrorKeywords = pm.globals.get(\"errorKeywords\").split(\"~\");",
+					"",
+					"pm.test(\"Verify stack trace\", () => {",
+					"    for (var i = 0; i < possibleErrorKeywords.length; i++) {",
+					"        pm.expect(pm.response.text()).to.not.include(possibleErrorKeywords[i]);  ",
+					"    }      ",
+					"});"
 				]
 			}
-		}
-	],
-	"variable": [
-		{
-			"key": "baseUrl",
-			"value": "https://tbd"
-		},
-		{
-			"key": "relationshipInstitutionId",
-			"value": ""
-		},
-		{
-			"key": "cryptoProviderId",
-			"value": ""
-		},
-		{
-			"key": "userId",
-			"value": ""
 		}
 	]
 }

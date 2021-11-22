@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "5f6297b0-5c11-4d93-a6f5-54fffb208311",
+		"_postman_id": "8f2b540f-6137-43aa-a8f6-1442fd4c9c8c",
 		"name": "NydigProvider-Orders",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -27,8 +27,7 @@
 							"                    \"type\": \"string\"\r",
 							"                },\r",
 							"                \"userId\": {\r",
-							"                    \"type\": \"string\",\r",
-							"                    \"format\": \"uuid\"\r",
+							"                    \"type\": \"string\"\r",
 							"                },\r",
 							"                \"created\": {\r",
 							"                    \"type\": \"string\",\r",
@@ -47,14 +46,18 @@
 							"                \"side\": {\r",
 							"                    \"type\": \"string\"\r",
 							"                },\r",
-							"                \"quantity\": {\r",
+							"                \"price\": {\r",
 							"                    \"type\": \"number\"\r",
 							"                },\r",
-							"                \"price\": {\r",
+							"                \"quantity\": {\r",
 							"                    \"type\": \"number\"\r",
 							"                },\r",
 							"                \"receipt\": {\r",
 							"                    \"$ref\": \"#/definitions/Receipt\"\r",
+							"                },\r",
+							"                \"requestedAt\": {\r",
+							"                    \"type\": \"string\",\r",
+							"                    \"format\": \"date-time\"\r",
 							"                }\r",
 							"            },\r",
 							"            \"required\": [\r",
@@ -65,6 +68,7 @@
 							"                \"price\",\r",
 							"                \"quantity\",\r",
 							"                \"receipt\",\r",
+							"                \"requestedAt\",\r",
 							"                \"side\",\r",
 							"                \"status\",\r",
 							"                \"symbol\",\r",
@@ -100,7 +104,9 @@
 							"    pm.response.to.have.status(201);\r",
 							"});\r",
 							"\r",
-							"var responseJson = pm.response.json();\r",
+							"const responseJson = pm.response.json();\r",
+							"\r",
+							"pm.environment.set(\"orderIdBuyToExecute\", responseJson.id);\r",
 							"\r",
 							"pm.test(\"Response Schema validation: Orders POST - 201\", function () {\r",
 							"    var result = tv4.validateResult(responseJson, schema);\r",
@@ -130,19 +136,24 @@
 						"key": "x-institution-id",
 						"value": "{{x-institution-id}}",
 						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{ordersBearerToken}}",
+						"type": "text"
 					}
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"accountId\": \"829553c1cca04fa081529ad9194da788\",\r\n    \"userId\": \"6a8e01a8-37f0-40e7-bb4e-2b47f1b2745e\",\r\n    \"side\": \"sell\",\r\n    \"symbol\": \"btc\",\r\n    \"quantity\": 1000\r\n}"
+					"raw": "{\r\n  \"accountId\": \"{{ordersAccountId}}\",\r\n  \"userId\": \"cu-01fj1xem8vja26pc7rk2te8qd7\",\r\n  \"side\": \"buy\",\r\n  \"symbol\": \"btc\",\r\n  \"quantity\": 0.1\r\n}"
 				},
 				"url": {
-					"raw": "{{cpOrdersBaseUrl}}/Orders",
+					"raw": "{{cpOrdersBaseUrl}}/orders",
 					"host": [
 						"{{cpOrdersBaseUrl}}"
 					],
 					"path": [
-						"Orders"
+						"orders"
 					]
 				}
 			},
@@ -150,6 +161,159 @@
 		},
 		{
 			"name": "PostOrders_Sell",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const schema = {\r",
+							"    \"$schema\": \"http://json-schema.org/draft-06/schema#\",\r",
+							"    \"$ref\": \"#/definitions/Welcome5\",\r",
+							"    \"definitions\": {\r",
+							"        \"Welcome5\": {\r",
+							"            \"type\": \"object\",\r",
+							"            \"additionalProperties\": false,\r",
+							"            \"properties\": {\r",
+							"                \"id\": {\r",
+							"                    \"type\": \"string\"\r",
+							"                },\r",
+							"                \"accountId\": {\r",
+							"                    \"type\": \"string\"\r",
+							"                },\r",
+							"                \"userId\": {\r",
+							"                    \"type\": \"string\"\r",
+							"                },\r",
+							"                \"created\": {\r",
+							"                    \"type\": \"string\",\r",
+							"                    \"format\": \"date-time\"\r",
+							"                },\r",
+							"                \"expiration\": {\r",
+							"                    \"type\": \"string\",\r",
+							"                    \"format\": \"date-time\"\r",
+							"                },\r",
+							"                \"status\": {\r",
+							"                    \"type\": \"string\"\r",
+							"                },\r",
+							"                \"symbol\": {\r",
+							"                    \"type\": \"string\"\r",
+							"                },\r",
+							"                \"side\": {\r",
+							"                    \"type\": \"string\"\r",
+							"                },\r",
+							"                \"price\": {\r",
+							"                    \"type\": \"number\"\r",
+							"                },\r",
+							"                \"quantity\": {\r",
+							"                    \"type\": \"number\"\r",
+							"                },\r",
+							"                \"receipt\": {\r",
+							"                    \"$ref\": \"#/definitions/Receipt\"\r",
+							"                },\r",
+							"                \"requestedAt\": {\r",
+							"                    \"type\": \"string\",\r",
+							"                    \"format\": \"date-time\"\r",
+							"                }\r",
+							"            },\r",
+							"            \"required\": [\r",
+							"                \"accountId\",\r",
+							"                \"created\",\r",
+							"                \"expiration\",\r",
+							"                \"id\",\r",
+							"                \"price\",\r",
+							"                \"quantity\",\r",
+							"                \"receipt\",\r",
+							"                \"requestedAt\",\r",
+							"                \"side\",\r",
+							"                \"status\",\r",
+							"                \"symbol\",\r",
+							"                \"userId\"\r",
+							"            ],\r",
+							"            \"title\": \"Welcome5\"\r",
+							"        },\r",
+							"        \"Receipt\": {\r",
+							"            \"type\": \"object\",\r",
+							"            \"additionalProperties\": false,\r",
+							"            \"properties\": {\r",
+							"                \"subtotal\": {\r",
+							"                    \"type\": \"number\"\r",
+							"                },\r",
+							"                \"fee\": {\r",
+							"                    \"type\": \"number\"\r",
+							"                },\r",
+							"                \"total\": {\r",
+							"                    \"type\": \"number\"\r",
+							"                }\r",
+							"            },\r",
+							"            \"required\": [\r",
+							"                \"fee\",\r",
+							"                \"subtotal\",\r",
+							"                \"total\"\r",
+							"            ],\r",
+							"            \"title\": \"Receipt\"\r",
+							"        }\r",
+							"    }\r",
+							"};\r",
+							"\r",
+							"pm.test(\"Verify Status Code: Orders POST - 201\", function () {\r",
+							"    pm.response.to.have.status(201);\r",
+							"});\r",
+							"\r",
+							"const responseJson = pm.response.json();\r",
+							"pm.environment.set(\"orderIdSellToExecute\", responseJson.id);\r",
+							"\r",
+							"pm.test(\"Response Schema validation: Orders POST - 201\", function () {\r",
+							"    var result = tv4.validateResult(responseJson, schema);\r",
+							"    if(!(result.valid)){\r",
+							"        console.log(result);\r",
+							"    }\r",
+							"    pm.expect(result.valid).to.be.true;\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response time is less than 10 seconds\", () => {\r",
+							"  pm.expect(pm.response.responseTime).to.be.below(10000);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "x-institution-id",
+						"value": "{{x-institution-id}}",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{ordersBearerToken}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"accountId\": \"{{ordersAccountId}}\",\r\n  \"userId\": \"cu-01fj1xem8vja26pc7rk2te8qd7\",\r\n  \"side\": \"sell\",\r\n  \"symbol\": \"btc\",\r\n  \"quantity\": 0.01\r\n}"
+				},
+				"url": {
+					"raw": "{{cpOrdersBaseUrl}}/orders",
+					"host": [
+						"{{cpOrdersBaseUrl}}"
+					],
+					"path": [
+						"orders"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PostOrders_SellZeroQuantity",
 			"event": [
 				{
 					"listen": "test",
@@ -172,13 +336,13 @@
 							"  ]\r",
 							"};\r",
 							"\r",
-							"pm.test(\"Verify Status Code: Orders POST - 201\", function () {\r",
-							"    pm.response.to.have.status(201);\r",
+							"pm.test(\"Verify Status Code: Orders POST - 400\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
 							"});\r",
 							"\r",
-							"var responseJson = pm.response.json();\r",
+							"const responseJson = pm.response.json();\r",
 							"\r",
-							"pm.test(\"Response Schema validation: Orders POST - 201\", function () {\r",
+							"pm.test(\"Response Schema validation: Orders POST 0.0 QUANTITY - 400\", function () {\r",
 							"    var result = tv4.validateResult(responseJson, schema);\r",
 							"    if(!(result.valid)){\r",
 							"        console.log(result);\r",
@@ -206,19 +370,105 @@
 						"key": "x-institution-id",
 						"value": "{{x-institution-id}}",
 						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{ordersBearerToken}}",
+						"type": "text"
 					}
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"accountId\": \"829553c1cca04fa081529ad9194da788\",\r\n    \"userId\": \"6a8e01a8-37f0-40e7-bb4e-2b47f1b2745e\",\r\n    \"side\": \"buy\",\r\n    \"symbol\": \"btc\",\r\n    \"quantity\": 1000\r\n}"
+					"raw": "{\r\n  \"accountId\": \"{{ordersAccountId}}\",\r\n  \"userId\": \"cu-01fj1xem8vja26pc7rk2te8qd7\",\r\n  \"side\": \"sell\",\r\n  \"symbol\": \"btc\",\r\n  \"quantity\": 0.0\r\n}"
 				},
 				"url": {
-					"raw": "{{cpOrdersBaseUrl}}/Orders",
+					"raw": "{{cpOrdersBaseUrl}}/orders",
 					"host": [
 						"{{cpOrdersBaseUrl}}"
 					],
 					"path": [
-						"Orders"
+						"orders"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PostOrders_BuyZeroQuantity",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const schema = {\r",
+							"  \"$schema\": \"http://json-schema.org/draft-04/schema#\",\r",
+							"  \"type\": \"object\",\r",
+							"  \"properties\": {\r",
+							"    \"code\": {\r",
+							"      \"type\": \"string\"\r",
+							"    },\r",
+							"    \"message\": {\r",
+							"      \"type\": \"string\"\r",
+							"    }\r",
+							"  },\r",
+							"  \"required\": [\r",
+							"    \"code\",\r",
+							"    \"message\"\r",
+							"  ]\r",
+							"};\r",
+							"\r",
+							"pm.test(\"Verify Status Code: Orders POST - 400\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});\r",
+							"\r",
+							"const responseJson = pm.response.json();\r",
+							"\r",
+							"pm.test(\"Response Schema validation: Orders POST 0.0 QUANTITY - 400\", function () {\r",
+							"    var result = tv4.validateResult(responseJson, schema);\r",
+							"    if(!(result.valid)){\r",
+							"        console.log(result);\r",
+							"    }\r",
+							"    pm.expect(result.valid).to.be.true;\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response time is less than 10 seconds\", () => {\r",
+							"  pm.expect(pm.response.responseTime).to.be.below(10000);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "x-institution-id",
+						"value": "{{x-institution-id}}",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{ordersBearerToken}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"accountId\": \"{{ordersAccountId}}\",\r\n  \"userId\": \"cu-01fj1xem8vja26pc7rk2te8qd7\",\r\n  \"side\": \"buy\",\r\n  \"symbol\": \"btc\",\r\n  \"quantity\": 0.0\r\n}"
+				},
+				"url": {
+					"raw": "{{cpOrdersBaseUrl}}/orders",
+					"host": [
+						"{{cpOrdersBaseUrl}}"
+					],
+					"path": [
+						"orders"
 					]
 				}
 			},
@@ -252,7 +502,7 @@
 							"    pm.response.to.have.status(400);\r",
 							"});\r",
 							"\r",
-							"var responseJson = pm.response.json();\r",
+							"const responseJson = pm.response.json();\r",
 							"\r",
 							"pm.test(\"Response Schema validation: Orders POST - 400\", function () {\r",
 							"    var result = tv4.validateResult(responseJson, schema);\r",
@@ -281,21 +531,25 @@
 					{
 						"key": "x-institution-id",
 						"value": "{{x-institution-id}}",
-						"type": "text",
-						"disabled": true
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{ordersBearerToken}}",
+						"type": "text"
 					}
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"accountId\": \"829553c1cca04fa081529ad9194da788\",\r\n    \"userId\": \"6a8e01a8-37f0-40e7-bb4e-2b47f1b2745e\",\r\n    \"side\": \"buy\",\r\n    \"symbol\": \"btc\",\r\n    \"quantity\": 1000\r\n}"
+					"raw": "{\r\n  \"accountId\": \"{{ordersAccountId}}\",\r\n  \"userId\": \"cu-01fj1xem8vja26pc7rk2te8qd7\",\r\n  \"side\": \"buy\",\r\n  \"symbol\": \"usd\",\r\n  \"quantity\": 0.1\r\n}"
 				},
 				"url": {
-					"raw": "{{cpOrdersBaseUrl}}/Orders",
+					"raw": "{{cpOrdersBaseUrl}}/orders",
 					"host": [
 						"{{cpOrdersBaseUrl}}"
 					],
 					"path": [
-						"Orders"
+						"orders"
 					]
 				}
 			},
@@ -329,7 +583,7 @@
 							"    pm.response.to.have.status(401);\r",
 							"});\r",
 							"\r",
-							"var responseJson = pm.response.json();\r",
+							"const responseJson = pm.response.json();\r",
 							"\r",
 							"pm.test(\"Response Schema validation: Orders POST - 401\", function () {\r",
 							"    var result = tv4.validateResult(responseJson, schema);\r",
@@ -356,22 +610,22 @@
 						"type": "text"
 					},
 					{
-						"key": "x-institution-id",
-						"value": "{{x-institution-id}}",
+						"key": "Authorization",
+						"value": "Bearer {{ordersBearerToken}}",
 						"type": "text"
 					}
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"accountId\": \"829553c1cca04fa081529ad9194da788\",\r\n    \"userId\": \"6a8e01a8-37f0-40e7-bb4e-2b47f1b2745e\",\r\n    \"side\": \"buy\",\r\n    \"symbol\": \"btc\",\r\n    \"quantity\": 1000\r\n}"
+					"raw": "{\r\n    \"accountId\": \"{{ordersAccountId}}\",\r\n    \"userId\": \"6a8e01a8-37f0-40e7-bb4e-2b47f1b2745e\",\r\n    \"side\": \"buy\",\r\n    \"symbol\": \"btc\",\r\n    \"quantity\": 1000\r\n}"
 				},
 				"url": {
-					"raw": "{{cpOrdersBaseUrl}}/Orders",
+					"raw": "{{cpOrdersBaseUrl}}/orders",
 					"host": [
 						"{{cpOrdersBaseUrl}}"
 					],
 					"path": [
-						"Orders"
+						"orders"
 					]
 				}
 			},
@@ -385,27 +639,43 @@
 					"script": {
 						"exec": [
 							"const schema = {\r",
-							"  \"$schema\": \"http://json-schema.org/draft-04/schema#\",\r",
-							"  \"type\": \"object\",\r",
-							"  \"properties\": {\r",
-							"    \"code\": {\r",
-							"      \"type\": \"string\"\r",
-							"    },\r",
-							"    \"message\": {\r",
-							"      \"type\": \"string\"\r",
+							"    \"$schema\": \"http://json-schema.org/draft-06/schema#\",\r",
+							"    \"$ref\": \"#/definitions/Welcome2\",\r",
+							"    \"definitions\": {\r",
+							"        \"Welcome2\": {\r",
+							"            \"type\": \"object\",\r",
+							"            \"additionalProperties\": false,\r",
+							"            \"properties\": {\r",
+							"                \"timestamp\": {\r",
+							"                    \"type\": \"string\",\r",
+							"                    \"format\": \"date-time\"\r",
+							"                },\r",
+							"                \"status\": {\r",
+							"                    \"type\": \"integer\"\r",
+							"                },\r",
+							"                \"error\": {\r",
+							"                    \"type\": \"string\"\r",
+							"                },\r",
+							"                \"path\": {\r",
+							"                    \"type\": \"string\"\r",
+							"                }\r",
+							"            },\r",
+							"            \"required\": [\r",
+							"                \"error\",\r",
+							"                \"path\",\r",
+							"                \"status\",\r",
+							"                \"timestamp\"\r",
+							"            ],\r",
+							"            \"title\": \"Welcome2\"\r",
+							"        }\r",
 							"    }\r",
-							"  },\r",
-							"  \"required\": [\r",
-							"    \"code\",\r",
-							"    \"message\"\r",
-							"  ]\r",
 							"};\r",
 							"\r",
 							"pm.test(\"Verify Status Code: Orders POST - 403\", function () {\r",
 							"    pm.response.to.have.status(403);\r",
 							"});\r",
 							"\r",
-							"var responseJson = pm.response.json();\r",
+							"const responseJson = pm.response.json();\r",
 							"\r",
 							"pm.test(\"Response Schema validation: Orders POST - 403\", function () {\r",
 							"    var result = tv4.validateResult(responseJson, schema);\r",
@@ -435,19 +705,24 @@
 						"key": "x-institution-id",
 						"value": "{{x-institution-id}}",
 						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{invalidBearerToken}}",
+						"type": "text"
 					}
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"accountId\": \"829553c1cca04fa081529ad9194da788\",\r\n    \"userId\": \"6a8e01a8-37f0-40e7-bb4e-2b47f1b2745e\",\r\n    \"side\": \"buy\",\r\n    \"symbol\": \"btc\",\r\n    \"quantity\": 1000\r\n}"
+					"raw": "{\r\n    \"accountId\": \"{{ordersAccountId}}\",\r\n    \"userId\": \"6a8e01a8-37f0-40e7-bb4e-2b47f1b2745e\",\r\n    \"side\": \"buy\",\r\n    \"symbol\": \"btc\",\r\n    \"quantity\": 1000\r\n}"
 				},
 				"url": {
-					"raw": "{{cpOrdersBaseUrl}}/Orders",
+					"raw": "{{cpOrdersBaseUrl}}/orders",
 					"host": [
 						"{{cpOrdersBaseUrl}}"
 					],
 					"path": [
-						"Orders"
+						"orders"
 					]
 				}
 			},
@@ -481,7 +756,7 @@
 							"    pm.response.to.have.status(404);\r",
 							"});\r",
 							"\r",
-							"var responseJson = pm.response.json();\r",
+							"const responseJson = pm.response.json();\r",
 							"\r",
 							"pm.test(\"Response Schema validation: Orders POST - 404\", function () {\r",
 							"    var result = tv4.validateResult(responseJson, schema);\r",
@@ -509,97 +784,26 @@
 					},
 					{
 						"key": "x-institution-id",
-						"value": "{{x-institution-id}}",
-						"type": "text"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n    \"accountId\": \"829553c1cca04fa081529ad9194da788\",\r\n    \"userId\": \"6a8e01a8-37f0-40e7-bb4e-2b47f1b2745e\",\r\n    \"side\": \"buy\",\r\n    \"symbol\": \"btc\",\r\n    \"quantity\": 1000\r\n}"
-				},
-				"url": {
-					"raw": "{{cpOrdersBaseUrl}}/Orders",
-					"host": [
-						"{{cpOrdersBaseUrl}}"
-					],
-					"path": [
-						"Orders"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "PostOrders_409",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"const schema = {\r",
-							"  \"$schema\": \"http://json-schema.org/draft-04/schema#\",\r",
-							"  \"type\": \"object\",\r",
-							"  \"properties\": {\r",
-							"    \"code\": {\r",
-							"      \"type\": \"string\"\r",
-							"    },\r",
-							"    \"message\": {\r",
-							"      \"type\": \"string\"\r",
-							"    }\r",
-							"  },\r",
-							"  \"required\": [\r",
-							"    \"code\",\r",
-							"    \"message\"\r",
-							"  ]\r",
-							"};\r",
-							"\r",
-							"pm.test(\"Verify Status Code: Orders POST - 409\", function () {\r",
-							"    pm.response.to.have.status(409);\r",
-							"});\r",
-							"\r",
-							"var responseJson = pm.response.json();\r",
-							"\r",
-							"pm.test(\"Response Schema validation: Orders POST - 409\", function () {\r",
-							"    var result = tv4.validateResult(responseJson, schema);\r",
-							"    if(!(result.valid)){\r",
-							"        console.log(result);\r",
-							"    }\r",
-							"    pm.expect(result.valid).to.be.true;\r",
-							"});\r",
-							"\r",
-							"pm.test(\"Response time is less than 10 seconds\", () => {\r",
-							"  pm.expect(pm.response.responseTime).to.be.below(10000);\r",
-							"});"
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"method": "POST",
-				"header": [
-					{
-						"key": "Content-Type",
-						"value": "application/json",
+						"value": "{{x-institution-id}}1",
 						"type": "text"
 					},
 					{
-						"key": "x-institution-id",
-						"value": "{{x-institution-id}}",
+						"key": "Authorization",
+						"value": "Bearer {{ordersBearerToken}}",
 						"type": "text"
 					}
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"accountId\": \"829553c1cca04fa081529ad9194da788\",\r\n    \"userId\": \"6a8e01a8-37f0-40e7-bb4e-2b47f1b2745e\",\r\n    \"side\": \"buy\",\r\n    \"symbol\": \"btc\",\r\n    \"quantity\": 1000\r\n}"
+					"raw": "{\r\n    \"accountId\": \"378600619308\",\r\n    \"userId\": \"cu-01fj1xem8vja26pc7rk2te8qd7\",\r\n    \"side\": \"buy\",\r\n    \"symbol\": \"btc\",\r\n    \"quantity\": 0.1\r\n}"
 				},
 				"url": {
-					"raw": "{{cpOrdersBaseUrl}}/Orders",
+					"raw": "{{cpOrdersBaseUrl}}/orders",
 					"host": [
 						"{{cpOrdersBaseUrl}}"
 					],
 					"path": [
-						"Orders"
+						"orders"
 					]
 				}
 			},
@@ -614,25 +818,9 @@
 						"exec": [
 							"const schema = {\r",
 							"    \"$schema\": \"http://json-schema.org/draft-06/schema#\",\r",
-							"    \"$ref\": \"#/definitions/Welcome8\",\r",
+							"    \"$ref\": \"#/definitions/Welcome1\",\r",
 							"    \"definitions\": {\r",
-							"        \"Welcome8\": {\r",
-							"            \"type\": \"object\",\r",
-							"            \"additionalProperties\": false,\r",
-							"            \"properties\": {\r",
-							"                \"results\": {\r",
-							"                    \"type\": \"array\",\r",
-							"                    \"items\": {\r",
-							"                        \"$ref\": \"#/definitions/Result\"\r",
-							"                    }\r",
-							"                }\r",
-							"            },\r",
-							"            \"required\": [\r",
-							"                \"results\"\r",
-							"            ],\r",
-							"            \"title\": \"Welcome8\"\r",
-							"        },\r",
-							"        \"Result\": {\r",
+							"        \"Welcome1\": {\r",
 							"            \"type\": \"object\",\r",
 							"            \"additionalProperties\": false,\r",
 							"            \"properties\": {\r",
@@ -643,14 +831,9 @@
 							"                    \"type\": \"string\"\r",
 							"                },\r",
 							"                \"userId\": {\r",
-							"                    \"type\": \"string\",\r",
-							"                    \"format\": \"uuid\"\r",
+							"                    \"type\": \"string\"\r",
 							"                },\r",
 							"                \"created\": {\r",
-							"                    \"type\": \"string\",\r",
-							"                    \"format\": \"date-time\"\r",
-							"                },\r",
-							"                \"expiration\": {\r",
 							"                    \"type\": \"string\",\r",
 							"                    \"format\": \"date-time\"\r",
 							"                },\r",
@@ -663,26 +846,60 @@
 							"                \"side\": {\r",
 							"                    \"type\": \"string\"\r",
 							"                },\r",
+							"                \"price\": {\r",
+							"                    \"type\": \"number\"\r",
+							"                },\r",
 							"                \"quantity\": {\r",
 							"                    \"type\": \"number\"\r",
 							"                },\r",
-							"                \"price\": {\r",
-							"                    \"type\": \"number\"\r",
+							"                \"receipt\": {\r",
+							"                    \"$ref\": \"#/definitions/Receipt\"\r",
+							"                },\r",
+							"                \"requestedAt\": {\r",
+							"                    \"type\": \"string\",\r",
+							"                    \"format\": \"date-time\"\r",
+							"                },\r",
+							"                \"lastUpdated\": {\r",
+							"                    \"type\": \"string\",\r",
+							"                    \"format\": \"date-time\"\r",
 							"                }\r",
 							"            },\r",
 							"            \"required\": [\r",
 							"                \"accountId\",\r",
 							"                \"created\",\r",
-							"                \"expiration\",\r",
 							"                \"id\",\r",
+							"                \"lastUpdated\",\r",
 							"                \"price\",\r",
 							"                \"quantity\",\r",
+							"                \"receipt\",\r",
+							"                \"requestedAt\",\r",
 							"                \"side\",\r",
 							"                \"status\",\r",
 							"                \"symbol\",\r",
 							"                \"userId\"\r",
 							"            ],\r",
-							"            \"title\": \"Result\"\r",
+							"            \"title\": \"Welcome1\"\r",
+							"        },\r",
+							"        \"Receipt\": {\r",
+							"            \"type\": \"object\",\r",
+							"            \"additionalProperties\": false,\r",
+							"            \"properties\": {\r",
+							"                \"subtotal\": {\r",
+							"                    \"type\": \"number\"\r",
+							"                },\r",
+							"                \"fee\": {\r",
+							"                    \"type\": \"number\"\r",
+							"                },\r",
+							"                \"total\": {\r",
+							"                    \"type\": \"number\"\r",
+							"                }\r",
+							"            },\r",
+							"            \"required\": [\r",
+							"                \"fee\",\r",
+							"                \"subtotal\",\r",
+							"                \"total\"\r",
+							"            ],\r",
+							"            \"title\": \"Receipt\"\r",
 							"        }\r",
 							"    }\r",
 							"};\r",
@@ -691,19 +908,30 @@
 							"    pm.response.to.have.status(200);\r",
 							"});\r",
 							"\r",
-							"var responseJson = pm.response.json();\r",
+							"const responseJson = pm.response.json();\r",
 							"\r",
 							"pm.test(\"Response Schema validation: Orders GET - 200\", function () {\r",
-							"    var result = tv4.validateResult(responseJson, schema);\r",
-							"    if(!(result.valid)){\r",
-							"        console.log(result);\r",
-							"    }\r",
+							"    responseJson.results.forEach(function(item) {\r",
+							"        var result = tv4.validateResult(item, schema);\r",
+							"            if(!(result.valid)){\r",
+							"                console.log(result);\r",
+							"            }\r",
 							"    pm.expect(result.valid).to.be.true;\r",
+							"    });\r",
 							"});\r",
 							"\r",
 							"pm.test(\"Response time is less than 10 seconds\", () => {\r",
 							"  pm.expect(pm.response.responseTime).to.be.below(10000);\r",
 							"});"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
 						],
 						"type": "text/javascript"
 					}
@@ -721,15 +949,20 @@
 						"key": "x-institution-id",
 						"value": "{{x-institution-id}}",
 						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{ordersBearerToken}}",
+						"type": "text"
 					}
 				],
 				"url": {
-					"raw": "{{cpOrdersBaseUrl}}/Orders?accountId={{ordersAccountId}}&status={{ordersStatus}}",
+					"raw": "{{cpOrdersBaseUrl}}/orders?accountId={{ordersAccountId}}&fromDate={{fromDate}}&toDate={{toDate}}&status=open",
 					"host": [
 						"{{cpOrdersBaseUrl}}"
 					],
 					"path": [
-						"Orders"
+						"orders"
 					],
 					"query": [
 						{
@@ -737,8 +970,16 @@
 							"value": "{{ordersAccountId}}"
 						},
 						{
+							"key": "fromDate",
+							"value": "{{fromDate}}"
+						},
+						{
+							"key": "toDate",
+							"value": "{{toDate}}"
+						},
+						{
 							"key": "status",
-							"value": "{{ordersStatus}}"
+							"value": "open"
 						}
 					]
 				}
@@ -773,7 +1014,7 @@
 							"    pm.response.to.have.status(400);\r",
 							"});\r",
 							"\r",
-							"var responseJson = pm.response.json();\r",
+							"const responseJson = pm.response.json();\r",
 							"\r",
 							"pm.test(\"Response Schema validation: Orders GET - 400\", function () {\r",
 							"    var result = tv4.validateResult(responseJson, schema);\r",
@@ -802,17 +1043,21 @@
 					{
 						"key": "x-institution-id",
 						"value": "{{x-institution-id}}",
-						"type": "text",
-						"disabled": true
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{ordersBearerToken}}",
+						"type": "text"
 					}
 				],
 				"url": {
-					"raw": "{{cpOrdersBaseUrl}}/Orders?accountId={{ordersAccountId}}&status={{ordersStatus}}",
+					"raw": "{{cpOrdersBaseUrl}}/orders?accountId={{ordersAccountId}}&fromDate={{fromDate}}&toDate={{toDate}}&status=open1",
 					"host": [
 						"{{cpOrdersBaseUrl}}"
 					],
 					"path": [
-						"Orders"
+						"orders"
 					],
 					"query": [
 						{
@@ -820,8 +1065,16 @@
 							"value": "{{ordersAccountId}}"
 						},
 						{
+							"key": "fromDate",
+							"value": "{{fromDate}}"
+						},
+						{
+							"key": "toDate",
+							"value": "{{toDate}}"
+						},
+						{
 							"key": "status",
-							"value": "{{ordersStatus}}"
+							"value": "open1"
 						}
 					]
 				}
@@ -856,7 +1109,7 @@
 							"    pm.response.to.have.status(401);\r",
 							"});\r",
 							"\r",
-							"var responseJson = pm.response.json();\r",
+							"const responseJson = pm.response.json();\r",
 							"\r",
 							"pm.test(\"Response Schema validation: Orders GET - 401\", function () {\r",
 							"    var result = tv4.validateResult(responseJson, schema);\r",
@@ -883,18 +1136,18 @@
 						"type": "text"
 					},
 					{
-						"key": "x-institution-id",
-						"value": "{{x-institution-id}}",
+						"key": "Authorization",
+						"value": "Bearer {{ordersBearerToken}}",
 						"type": "text"
 					}
 				],
 				"url": {
-					"raw": "{{cpOrdersBaseUrl}}/Orders?accountId={{ordersAccountId}}&status={{ordersStatus}}",
+					"raw": "{{cpOrdersBaseUrl}}/orders?accountId={{ordersAccountId}}&fromDate={{fromDate}}&toDate={{toDate}}&status=open",
 					"host": [
 						"{{cpOrdersBaseUrl}}"
 					],
 					"path": [
-						"Orders"
+						"orders"
 					],
 					"query": [
 						{
@@ -902,8 +1155,16 @@
 							"value": "{{ordersAccountId}}"
 						},
 						{
+							"key": "fromDate",
+							"value": "{{fromDate}}"
+						},
+						{
+							"key": "toDate",
+							"value": "{{toDate}}"
+						},
+						{
 							"key": "status",
-							"value": "{{ordersStatus}}"
+							"value": "open"
 						}
 					]
 				}
@@ -918,27 +1179,43 @@
 					"script": {
 						"exec": [
 							"const schema = {\r",
-							"  \"$schema\": \"http://json-schema.org/draft-04/schema#\",\r",
-							"  \"type\": \"object\",\r",
-							"  \"properties\": {\r",
-							"    \"code\": {\r",
-							"      \"type\": \"string\"\r",
-							"    },\r",
-							"    \"message\": {\r",
-							"      \"type\": \"string\"\r",
+							"    \"$schema\": \"http://json-schema.org/draft-06/schema#\",\r",
+							"    \"$ref\": \"#/definitions/Welcome2\",\r",
+							"    \"definitions\": {\r",
+							"        \"Welcome2\": {\r",
+							"            \"type\": \"object\",\r",
+							"            \"additionalProperties\": false,\r",
+							"            \"properties\": {\r",
+							"                \"timestamp\": {\r",
+							"                    \"type\": \"string\",\r",
+							"                    \"format\": \"date-time\"\r",
+							"                },\r",
+							"                \"status\": {\r",
+							"                    \"type\": \"integer\"\r",
+							"                },\r",
+							"                \"error\": {\r",
+							"                    \"type\": \"string\"\r",
+							"                },\r",
+							"                \"path\": {\r",
+							"                    \"type\": \"string\"\r",
+							"                }\r",
+							"            },\r",
+							"            \"required\": [\r",
+							"                \"error\",\r",
+							"                \"path\",\r",
+							"                \"status\",\r",
+							"                \"timestamp\"\r",
+							"            ],\r",
+							"            \"title\": \"Welcome2\"\r",
+							"        }\r",
 							"    }\r",
-							"  },\r",
-							"  \"required\": [\r",
-							"    \"code\",\r",
-							"    \"message\"\r",
-							"  ]\r",
 							"};\r",
 							"\r",
 							"pm.test(\"Verify Status Code: Orders GET - 403\", function () {\r",
 							"    pm.response.to.have.status(403);\r",
 							"});\r",
 							"\r",
-							"var responseJson = pm.response.json();\r",
+							"const responseJson = pm.response.json();\r",
 							"\r",
 							"pm.test(\"Response Schema validation: Orders GET - 403\", function () {\r",
 							"    var result = tv4.validateResult(responseJson, schema);\r",
@@ -968,15 +1245,20 @@
 						"key": "x-institution-id",
 						"value": "{{x-institution-id}}",
 						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{invalidBearerToken}}",
+						"type": "text"
 					}
 				],
 				"url": {
-					"raw": "{{cpOrdersBaseUrl}}/Orders?accountId={{ordersAccountId}}&status={{ordersStatus}}",
+					"raw": "{{cpOrdersBaseUrl}}/orders?accountId={{ordersAccountId}}&fromDate={{fromDate}}&toDate={{toDate}}&status=open",
 					"host": [
 						"{{cpOrdersBaseUrl}}"
 					],
 					"path": [
-						"Orders"
+						"orders"
 					],
 					"query": [
 						{
@@ -984,8 +1266,16 @@
 							"value": "{{ordersAccountId}}"
 						},
 						{
+							"key": "fromDate",
+							"value": "{{fromDate}}"
+						},
+						{
+							"key": "toDate",
+							"value": "{{toDate}}"
+						},
+						{
 							"key": "status",
-							"value": "{{ordersStatus}}"
+							"value": "open"
 						}
 					]
 				}
@@ -1020,7 +1310,7 @@
 							"    pm.response.to.have.status(404);\r",
 							"});\r",
 							"\r",
-							"var responseJson = pm.response.json();\r",
+							"const responseJson = pm.response.json();\r",
 							"\r",
 							"pm.test(\"Response Schema validation: Orders GET - 404\", function () {\r",
 							"    var result = tv4.validateResult(responseJson, schema);\r",
@@ -1050,24 +1340,37 @@
 						"key": "x-institution-id",
 						"value": "{{x-institution-id}}",
 						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{ordersBearerToken}}",
+						"type": "text"
 					}
 				],
 				"url": {
-					"raw": "{{cpOrdersBaseUrl}}/Orders?accountId={{ordersAccountId}}&status={{ordersStatus}}",
+					"raw": "{{cpOrdersBaseUrl}}/orders?accountId={{invalidAccountId}}&fromDate={{fromDate}}&toDate={{toDate}}&status=open",
 					"host": [
 						"{{cpOrdersBaseUrl}}"
 					],
 					"path": [
-						"Orders"
+						"orders"
 					],
 					"query": [
 						{
 							"key": "accountId",
-							"value": "{{ordersAccountId}}"
+							"value": "{{invalidAccountId}}"
+						},
+						{
+							"key": "fromDate",
+							"value": "{{fromDate}}"
+						},
+						{
+							"key": "toDate",
+							"value": "{{toDate}}"
 						},
 						{
 							"key": "status",
-							"value": "{{ordersStatus}}"
+							"value": "open"
 						}
 					]
 				}
@@ -1083,9 +1386,9 @@
 						"exec": [
 							"const schema = {\r",
 							"    \"$schema\": \"http://json-schema.org/draft-06/schema#\",\r",
-							"    \"$ref\": \"#/definitions/Welcome6\",\r",
+							"    \"$ref\": \"#/definitions/Welcome10\",\r",
 							"    \"definitions\": {\r",
-							"        \"Welcome6\": {\r",
+							"        \"Welcome10\": {\r",
 							"            \"type\": \"object\",\r",
 							"            \"additionalProperties\": false,\r",
 							"            \"properties\": {\r",
@@ -1096,14 +1399,9 @@
 							"                    \"type\": \"string\"\r",
 							"                },\r",
 							"                \"userId\": {\r",
-							"                    \"type\": \"string\",\r",
-							"                    \"format\": \"uuid\"\r",
+							"                    \"type\": \"string\"\r",
 							"                },\r",
 							"                \"created\": {\r",
-							"                    \"type\": \"string\",\r",
-							"                    \"format\": \"date-time\"\r",
-							"                },\r",
-							"                \"expiration\": {\r",
 							"                    \"type\": \"string\",\r",
 							"                    \"format\": \"date-time\"\r",
 							"                },\r",
@@ -1119,48 +1417,28 @@
 							"                \"quantity\": {\r",
 							"                    \"type\": \"number\"\r",
 							"                },\r",
-							"                \"price\": {\r",
-							"                    \"type\": \"number\"\r",
+							"                \"requestedAt\": {\r",
+							"                    \"type\": \"string\",\r",
+							"                    \"format\": \"date-time\"\r",
 							"                },\r",
-							"                \"receipt\": {\r",
-							"                    \"$ref\": \"#/definitions/Receipt\"\r",
+							"                \"lastUpdated\": {\r",
+							"                    \"type\": \"string\",\r",
+							"                    \"format\": \"date-time\"\r",
 							"                }\r",
 							"            },\r",
 							"            \"required\": [\r",
 							"                \"accountId\",\r",
 							"                \"created\",\r",
-							"                \"expiration\",\r",
 							"                \"id\",\r",
-							"                \"price\",\r",
+							"                \"lastUpdated\",\r",
 							"                \"quantity\",\r",
-							"                \"receipt\",\r",
+							"                \"requestedAt\",\r",
 							"                \"side\",\r",
 							"                \"status\",\r",
 							"                \"symbol\",\r",
 							"                \"userId\"\r",
 							"            ],\r",
-							"            \"title\": \"Welcome6\"\r",
-							"        },\r",
-							"        \"Receipt\": {\r",
-							"            \"type\": \"object\",\r",
-							"            \"additionalProperties\": false,\r",
-							"            \"properties\": {\r",
-							"                \"subtotal\": {\r",
-							"                    \"type\": \"number\"\r",
-							"                },\r",
-							"                \"fee\": {\r",
-							"                    \"type\": \"number\"\r",
-							"                },\r",
-							"                \"total\": {\r",
-							"                    \"type\": \"number\"\r",
-							"                }\r",
-							"            },\r",
-							"            \"required\": [\r",
-							"                \"fee\",\r",
-							"                \"subtotal\",\r",
-							"                \"total\"\r",
-							"            ],\r",
-							"            \"title\": \"Receipt\"\r",
+							"            \"title\": \"Welcome10\"\r",
 							"        }\r",
 							"    }\r",
 							"};\r",
@@ -1169,7 +1447,7 @@
 							"    pm.response.to.have.status(200);\r",
 							"});\r",
 							"\r",
-							"var responseJson = pm.response.json();\r",
+							"const responseJson = pm.response.json();\r",
 							"\r",
 							"pm.test(\"Response Schema validation: Order GET - 200\", function () {\r",
 							"    var result = tv4.validateResult(responseJson, schema);\r",
@@ -1199,15 +1477,20 @@
 						"key": "x-institution-id",
 						"value": "{{x-institution-id}}",
 						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{ordersBearerToken}}",
+						"type": "text"
 					}
 				],
 				"url": {
-					"raw": "{{cpOrdersBaseUrl}}/Orders/{{orderId}}",
+					"raw": "{{cpOrdersBaseUrl}}/orders/{{orderId}}",
 					"host": [
 						"{{cpOrdersBaseUrl}}"
 					],
 					"path": [
-						"Orders",
+						"orders",
 						"{{orderId}}"
 					]
 				}
@@ -1242,7 +1525,7 @@
 							"    pm.response.to.have.status(400);\r",
 							"});\r",
 							"\r",
-							"var responseJson = pm.response.json();\r",
+							"const responseJson = pm.response.json();\r",
 							"\r",
 							"pm.test(\"Response Schema validation: Order GET - 400\", function () {\r",
 							"    var result = tv4.validateResult(responseJson, schema);\r",
@@ -1271,18 +1554,22 @@
 					{
 						"key": "x-institution-id",
 						"value": "{{x-institution-id}}",
-						"type": "text",
-						"disabled": true
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{ordersBearerToken}}",
+						"type": "text"
 					}
 				],
 				"url": {
-					"raw": "{{cpOrdersBaseUrl}}/Orders/{{orderId}}",
+					"raw": "{{cpOrdersBaseUrl}}/orders/{{orderId}}1",
 					"host": [
 						"{{cpOrdersBaseUrl}}"
 					],
 					"path": [
-						"Orders",
-						"{{orderId}}"
+						"orders",
+						"{{orderId}}1"
 					]
 				}
 			},
@@ -1316,7 +1603,7 @@
 							"    pm.response.to.have.status(401);\r",
 							"});\r",
 							"\r",
-							"var responseJson = pm.response.json();\r",
+							"const responseJson = pm.response.json();\r",
 							"\r",
 							"pm.test(\"Response Schema validation: Order GET - 401\", function () {\r",
 							"    var result = tv4.validateResult(responseJson, schema);\r",
@@ -1343,18 +1630,18 @@
 						"type": "text"
 					},
 					{
-						"key": "x-institution-id",
-						"value": "{{x-institution-id}}",
+						"key": "Authorization",
+						"value": "Bearer {{ordersBearerToken}}",
 						"type": "text"
 					}
 				],
 				"url": {
-					"raw": "{{cpOrdersBaseUrl}}/Orders/{{orderId}}",
+					"raw": "{{cpOrdersBaseUrl}}/orders/{{orderId}}",
 					"host": [
 						"{{cpOrdersBaseUrl}}"
 					],
 					"path": [
-						"Orders",
+						"orders",
 						"{{orderId}}"
 					]
 				}
@@ -1369,27 +1656,43 @@
 					"script": {
 						"exec": [
 							"const schema = {\r",
-							"  \"$schema\": \"http://json-schema.org/draft-04/schema#\",\r",
-							"  \"type\": \"object\",\r",
-							"  \"properties\": {\r",
-							"    \"code\": {\r",
-							"      \"type\": \"string\"\r",
-							"    },\r",
-							"    \"message\": {\r",
-							"      \"type\": \"string\"\r",
+							"    \"$schema\": \"http://json-schema.org/draft-06/schema#\",\r",
+							"    \"$ref\": \"#/definitions/Welcome2\",\r",
+							"    \"definitions\": {\r",
+							"        \"Welcome2\": {\r",
+							"            \"type\": \"object\",\r",
+							"            \"additionalProperties\": false,\r",
+							"            \"properties\": {\r",
+							"                \"timestamp\": {\r",
+							"                    \"type\": \"string\",\r",
+							"                    \"format\": \"date-time\"\r",
+							"                },\r",
+							"                \"status\": {\r",
+							"                    \"type\": \"integer\"\r",
+							"                },\r",
+							"                \"error\": {\r",
+							"                    \"type\": \"string\"\r",
+							"                },\r",
+							"                \"path\": {\r",
+							"                    \"type\": \"string\"\r",
+							"                }\r",
+							"            },\r",
+							"            \"required\": [\r",
+							"                \"error\",\r",
+							"                \"path\",\r",
+							"                \"status\",\r",
+							"                \"timestamp\"\r",
+							"            ],\r",
+							"            \"title\": \"Welcome2\"\r",
+							"        }\r",
 							"    }\r",
-							"  },\r",
-							"  \"required\": [\r",
-							"    \"code\",\r",
-							"    \"message\"\r",
-							"  ]\r",
 							"};\r",
 							"\r",
 							"pm.test(\"Verify Status Code: Order GET - 403\", function () {\r",
 							"    pm.response.to.have.status(403);\r",
 							"});\r",
 							"\r",
-							"var responseJson = pm.response.json();\r",
+							"const responseJson = pm.response.json();\r",
 							"\r",
 							"pm.test(\"Response Schema validation: Order GET - 403\", function () {\r",
 							"    var result = tv4.validateResult(responseJson, schema);\r",
@@ -1419,15 +1722,20 @@
 						"key": "x-institution-id",
 						"value": "{{x-institution-id}}",
 						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{invalidBearerToken}}",
+						"type": "text"
 					}
 				],
 				"url": {
-					"raw": "{{cpOrdersBaseUrl}}/Orders/{{orderId}}",
+					"raw": "{{cpOrdersBaseUrl}}/orders/{{orderId}}",
 					"host": [
 						"{{cpOrdersBaseUrl}}"
 					],
 					"path": [
-						"Orders",
+						"orders",
 						"{{orderId}}"
 					]
 				}
@@ -1462,7 +1770,7 @@
 							"    pm.response.to.have.status(404);\r",
 							"});\r",
 							"\r",
-							"var responseJson = pm.response.json();\r",
+							"const responseJson = pm.response.json();\r",
 							"\r",
 							"pm.test(\"Response Schema validation: Order GET - 404\", function () {\r",
 							"    var result = tv4.validateResult(responseJson, schema);\r",
@@ -1492,23 +1800,28 @@
 						"key": "x-institution-id",
 						"value": "{{x-institution-id}}",
 						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{ordersBearerToken}}",
+						"type": "text"
 					}
 				],
 				"url": {
-					"raw": "{{cpOrdersBaseUrl}}/Orders/{{orderId}}",
+					"raw": "{{cpOrdersBaseUrl}}/orders/{{invalidOrderId}}",
 					"host": [
 						"{{cpOrdersBaseUrl}}"
 					],
 					"path": [
-						"Orders",
-						"{{orderId}}"
+						"orders",
+						"{{invalidOrderId}}"
 					]
 				}
 			},
 			"response": []
 		},
 		{
-			"name": "PostOrdersExecute",
+			"name": "PostOrdersBuyExecute",
 			"event": [
 				{
 					"listen": "test",
@@ -1516,9 +1829,9 @@
 						"exec": [
 							"const schema = {\r",
 							"    \"$schema\": \"http://json-schema.org/draft-06/schema#\",\r",
-							"    \"$ref\": \"#/definitions/Welcome3\",\r",
+							"    \"$ref\": \"#/definitions/Welcome4\",\r",
 							"    \"definitions\": {\r",
-							"        \"Welcome3\": {\r",
+							"        \"Welcome4\": {\r",
 							"            \"type\": \"object\",\r",
 							"            \"additionalProperties\": false,\r",
 							"            \"properties\": {\r",
@@ -1529,14 +1842,9 @@
 							"                    \"type\": \"string\"\r",
 							"                },\r",
 							"                \"userId\": {\r",
-							"                    \"type\": \"string\",\r",
-							"                    \"format\": \"uuid\"\r",
+							"                    \"type\": \"string\"\r",
 							"                },\r",
 							"                \"created\": {\r",
-							"                    \"type\": \"string\",\r",
-							"                    \"format\": \"date-time\"\r",
-							"                },\r",
-							"                \"expiration\": {\r",
 							"                    \"type\": \"string\",\r",
 							"                    \"format\": \"date-time\"\r",
 							"                },\r",
@@ -1549,30 +1857,39 @@
 							"                \"side\": {\r",
 							"                    \"type\": \"string\"\r",
 							"                },\r",
-							"                \"quantity\": {\r",
+							"                \"price\": {\r",
 							"                    \"type\": \"number\"\r",
 							"                },\r",
-							"                \"price\": {\r",
+							"                \"quantity\": {\r",
 							"                    \"type\": \"number\"\r",
 							"                },\r",
 							"                \"receipt\": {\r",
 							"                    \"$ref\": \"#/definitions/Receipt\"\r",
+							"                },\r",
+							"                \"requestedAt\": {\r",
+							"                    \"type\": \"string\",\r",
+							"                    \"format\": \"date-time\"\r",
+							"                },\r",
+							"                \"lastUpdated\": {\r",
+							"                    \"type\": \"string\",\r",
+							"                    \"format\": \"date-time\"\r",
 							"                }\r",
 							"            },\r",
 							"            \"required\": [\r",
 							"                \"accountId\",\r",
 							"                \"created\",\r",
-							"                \"expiration\",\r",
 							"                \"id\",\r",
+							"                \"lastUpdated\",\r",
 							"                \"price\",\r",
 							"                \"quantity\",\r",
 							"                \"receipt\",\r",
+							"                \"requestedAt\",\r",
 							"                \"side\",\r",
 							"                \"status\",\r",
 							"                \"symbol\",\r",
 							"                \"userId\"\r",
 							"            ],\r",
-							"            \"title\": \"Welcome3\"\r",
+							"            \"title\": \"Welcome4\"\r",
 							"        },\r",
 							"        \"Receipt\": {\r",
 							"            \"type\": \"object\",\r",
@@ -1598,13 +1915,13 @@
 							"    }\r",
 							"};\r",
 							"\r",
-							"pm.test(\"Verify Status Code: Orders Execute POST - 201\", function () {\r",
-							"    pm.response.to.have.status(201);\r",
+							"pm.test(\"Verify Status Code: Orders Execute POST - 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
 							"});\r",
 							"\r",
-							"var responseJson = pm.response.json();\r",
+							"const responseJson = pm.response.json();\r",
 							"\r",
-							"pm.test(\"Response Schema validation: Orders Execute POST - 201\", function () {\r",
+							"pm.test(\"Response Schema validation: Orders Execute POST - 409\", function () {\r",
 							"    var result = tv4.validateResult(responseJson, schema);\r",
 							"    if(!(result.valid)){\r",
 							"        console.log(result);\r",
@@ -1632,20 +1949,179 @@
 						"key": "x-institution-id",
 						"value": "{{x-institution-id}}",
 						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{ordersBearerToken}}",
+						"type": "text"
 					}
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"accountId\": \"6a8e01a8-37f0-40e7-bb4e-2b47f1b2745e\",\r\n    \"userId\": \"673c71f3-0a7a-4f9d-9f0a-c076994f8120\",\r\n    \"userInfo\": {\r\n        \"line1\": \"123 Main St\",\r\n        \"city\": \"New York\",\r\n        \"stateProvinceRegion\": \"NY\",\r\n        \"zipCode\": \"10092\",\r\n        \"country\": \"US\",\r\n        \"email\": \"jon-odin+35@example.com\",\r\n        \"phone\": \"+15559876543\"\r\n    }\r\n}"
+					"raw": "{\r\n    \"id\": \"oq-01fk65z0twc81gwdwk0c051wyx\",\r\n    \"accountId\": \"300000619308\",\r\n    \"userId\": \"cu-01fj1xem8vja26pc7rk2te8qd7\",\r\n    \"created\": \"2021-10-29T14:06:24Z\",\r\n    \"expiration\": \"2021-10-29T14:06:54Z\",\r\n    \"status\": \"quote\",\r\n    \"symbol\": \"btc\",\r\n    \"side\": \"buy\",\r\n    \"price\": 61484.51,\r\n    \"quantity\": 0.10000000,\r\n    \"receipt\": {\r\n        \"subtotal\": 6148.45,\r\n        \"fee\": 122.97,\r\n        \"total\": 6271.42\r\n    },\r\n    \"requestedAt\": \"2021-10-29T14:06:24Z\"\r\n}"
 				},
 				"url": {
-					"raw": "{{cpOrdersBaseUrl}}/Orders/{{orderIdExecute}}/execute",
+					"raw": "{{cpOrdersBaseUrl}}/orders/{{orderIdBuyToExecute}}/execute",
 					"host": [
 						"{{cpOrdersBaseUrl}}"
 					],
 					"path": [
-						"Orders",
-						"{{orderIdExecute}}",
+						"orders",
+						"{{orderIdBuyToExecute}}",
+						"execute"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PostOrdersSellExecute",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const schema = {\r",
+							"    \"$schema\": \"http://json-schema.org/draft-06/schema#\",\r",
+							"    \"$ref\": \"#/definitions/Welcome4\",\r",
+							"    \"definitions\": {\r",
+							"        \"Welcome4\": {\r",
+							"            \"type\": \"object\",\r",
+							"            \"additionalProperties\": false,\r",
+							"            \"properties\": {\r",
+							"                \"id\": {\r",
+							"                    \"type\": \"string\"\r",
+							"                },\r",
+							"                \"accountId\": {\r",
+							"                    \"type\": \"string\"\r",
+							"                },\r",
+							"                \"userId\": {\r",
+							"                    \"type\": \"string\"\r",
+							"                },\r",
+							"                \"created\": {\r",
+							"                    \"type\": \"string\",\r",
+							"                    \"format\": \"date-time\"\r",
+							"                },\r",
+							"                \"status\": {\r",
+							"                    \"type\": \"string\"\r",
+							"                },\r",
+							"                \"symbol\": {\r",
+							"                    \"type\": \"string\"\r",
+							"                },\r",
+							"                \"side\": {\r",
+							"                    \"type\": \"string\"\r",
+							"                },\r",
+							"                \"price\": {\r",
+							"                    \"type\": \"number\"\r",
+							"                },\r",
+							"                \"quantity\": {\r",
+							"                    \"type\": \"number\"\r",
+							"                },\r",
+							"                \"receipt\": {\r",
+							"                    \"$ref\": \"#/definitions/Receipt\"\r",
+							"                },\r",
+							"                \"requestedAt\": {\r",
+							"                    \"type\": \"string\",\r",
+							"                    \"format\": \"date-time\"\r",
+							"                },\r",
+							"                \"lastUpdated\": {\r",
+							"                    \"type\": \"string\",\r",
+							"                    \"format\": \"date-time\"\r",
+							"                }\r",
+							"            },\r",
+							"            \"required\": [\r",
+							"                \"accountId\",\r",
+							"                \"created\",\r",
+							"                \"id\",\r",
+							"                \"lastUpdated\",\r",
+							"                \"price\",\r",
+							"                \"quantity\",\r",
+							"                \"receipt\",\r",
+							"                \"requestedAt\",\r",
+							"                \"side\",\r",
+							"                \"status\",\r",
+							"                \"symbol\",\r",
+							"                \"userId\"\r",
+							"            ],\r",
+							"            \"title\": \"Welcome4\"\r",
+							"        },\r",
+							"        \"Receipt\": {\r",
+							"            \"type\": \"object\",\r",
+							"            \"additionalProperties\": false,\r",
+							"            \"properties\": {\r",
+							"                \"subtotal\": {\r",
+							"                    \"type\": \"number\"\r",
+							"                },\r",
+							"                \"fee\": {\r",
+							"                    \"type\": \"number\"\r",
+							"                },\r",
+							"                \"total\": {\r",
+							"                    \"type\": \"number\"\r",
+							"                }\r",
+							"            },\r",
+							"            \"required\": [\r",
+							"                \"fee\",\r",
+							"                \"subtotal\",\r",
+							"                \"total\"\r",
+							"            ],\r",
+							"            \"title\": \"Receipt\"\r",
+							"        }\r",
+							"    }\r",
+							"};\r",
+							"\r",
+							"pm.test(\"Verify Status Code: Orders Execute POST - 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"const responseJson = pm.response.json();\r",
+							"\r",
+							"pm.test(\"Response Schema validation: Orders Execute POST - 409\", function () {\r",
+							"    var result = tv4.validateResult(responseJson, schema);\r",
+							"    if(!(result.valid)){\r",
+							"        console.log(result);\r",
+							"    }\r",
+							"    pm.expect(result.valid).to.be.true;\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response time is less than 10 seconds\", () => {\r",
+							"  pm.expect(pm.response.responseTime).to.be.below(10000);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "x-institution-id",
+						"value": "{{x-institution-id}}",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{ordersBearerToken}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"id\": \"oq-01fk65z0twc81gwdwk0c051wyx\",\r\n    \"accountId\": \"300000619308\",\r\n    \"userId\": \"cu-01fj1xem8vja26pc7rk2te8qd7\",\r\n    \"created\": \"2021-10-29T14:06:24Z\",\r\n    \"expiration\": \"2021-10-29T14:06:54Z\",\r\n    \"status\": \"quote\",\r\n    \"symbol\": \"btc\",\r\n    \"side\": \"buy\",\r\n    \"price\": 61484.51,\r\n    \"quantity\": 0.10000000,\r\n    \"receipt\": {\r\n        \"subtotal\": 6148.45,\r\n        \"fee\": 122.97,\r\n        \"total\": 6271.42\r\n    },\r\n    \"requestedAt\": \"2021-10-29T14:06:24Z\"\r\n}"
+				},
+				"url": {
+					"raw": "{{cpOrdersBaseUrl}}/orders/{{orderIdSellToExecute}}/execute",
+					"host": [
+						"{{cpOrdersBaseUrl}}"
+					],
+					"path": [
+						"orders",
+						"{{orderIdSellToExecute}}",
 						"execute"
 					]
 				}
@@ -1680,7 +2156,7 @@
 							"    pm.response.to.have.status(400);\r",
 							"});\r",
 							"\r",
-							"var responseJson = pm.response.json();\r",
+							"const responseJson = pm.response.json();\r",
 							"\r",
 							"pm.test(\"Response Schema validation: Orders Execute POST - 400\", function () {\r",
 							"    var result = tv4.validateResult(responseJson, schema);\r",
@@ -1707,24 +2183,28 @@
 						"type": "text"
 					},
 					{
+						"key": "Authorization",
+						"value": "Bearer {{ordersBearerToken}}",
+						"type": "text"
+					},
+					{
 						"key": "x-institution-id",
 						"value": "{{x-institution-id}}",
-						"type": "text",
-						"disabled": true
+						"type": "text"
 					}
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"accountId\": \"6a8e01a8-37f0-40e7-bb4e-2b47f1b2745e\",\r\n    \"userId\": \"673c71f3-0a7a-4f9d-9f0a-c076994f8120\",\r\n    \"userInfo\": {\r\n        \"line1\": \"123 Main St\",\r\n        \"city\": \"New York\",\r\n        \"stateProvinceRegion\": \"NY\",\r\n        \"zipCode\": \"10092\",\r\n        \"country\": \"US\",\r\n        \"email\": \"jon-odin+35@example.com\",\r\n        \"phone\": \"+15559876543\"\r\n    }\r\n}"
+					"raw": "{\r\n    \"id\": \"oq-01fk65z0twc81gwdwk0c051wyx\",\r\n    \"accountId\": \"300000619308\",\r\n    \"userId\": \"786cu-01fj1xem8vja26pc7rk2te8qd7\",\r\n    \"created\": \"2021-10-29T14:06:24Z\",\r\n    \"expiration\": \"2021-10-29T14:06:54Z\",\r\n    \"status\": \"quote\",\r\n    \"symbol\": \"btc\",\r\n    \"side\": \"buy\",\r\n    \"price\": 61484.51,\r\n    \"quantity\": 100.10000000,\r\n    \"receipt\": {\r\n        \"subtotal\": 6148.45,\r\n        \"fee\": 122.97,\r\n        \"total\": 6271.42\r\n    },\r\n    \"requestedAt\": \"2021-10-29T14:06:24Z\"\r\n}"
 				},
 				"url": {
-					"raw": "{{cpOrdersBaseUrl}}/Orders/{{orderIdExecute}}/execute",
+					"raw": "{{cpOrdersBaseUrl}}/orders/{{orderIdBuyToExecute}}/execute",
 					"host": [
 						"{{cpOrdersBaseUrl}}"
 					],
 					"path": [
-						"Orders",
-						"{{orderIdExecute}}",
+						"orders",
+						"{{orderIdBuyToExecute}}",
 						"execute"
 					]
 				}
@@ -1759,7 +2239,7 @@
 							"    pm.response.to.have.status(401);\r",
 							"});\r",
 							"\r",
-							"var responseJson = pm.response.json();\r",
+							"const responseJson = pm.response.json();\r",
 							"\r",
 							"pm.test(\"Response Schema validation: Orders Execute POST - 401\", function () {\r",
 							"    var result = tv4.validateResult(responseJson, schema);\r",
@@ -1786,23 +2266,23 @@
 						"type": "text"
 					},
 					{
-						"key": "x-institution-id",
-						"value": "{{x-institution-id}}",
+						"key": "Authorization",
+						"value": "Bearer {{ordersBearerToken}}",
 						"type": "text"
 					}
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"accountId\": \"6a8e01a8-37f0-40e7-bb4e-2b47f1b2745e\",\r\n    \"userId\": \"673c71f3-0a7a-4f9d-9f0a-c076994f8120\",\r\n    \"userInfo\": {\r\n        \"line1\": \"123 Main St\",\r\n        \"city\": \"New York\",\r\n        \"stateProvinceRegion\": \"NY\",\r\n        \"zipCode\": \"10092\",\r\n        \"country\": \"US\",\r\n        \"email\": \"jon-odin+35@example.com\",\r\n        \"phone\": \"+15559876543\"\r\n    }\r\n}"
+					"raw": "{\r\n    \"id\": \"oq-01fk65z0twc81gwdwk0c051wyx\",\r\n    \"accountId\": \"300000619308\",\r\n    \"userId\": \"cu-01fj1xem8vja26pc7rk2te8qd7\",\r\n    \"created\": \"2021-10-29T14:06:24Z\",\r\n    \"expiration\": \"2021-10-29T14:06:54Z\",\r\n    \"status\": \"quote\",\r\n    \"symbol\": \"btc\",\r\n    \"side\": \"buy\",\r\n    \"price\": 61484.51,\r\n    \"quantity\": 0.10000000,\r\n    \"receipt\": {\r\n        \"subtotal\": 6148.45,\r\n        \"fee\": 122.97,\r\n        \"total\": 6271.42\r\n    },\r\n    \"requestedAt\": \"2021-10-29T14:06:24Z\"\r\n}"
 				},
 				"url": {
-					"raw": "{{cpOrdersBaseUrl}}/Orders/{{orderIdExecute}}/execute",
+					"raw": "{{cpOrdersBaseUrl}}/orders/{{orderIdBuyToExecute}}/execute",
 					"host": [
 						"{{cpOrdersBaseUrl}}"
 					],
 					"path": [
-						"Orders",
-						"{{orderIdExecute}}",
+						"orders",
+						"{{orderIdBuyToExecute}}",
 						"execute"
 					]
 				}
@@ -1817,27 +2297,43 @@
 					"script": {
 						"exec": [
 							"const schema = {\r",
-							"  \"$schema\": \"http://json-schema.org/draft-04/schema#\",\r",
-							"  \"type\": \"object\",\r",
-							"  \"properties\": {\r",
-							"    \"code\": {\r",
-							"      \"type\": \"string\"\r",
-							"    },\r",
-							"    \"message\": {\r",
-							"      \"type\": \"string\"\r",
+							"    \"$schema\": \"http://json-schema.org/draft-06/schema#\",\r",
+							"    \"$ref\": \"#/definitions/Welcome2\",\r",
+							"    \"definitions\": {\r",
+							"        \"Welcome2\": {\r",
+							"            \"type\": \"object\",\r",
+							"            \"additionalProperties\": false,\r",
+							"            \"properties\": {\r",
+							"                \"timestamp\": {\r",
+							"                    \"type\": \"string\",\r",
+							"                    \"format\": \"date-time\"\r",
+							"                },\r",
+							"                \"status\": {\r",
+							"                    \"type\": \"integer\"\r",
+							"                },\r",
+							"                \"error\": {\r",
+							"                    \"type\": \"string\"\r",
+							"                },\r",
+							"                \"path\": {\r",
+							"                    \"type\": \"string\"\r",
+							"                }\r",
+							"            },\r",
+							"            \"required\": [\r",
+							"                \"error\",\r",
+							"                \"path\",\r",
+							"                \"status\",\r",
+							"                \"timestamp\"\r",
+							"            ],\r",
+							"            \"title\": \"Welcome2\"\r",
+							"        }\r",
 							"    }\r",
-							"  },\r",
-							"  \"required\": [\r",
-							"    \"code\",\r",
-							"    \"message\"\r",
-							"  ]\r",
 							"};\r",
 							"\r",
 							"pm.test(\"Verify Status Code: Orders Execute POST - 403\", function () {\r",
 							"    pm.response.to.have.status(403);\r",
 							"});\r",
 							"\r",
-							"var responseJson = pm.response.json();\r",
+							"const responseJson = pm.response.json();\r",
 							"\r",
 							"pm.test(\"Response Schema validation: Orders Execute POST - 403\", function () {\r",
 							"    var result = tv4.validateResult(responseJson, schema);\r",
@@ -1867,6 +2363,11 @@
 						"key": "x-institution-id",
 						"value": "{{x-institution-id}}",
 						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{invalidBearerToken}}",
+						"type": "text"
 					}
 				],
 				"body": {
@@ -1874,13 +2375,13 @@
 					"raw": "{\r\n    \"accountId\": \"6a8e01a8-37f0-40e7-bb4e-2b47f1b2745e\",\r\n    \"userId\": \"673c71f3-0a7a-4f9d-9f0a-c076994f8120\",\r\n    \"userInfo\": {\r\n        \"line1\": \"123 Main St\",\r\n        \"city\": \"New York\",\r\n        \"stateProvinceRegion\": \"NY\",\r\n        \"zipCode\": \"10092\",\r\n        \"country\": \"US\",\r\n        \"email\": \"jon-odin+35@example.com\",\r\n        \"phone\": \"+15559876543\"\r\n    }\r\n}"
 				},
 				"url": {
-					"raw": "{{cpOrdersBaseUrl}}/Orders/{{orderIdExecute}}/execute",
+					"raw": "{{cpOrdersBaseUrl}}/orders/{{orderIdBuyToExecute}}/execute",
 					"host": [
 						"{{cpOrdersBaseUrl}}"
 					],
 					"path": [
-						"Orders",
-						"{{orderIdExecute}}",
+						"orders",
+						"{{orderIdBuyToExecute}}",
 						"execute"
 					]
 				}
@@ -1915,7 +2416,7 @@
 							"    pm.response.to.have.status(404);\r",
 							"});\r",
 							"\r",
-							"var responseJson = pm.response.json();\r",
+							"const responseJson = pm.response.json();\r",
 							"\r",
 							"pm.test(\"Response Schema validation: Orders Execute POST - 404\", function () {\r",
 							"    var result = tv4.validateResult(responseJson, schema);\r",
@@ -1945,20 +2446,25 @@
 						"key": "x-institution-id",
 						"value": "{{x-institution-id}}",
 						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{ordersBearerToken}}",
+						"type": "text"
 					}
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"accountId\": \"6a8e01a8-37f0-40e7-bb4e-2b47f1b2745e\",\r\n    \"userId\": \"673c71f3-0a7a-4f9d-9f0a-c076994f8120\",\r\n    \"userInfo\": {\r\n        \"line1\": \"123 Main St\",\r\n        \"city\": \"New York\",\r\n        \"stateProvinceRegion\": \"NY\",\r\n        \"zipCode\": \"10092\",\r\n        \"country\": \"US\",\r\n        \"email\": \"jon-odin+35@example.com\",\r\n        \"phone\": \"+15559876543\"\r\n    }\r\n}"
+					"raw": "{\r\n    \"id\": \"oq-01fk65z0twc81gwdwk0c051wyx\",\r\n    \"accountId\": \"378600619308\",\r\n    \"userId\": \"cu-01fj1xem8vja26pc7rk2te8qd7\",\r\n    \"created\": \"2021-10-29T14:06:24Z\",\r\n    \"expiration\": \"2021-10-29T14:06:54Z\",\r\n    \"status\": \"quote\",\r\n    \"symbol\": \"btc\",\r\n    \"side\": \"buy\",\r\n    \"price\": 61484.51,\r\n    \"quantity\": 0.10000000,\r\n    \"receipt\": {\r\n        \"subtotal\": 6148.45,\r\n        \"fee\": 122.97,\r\n        \"total\": 6271.42\r\n    },\r\n    \"requestedAt\": \"2021-10-29T14:06:24Z\"\r\n}"
 				},
 				"url": {
-					"raw": "{{cpOrdersBaseUrl}}/Orders/{{orderIdExecute}}/execute",
+					"raw": "{{cpOrdersBaseUrl}}/orders/{{orderIdBuyToExecute}}/execute",
 					"host": [
 						"{{cpOrdersBaseUrl}}"
 					],
 					"path": [
-						"Orders",
-						"{{orderIdExecute}}",
+						"orders",
+						"{{orderIdBuyToExecute}}",
 						"execute"
 					]
 				}
@@ -1966,7 +2472,7 @@
 			"response": []
 		},
 		{
-			"name": "PostOrdersExecute_409",
+			"name": "PostOrdersBuyExecute_409",
 			"event": [
 				{
 					"listen": "test",
@@ -1993,7 +2499,7 @@
 							"    pm.response.to.have.status(409);\r",
 							"});\r",
 							"\r",
-							"var responseJson = pm.response.json();\r",
+							"const responseJson = pm.response.json();\r",
 							"\r",
 							"pm.test(\"Response Schema validation: Orders Execute POST - 409\", function () {\r",
 							"    var result = tv4.validateResult(responseJson, schema);\r",
@@ -2023,20 +2529,108 @@
 						"key": "x-institution-id",
 						"value": "{{x-institution-id}}",
 						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{ordersBearerToken}}",
+						"type": "text"
 					}
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"accountId\": \"6a8e01a8-37f0-40e7-bb4e-2b47f1b2745e\",\r\n    \"userId\": \"673c71f3-0a7a-4f9d-9f0a-c076994f8120\",\r\n    \"userInfo\": {\r\n        \"line1\": \"123 Main St\",\r\n        \"city\": \"New York\",\r\n        \"stateProvinceRegion\": \"NY\",\r\n        \"zipCode\": \"10092\",\r\n        \"country\": \"US\",\r\n        \"email\": \"jon-odin+35@example.com\",\r\n        \"phone\": \"+15559876543\"\r\n    }\r\n}"
+					"raw": "{\r\n    \"id\": \"oq-01fk65z0twc81gwdwk0c051wyx\",\r\n    \"accountId\": \"300000619308\",\r\n    \"userId\": \"cu-01fj1xem8vja26pc7rk2te8qd7\",\r\n    \"created\": \"2021-10-29T14:06:24Z\",\r\n    \"expiration\": \"2021-10-29T14:06:54Z\",\r\n    \"status\": \"quote\",\r\n    \"symbol\": \"btc\",\r\n    \"side\": \"buy\",\r\n    \"price\": 61484.51,\r\n    \"quantity\": 0.10000000,\r\n    \"receipt\": {\r\n        \"subtotal\": 6148.45,\r\n        \"fee\": 122.97,\r\n        \"total\": 6271.42\r\n    },\r\n    \"requestedAt\": \"2021-10-29T14:06:24Z\"\r\n}"
 				},
 				"url": {
-					"raw": "{{cpOrdersBaseUrl}}/Orders/{{orderIdExecute}}/execute",
+					"raw": "{{cpOrdersBaseUrl}}/orders/{{orderIdBuyToExecute}}/execute",
 					"host": [
 						"{{cpOrdersBaseUrl}}"
 					],
 					"path": [
-						"Orders",
-						"{{orderIdExecute}}",
+						"orders",
+						"{{orderIdBuyToExecute}}",
+						"execute"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PostOrdersSellExecute_409",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const schema = {\r",
+							"  \"$schema\": \"http://json-schema.org/draft-04/schema#\",\r",
+							"  \"type\": \"object\",\r",
+							"  \"properties\": {\r",
+							"    \"code\": {\r",
+							"      \"type\": \"string\"\r",
+							"    },\r",
+							"    \"message\": {\r",
+							"      \"type\": \"string\"\r",
+							"    }\r",
+							"  },\r",
+							"  \"required\": [\r",
+							"    \"code\",\r",
+							"    \"message\"\r",
+							"  ]\r",
+							"};\r",
+							"\r",
+							"pm.test(\"Verify Status Code: Orders Execute POST - 409\", function () {\r",
+							"    pm.response.to.have.status(409);\r",
+							"});\r",
+							"\r",
+							"const responseJson = pm.response.json();\r",
+							"\r",
+							"pm.test(\"Response Schema validation: Orders Execute POST - 409\", function () {\r",
+							"    var result = tv4.validateResult(responseJson, schema);\r",
+							"    if(!(result.valid)){\r",
+							"        console.log(result);\r",
+							"    }\r",
+							"    pm.expect(result.valid).to.be.true;\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response time is less than 10 seconds\", () => {\r",
+							"  pm.expect(pm.response.responseTime).to.be.below(10000);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "x-institution-id",
+						"value": "{{x-institution-id}}",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{ordersBearerToken}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"id\": \"oq-01fk65z0twc81gwdwk0c051wyx\",\r\n    \"accountId\": \"300000619308\",\r\n    \"userId\": \"cu-01fj1xem8vja26pc7rk2te8qd7\",\r\n    \"created\": \"2021-10-29T14:06:24Z\",\r\n    \"expiration\": \"2021-10-29T14:06:54Z\",\r\n    \"status\": \"quote\",\r\n    \"symbol\": \"btc\",\r\n    \"side\": \"buy\",\r\n    \"price\": 61484.51,\r\n    \"quantity\": 0.10000000,\r\n    \"receipt\": {\r\n        \"subtotal\": 6148.45,\r\n        \"fee\": 122.97,\r\n        \"total\": 6271.42\r\n    },\r\n    \"requestedAt\": \"2021-10-29T14:06:24Z\"\r\n}"
+				},
+				"url": {
+					"raw": "{{cpOrdersBaseUrl}}/orders/{{orderIdSellToExecute}}/execute",
+					"host": [
+						"{{cpOrdersBaseUrl}}"
+					],
+					"path": [
+						"orders",
+						"{{orderIdSellToExecute}}",
 						"execute"
 					]
 				}
@@ -2050,7 +2644,31 @@
 			"script": {
 				"type": "text/javascript",
 				"exec": [
-					""
+					"const authBody = 'client_id=7168155c594e45fbabf9e8fe1560aae6&client_secret=4ce94149b9244c59811953477d4db499&grant_type=client_credentials'",
+					"",
+					"const tokenPostRequest = {",
+					"    url: \"https://ncrdev-dev.apigee.net/security/access-key-authentication/oauth2/token\",",
+					"    method: 'POST',",
+					"    header: { 'Content-type': 'application/x-www-form-urlencoded' },",
+					"    body: {",
+					"        mode: 'raw',",
+					"        raw: authBody",
+					"    }",
+					"}; ",
+					"",
+					"pm.sendRequest(tokenPostRequest, function (err, res) {",
+					"    if (err) {",
+					"        console.log(err);",
+					"    }",
+					"    else {",
+					"        var jsonResponseData = res.json();",
+					"        pm.environment.set(\"ordersBearerToken\", jsonResponseData.access_token);",
+					"    }",
+					"});",
+					"",
+					"var moment = require('moment');",
+					"pm.environment.set('fromDate', moment().subtract(7, \"days\"));",
+					"pm.environment.set('toDate', moment().add(5, \"minutes\"));"
 				]
 			}
 		},
@@ -2059,27 +2677,15 @@
 			"script": {
 				"type": "text/javascript",
 				"exec": [
-					""
+					"const possibleErrorKeywords = pm.globals.get( \"errorKeywords\").split(\"~\");",
+					"",
+					"pm.test(\"Verify stack trace\", () => {",
+					"    for (var i = 0; i < possibleErrorKeywords.length; i++) {",
+					"        pm.expect(pm.response.text()).to.not.include(possibleErrorKeywords[i]);  ",
+					"    }      ",
+					"});"
 				]
 			}
-		}
-	],
-	"variable": [
-		{
-			"key": "baseUrl",
-			"value": "https://tbd"
-		},
-		{
-			"key": "relationshipInstitutionId",
-			"value": ""
-		},
-		{
-			"key": "cryptoProviderId",
-			"value": ""
-		},
-		{
-			"key": "userId",
-			"value": ""
 		}
 	]
 }

@@ -28,22 +28,24 @@ if (!$env){
 
 cls
 
+#Get-ChildItem ./allure-report/*.* -Recurse | Remove-Item
+#Get-ChildItem ./allure-results/*.* -Recurse | Remove-Item
+
 Write-Host "Current Execution Environment ++++++++ $env  ++++++++"
 Get-Date
 
-#cleanup previous results file
-Get-ChildItem "newman\*.*" | Remove-Item
-
-#node newman-run.js "./NydigProvider.postman_collection.json" "./NCR.postman_globals.json" "./NydigProvider_$env.postman_environment.json"
+node .\slackApiNotification.js 'Nydig' 'Started'
 
 node newman-run.js "./NydigProvider-MarketData.postman_collection.json" "./NCR.postman_globals.json" "./NydigProvider_$env.postman_environment.json"
-#node newman-run.js "./NydigProvider-.postman_collection.json" "./NCR.postman_globals.json" "./NydigProvider_$env.postman_environment.json"
-node newman-run.js "./NydigProvider-Users.postman_collection.json" "./NCR.postman_globals.json" "./NydigProvider_$env.postman_environment.json"
-#node newman-run.js "./NydigProvider-Users.postman_collection.json" "./NCR.postman_globals.json" "./NydigProvider_$env.postman_environment.json"
+node newman-run.js "./NydigProvider-Users.postman_collection.json" "./NCR.postman_globals.json" "./NydigProvider_$env.postman_environment.json" false
+node newman-run.js "./NydigProvider-Accounts.postman_collection.json" "./NCR.postman_globals.json" "./NydigProvider_$env.postman_environment.json" false
+node newman-run.js "./NydigProvider-Orders.postman_collection.json" "./NCR.postman_globals.json" "./NydigProvider_$env.postman_environment.json" false
 
 #Copy-Item -Path './allure-report/history' -Destination './allure-results/history' -recurse -Force
 #allure generate './allure-results/' -o './allure-report/' --clean
 #allure open './allure-report/'
+
+node .\slackApiNotification.js 'Nydig'
 
 allure generate
 allure open allure-report

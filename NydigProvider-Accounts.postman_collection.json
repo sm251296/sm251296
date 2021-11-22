@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "e46b94c1-92f3-4b8d-a666-83f91935bf69",
+		"_postman_id": "89def8a7-dc87-4147-b5d4-2c57a0b02b3c",
 		"name": "NydigProvider-Accounts",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -37,7 +37,7 @@
 							"                    \"type\": \"string\"\r",
 							"                },\r",
 							"                \"balance\": {\r",
-							"                    \"type\": \"string\"\r",
+							"                    \"type\": \"number\"\r",
 							"                },\r",
 							"                \"assetSymbol\": {\r",
 							"                    \"type\": \"string\"\r",
@@ -81,7 +81,7 @@
 							"    pm.response.to.have.status(201);\r",
 							"});\r",
 							"\r",
-							"var responseJson = pm.response.json();\r",
+							"const responseJson = pm.response.json();\r",
 							"\r",
 							"pm.test(\"Response Schema validation: Accounts POST - 201\", function () {\r",
 							"    var result = tv4.validateResult(responseJson, schema);\r",
@@ -102,14 +102,7 @@
 					"listen": "prerequest",
 					"script": {
 						"exec": [
-							"\r",
-							"postman.setNextRequest(\"PostUsers\");\r",
-							"\r",
-							"\r",
-							"\r",
-							"1\r",
-							"pm.collectionVariables.set(\"userId\", pm.variables.replaceIn(\"{{$guid}}\"));\r",
-							""
+							"// Happy Path"
 						],
 						"type": "text/javascript"
 					}
@@ -126,6 +119,11 @@
 					{
 						"key": "x-institution-id",
 						"value": "{{x-institution-id}}",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{accountsBearerToken}}",
 						"type": "text"
 					}
 				],
@@ -173,7 +171,7 @@
 							"    pm.response.to.have.status(400);\r",
 							"});\r",
 							"\r",
-							"var responseJson = pm.response.json();\r",
+							"const responseJson = pm.response.json();\r",
 							"\r",
 							"pm.test(\"Response Schema validation: Accounts POST - 400\", function () {\r",
 							"    var result = tv4.validateResult(responseJson, schema);\r",
@@ -186,6 +184,15 @@
 							"pm.test(\"Response time is less than 10 seconds\", () => {\r",
 							"  pm.expect(pm.response.responseTime).to.be.below(10000);\r",
 							"});"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"// The user id is incorrect"
 						],
 						"type": "text/javascript"
 					}
@@ -202,13 +209,17 @@
 					{
 						"key": "x-institution-id",
 						"value": "{{x-institution-id}}",
-						"type": "text",
-						"disabled": true
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{accountsBearerToken}}",
+						"type": "text"
 					}
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"owners\": [\r\n        {\r\n            \"userId\": \"8afd3b57-80e9-46a2-b5ed-35df64e7bee5\"\r\n        }\r\n    ]\r\n}"
+					"raw": "{\r\n    \"owners\": [\r\n        {\r\n            \"userId\": \"cu-01fk0tj32jaxtnxpaaktv6j4jw1\"\r\n        }\r\n    ]\r\n}"
 				},
 				"url": {
 					"raw": "{{cpAccountsBaseUrl}}/accounts",
@@ -250,7 +261,7 @@
 							"    pm.response.to.have.status(401);\r",
 							"});\r",
 							"\r",
-							"var responseJson = pm.response.json();\r",
+							"const responseJson = pm.response.json();\r",
 							"\r",
 							"pm.test(\"Response Schema validation: Accounts POST - 401\", function () {\r",
 							"    var result = tv4.validateResult(responseJson, schema);\r",
@@ -277,14 +288,14 @@
 						"type": "text"
 					},
 					{
-						"key": "x-institution-id",
-						"value": "{{x-institution-id}}",
+						"key": "Authorization",
+						"value": "Bearer {{accountsBearerToken}}",
 						"type": "text"
 					}
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"owners\": [\r\n        {\r\n            \"userId\": \"8afd3b57-80e9-46a2-b5ed-35df64e7bee5\"\r\n        }\r\n    ]\r\n}"
+					"raw": "{\r\n    \"owners\": [\r\n        {\r\n            \"userId\": \"cu-01fk0tj32jaxtnxpaaktv6j4jw\"\r\n        }\r\n    ]\r\n}"
 				},
 				"url": {
 					"raw": "{{cpAccountsBaseUrl}}/accounts",
@@ -306,27 +317,43 @@
 					"script": {
 						"exec": [
 							"const schema = {\r",
-							"  \"$schema\": \"http://json-schema.org/draft-04/schema#\",\r",
-							"  \"type\": \"object\",\r",
-							"  \"properties\": {\r",
-							"    \"code\": {\r",
-							"      \"type\": \"string\"\r",
-							"    },\r",
-							"    \"message\": {\r",
-							"      \"type\": \"string\"\r",
+							"    \"$schema\": \"http://json-schema.org/draft-06/schema#\",\r",
+							"    \"$ref\": \"#/definitions/Welcome2\",\r",
+							"    \"definitions\": {\r",
+							"        \"Welcome2\": {\r",
+							"            \"type\": \"object\",\r",
+							"            \"additionalProperties\": false,\r",
+							"            \"properties\": {\r",
+							"                \"timestamp\": {\r",
+							"                    \"type\": \"string\",\r",
+							"                    \"format\": \"date-time\"\r",
+							"                },\r",
+							"                \"status\": {\r",
+							"                    \"type\": \"integer\"\r",
+							"                },\r",
+							"                \"error\": {\r",
+							"                    \"type\": \"string\"\r",
+							"                },\r",
+							"                \"path\": {\r",
+							"                    \"type\": \"string\"\r",
+							"                }\r",
+							"            },\r",
+							"            \"required\": [\r",
+							"                \"error\",\r",
+							"                \"path\",\r",
+							"                \"status\",\r",
+							"                \"timestamp\"\r",
+							"            ],\r",
+							"            \"title\": \"Welcome2\"\r",
+							"        }\r",
 							"    }\r",
-							"  },\r",
-							"  \"required\": [\r",
-							"    \"code\",\r",
-							"    \"message\"\r",
-							"  ]\r",
 							"};\r",
 							"\r",
 							"pm.test(\"Verify Status Code: Accounts POST - 403\", function () {\r",
 							"    pm.response.to.have.status(403);\r",
 							"});\r",
 							"\r",
-							"var responseJson = pm.response.json();\r",
+							"const responseJson = pm.response.json();\r",
 							"\r",
 							"pm.test(\"Response Schema validation: Accounts POST - 403\", function () {\r",
 							"    var result = tv4.validateResult(responseJson, schema);\r",
@@ -356,11 +383,16 @@
 						"key": "x-institution-id",
 						"value": "{{x-institution-id}}",
 						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{invalidBearerToken}}",
+						"type": "text"
 					}
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"owners\": [\r\n        {\r\n            \"userId\": \"8afd3b57-80e9-46a2-b5ed-35df64e7bee5\"\r\n        }\r\n    ]\r\n}"
+					"raw": "{\r\n    \"owners\": [\r\n        {\r\n            \"userId\": \"cu-01fk0tj32jaxtnxpaaktv6j4jw\"\r\n        }\r\n    ]\r\n}"
 				},
 				"url": {
 					"raw": "{{cpAccountsBaseUrl}}/accounts",
@@ -402,7 +434,7 @@
 							"    pm.response.to.have.status(404);\r",
 							"});\r",
 							"\r",
-							"var responseJson = pm.response.json();\r",
+							"const responseJson = pm.response.json();\r",
 							"\r",
 							"pm.test(\"Response Schema validation: Accounts POST - 404\", function () {\r",
 							"    var result = tv4.validateResult(responseJson, schema);\r",
@@ -432,11 +464,16 @@
 						"key": "x-institution-id",
 						"value": "{{x-institution-id}}",
 						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{accountsBearerToken}}",
+						"type": "text"
 					}
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"owners\": [\r\n        {\r\n            \"userId\": \"8afd3b57-80e9-46a2-b5ed-35df64e7bee5\"\r\n        }\r\n    ]\r\n}"
+					"raw": "{\r\n    \"owners\": [\r\n        {\r\n            \"userId\": \"cu-01fk0tj32jaxtnxpaaktv6j4kw\"\r\n        }\r\n    ]\r\n}"
 				},
 				"url": {
 					"raw": "{{cpAccountsBaseUrl}}/accounts",
@@ -478,7 +515,7 @@
 							"    pm.response.to.have.status(409);\r",
 							"});\r",
 							"\r",
-							"var responseJson = pm.response.json();\r",
+							"const responseJson = pm.response.json();\r",
 							"\r",
 							"pm.test(\"Response Schema validation: Accounts POST - 409\", function () {\r",
 							"    var result = tv4.validateResult(responseJson, schema);\r",
@@ -508,11 +545,16 @@
 						"key": "x-institution-id",
 						"value": "{{x-institution-id}}",
 						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{accountsBearerToken}}",
+						"type": "text"
 					}
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"owners\": [\r\n        {\r\n            \"userId\": \"8afd3b57-80e9-46a2-b5ed-35df64e7bee5\"\r\n        }\r\n    ]\r\n}"
+					"raw": "{\r\n    \"owners\": [\r\n        {\r\n            \"userId\": \"cu-01fk0tj32jaxtnxpaaktv6j4jw\"\r\n        }\r\n    ]\r\n}"
 				},
 				"url": {
 					"raw": "{{cpAccountsBaseUrl}}/accounts",
@@ -527,7 +569,7 @@
 			"response": []
 		},
 		{
-			"name": "PostAccount_500",
+			"name": "GetAccounts",
 			"event": [
 				{
 					"listen": "test",
@@ -550,151 +592,11 @@
 							"  ]\r",
 							"};\r",
 							"\r",
-							"pm.test(\"Verify Status Code: Accounts POST - 500\", function () {\r",
-							"    pm.response.to.have.status(500);\r",
+							"pm.test(\"Not Implimented : Verify Status Code: Accounts GET - 200\", function () {\r",
+							"    pm.response.to.have.status(501);\r",
 							"});\r",
 							"\r",
-							"var responseJson = pm.response.json();\r",
-							"\r",
-							"pm.test(\"Response Schema validation: Accounts POST - 500\", function () {\r",
-							"    var result = tv4.validateResult(responseJson, schema);\r",
-							"    if(!(result.valid)){\r",
-							"        console.log(result);\r",
-							"    }\r",
-							"    pm.expect(result.valid).to.be.true;\r",
-							"});\r",
-							"\r",
-							"pm.test(\"Response time is less than 10 seconds\", () => {\r",
-							"  pm.expect(pm.response.responseTime).to.be.below(10000);\r",
-							"});"
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"method": "POST",
-				"header": [
-					{
-						"key": "Content-Type",
-						"value": "application/font-woff",
-						"type": "text"
-					},
-					{
-						"key": "x-institution-id",
-						"value": "{{x-institution-id}}",
-						"type": "text"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n    \"owners\": [\r\n        {\r\n            \"userId\": \"8afd3b57-80e9-46a2-b5ed-35df64e7bee5\"\r\n        }\r\n    ]\r\n}"
-				},
-				"url": {
-					"raw": "{{cpAccountsBaseUrl}}/accounts",
-					"host": [
-						"{{cpAccountsBaseUrl}}"
-					],
-					"path": [
-						"accounts"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "GetAccounts",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"const schema = {\r",
-							"    \"$schema\": \"http://json-schema.org/draft-06/schema#\",\r",
-							"    \"$ref\": \"#/definitions/Welcome4\",\r",
-							"    \"definitions\": {\r",
-							"        \"Welcome4\": {\r",
-							"            \"type\": \"object\",\r",
-							"            \"additionalProperties\": false,\r",
-							"            \"properties\": {\r",
-							"                \"results\": {\r",
-							"                    \"type\": \"array\",\r",
-							"                    \"items\": {\r",
-							"                        \"$ref\": \"#/definitions/Result\"\r",
-							"                    }\r",
-							"                }\r",
-							"            },\r",
-							"            \"required\": [\r",
-							"                \"results\"\r",
-							"            ],\r",
-							"            \"title\": \"Welcome4\"\r",
-							"        },\r",
-							"        \"Result\": {\r",
-							"            \"type\": \"object\",\r",
-							"            \"additionalProperties\": false,\r",
-							"            \"properties\": {\r",
-							"                \"id\": {\r",
-							"                    \"type\": \"string\"\r",
-							"                },\r",
-							"                \"created\": {\r",
-							"                    \"type\": \"string\",\r",
-							"                    \"format\": \"date-time\"\r",
-							"                },\r",
-							"                \"owners\": {\r",
-							"                    \"type\": \"array\",\r",
-							"                    \"items\": {\r",
-							"                        \"$ref\": \"#/definitions/Owner\"\r",
-							"                    }\r",
-							"                },\r",
-							"                \"status\": {\r",
-							"                    \"type\": \"string\"\r",
-							"                },\r",
-							"                \"balance\": {\r",
-							"                    \"type\": \"string\"\r",
-							"                },\r",
-							"                \"assetSymbol\": {\r",
-							"                    \"type\": \"string\"\r",
-							"                },\r",
-							"                \"assetName\": {\r",
-							"                    \"type\": \"string\"\r",
-							"                }\r",
-							"            },\r",
-							"            \"required\": [\r",
-							"                \"assetName\",\r",
-							"                \"assetSymbol\",\r",
-							"                \"balance\",\r",
-							"                \"created\",\r",
-							"                \"id\",\r",
-							"                \"owners\",\r",
-							"                \"status\"\r",
-							"            ],\r",
-							"            \"title\": \"Result\"\r",
-							"        },\r",
-							"        \"Owner\": {\r",
-							"            \"type\": \"object\",\r",
-							"            \"additionalProperties\": false,\r",
-							"            \"properties\": {\r",
-							"                \"userId\": {\r",
-							"                    \"type\": \"string\"\r",
-							"                },\r",
-							"                \"primary\": {\r",
-							"                    \"type\": \"boolean\"\r",
-							"                }\r",
-							"            },\r",
-							"            \"required\": [\r",
-							"                \"primary\",\r",
-							"                \"userId\"\r",
-							"            ],\r",
-							"            \"title\": \"Owner\"\r",
-							"        }\r",
-							"    }\r",
-							"};\r",
-							"\r",
-							"pm.test(\"Verify Status Code: Accounts GET - 200\", function () {\r",
-							"    pm.response.to.have.status(200);\r",
-							"});\r",
-							"\r",
-							"var responseJson = pm.response.json();\r",
+							"const responseJson = pm.response.json();\r",
 							"\r",
 							"pm.test(\"Response Schema validation: Accounts GET - 200\", function () {\r",
 							"    var result = tv4.validateResult(responseJson, schema);\r",
@@ -723,6 +625,11 @@
 					{
 						"key": "x-institution-id",
 						"value": "{{x-institution-id}}",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{accountsBearerToken}}",
 						"type": "text"
 					}
 				],
@@ -776,11 +683,11 @@
 							"  ]\r",
 							"};\r",
 							"\r",
-							"pm.test(\"Verify Status Code: Accounts GET - 400\", function () {\r",
-							"    pm.response.to.have.status(400);\r",
+							"pm.test(\"Not Implimented Verify Status Code: Accounts GET - 400\", function () {\r",
+							"    pm.response.to.have.status(501);\r",
 							"});\r",
 							"\r",
-							"var responseJson = pm.response.json();\r",
+							"const responseJson = pm.response.json();\r",
 							"\r",
 							"pm.test(\"Response Schema validation: Accounts GET - 400\", function () {\r",
 							"    var result = tv4.validateResult(responseJson, schema);\r",
@@ -809,12 +716,16 @@
 					{
 						"key": "x-institution-id",
 						"value": "{{x-institution-id}}",
-						"type": "text",
-						"disabled": true
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{accountsBearerToken}}",
+						"type": "text"
 					}
 				],
 				"url": {
-					"raw": "{{cpAccountsBaseUrl}}/accounts?providerId={{providerId}}&userId={{accountsUserId}}&offset={{offset}}",
+					"raw": "{{cpAccountsBaseUrl}}/accounts?providerId={{providerId}}&userId={{accountsUserId}}&offset={{offset}}1",
 					"host": [
 						"{{cpAccountsBaseUrl}}"
 					],
@@ -832,7 +743,7 @@
 						},
 						{
 							"key": "offset",
-							"value": "{{offset}}"
+							"value": "{{offset}}1"
 						}
 					]
 				}
@@ -867,7 +778,7 @@
 							"    pm.response.to.have.status(401);\r",
 							"});\r",
 							"\r",
-							"var responseJson = pm.response.json();\r",
+							"const responseJson = pm.response.json();\r",
 							"\r",
 							"pm.test(\"Response Schema validation: Accounts GET - 401\", function () {\r",
 							"    var result = tv4.validateResult(responseJson, schema);\r",
@@ -894,8 +805,8 @@
 						"type": "text"
 					},
 					{
-						"key": "x-institution-id",
-						"value": "{{x-institution-id}}",
+						"key": "Authorization",
+						"value": "Bearer {{accountsBearerToken}}",
 						"type": "text"
 					}
 				],
@@ -933,27 +844,43 @@
 					"script": {
 						"exec": [
 							"const schema = {\r",
-							"  \"$schema\": \"http://json-schema.org/draft-04/schema#\",\r",
-							"  \"type\": \"object\",\r",
-							"  \"properties\": {\r",
-							"    \"code\": {\r",
-							"      \"type\": \"string\"\r",
-							"    },\r",
-							"    \"message\": {\r",
-							"      \"type\": \"string\"\r",
+							"    \"$schema\": \"http://json-schema.org/draft-06/schema#\",\r",
+							"    \"$ref\": \"#/definitions/Welcome2\",\r",
+							"    \"definitions\": {\r",
+							"        \"Welcome2\": {\r",
+							"            \"type\": \"object\",\r",
+							"            \"additionalProperties\": false,\r",
+							"            \"properties\": {\r",
+							"                \"timestamp\": {\r",
+							"                    \"type\": \"string\",\r",
+							"                    \"format\": \"date-time\"\r",
+							"                },\r",
+							"                \"status\": {\r",
+							"                    \"type\": \"integer\"\r",
+							"                },\r",
+							"                \"error\": {\r",
+							"                    \"type\": \"string\"\r",
+							"                },\r",
+							"                \"path\": {\r",
+							"                    \"type\": \"string\"\r",
+							"                }\r",
+							"            },\r",
+							"            \"required\": [\r",
+							"                \"error\",\r",
+							"                \"path\",\r",
+							"                \"status\",\r",
+							"                \"timestamp\"\r",
+							"            ],\r",
+							"            \"title\": \"Welcome2\"\r",
+							"        }\r",
 							"    }\r",
-							"  },\r",
-							"  \"required\": [\r",
-							"    \"code\",\r",
-							"    \"message\"\r",
-							"  ]\r",
 							"};\r",
 							"\r",
 							"pm.test(\"Verify Status Code: Accounts GET - 403\", function () {\r",
 							"    pm.response.to.have.status(403);\r",
 							"});\r",
 							"\r",
-							"var responseJson = pm.response.json();\r",
+							"const responseJson = pm.response.json();\r",
 							"\r",
 							"pm.test(\"Response Schema validation: Accounts GET - 403\", function () {\r",
 							"    var result = tv4.validateResult(responseJson, schema);\r",
@@ -986,7 +913,7 @@
 					}
 				],
 				"url": {
-					"raw": "{{cpAccountsBaseUrl}}/accounts?providerId={{providerId}}&userId={{accountsUserId}}&offset={{offset}}",
+					"raw": "{{cpAccountsBaseUrl}}/accounts?providerId={{providerId}}&userId={{accountsUserId}}&offset={{offset}}&Authorization=Bearer {{accountsBearerToken}}",
 					"host": [
 						"{{cpAccountsBaseUrl}}"
 					],
@@ -1005,6 +932,10 @@
 						{
 							"key": "offset",
 							"value": "{{offset}}"
+						},
+						{
+							"key": "Authorization",
+							"value": "Bearer {{accountsBearerToken}}"
 						}
 					]
 				}
@@ -1026,7 +957,7 @@
 							"      \"type\": \"string\"\r",
 							"    },\r",
 							"    \"message\": {\r",
-							"      \"type\": \"string\"\r",
+							"      \"type\": \"bool\"\r",
 							"    }\r",
 							"  },\r",
 							"  \"required\": [\r",
@@ -1036,17 +967,18 @@
 							"};\r",
 							"\r",
 							"pm.test(\"Verify Status Code: Accounts GET - 404\", function () {\r",
-							"    pm.response.to.have.status(404);\r",
+							"    pm.response.to.have.status(501);\r",
 							"});\r",
 							"\r",
-							"var responseJson = pm.response.json();\r",
+							"const responseJson = pm.response.json();\r",
 							"\r",
-							"pm.test(\"Response Schema validation: Accounts GET - 404\", function () {\r",
+							"pm.test(\"Not Implimented : Response Schema validation: Accounts GET - 404\", function () {\r",
 							"    var result = tv4.validateResult(responseJson, schema);\r",
 							"    if(!(result.valid)){\r",
 							"        console.log(result);\r",
 							"    }\r",
 							"    pm.expect(result.valid).to.be.true;\r",
+							"    pm.response.to.have.status(200);\r",
 							"});\r",
 							"\r",
 							"pm.test(\"Response time is less than 10 seconds\", () => {\r",
@@ -1069,177 +1001,10 @@
 						"key": "x-institution-id",
 						"value": "{{x-institution-id}}",
 						"type": "text"
-					}
-				],
-				"url": {
-					"raw": "{{cpAccountsBaseUrl}}/accounts?providerId={{providerId}}&userId={{accountsUserId}}&offset={{offset}}",
-					"host": [
-						"{{cpAccountsBaseUrl}}"
-					],
-					"path": [
-						"accounts"
-					],
-					"query": [
-						{
-							"key": "providerId",
-							"value": "{{providerId}}"
-						},
-						{
-							"key": "userId",
-							"value": "{{accountsUserId}}"
-						},
-						{
-							"key": "offset",
-							"value": "{{offset}}"
-						}
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "GetAccounts_409",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"const schema = {\r",
-							"  \"$schema\": \"http://json-schema.org/draft-04/schema#\",\r",
-							"  \"type\": \"object\",\r",
-							"  \"properties\": {\r",
-							"    \"code\": {\r",
-							"      \"type\": \"string\"\r",
-							"    },\r",
-							"    \"message\": {\r",
-							"      \"type\": \"string\"\r",
-							"    }\r",
-							"  },\r",
-							"  \"required\": [\r",
-							"    \"code\",\r",
-							"    \"message\"\r",
-							"  ]\r",
-							"};\r",
-							"\r",
-							"pm.test(\"Verify Status Code: Accounts GET - 409\", function () {\r",
-							"    pm.response.to.have.status(409);\r",
-							"});\r",
-							"\r",
-							"var responseJson = pm.response.json();\r",
-							"\r",
-							"pm.test(\"Response Schema validation: Accounts GET - 409\", function () {\r",
-							"    var result = tv4.validateResult(responseJson, schema);\r",
-							"    if(!(result.valid)){\r",
-							"        console.log(result);\r",
-							"    }\r",
-							"    pm.expect(result.valid).to.be.true;\r",
-							"});\r",
-							"\r",
-							"pm.test(\"Response time is less than 10 seconds\", () => {\r",
-							"  pm.expect(pm.response.responseTime).to.be.below(10000);\r",
-							"});"
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"method": "GET",
-				"header": [
-					{
-						"key": "Content-Type",
-						"value": "application/json",
-						"type": "text"
 					},
 					{
-						"key": "x-institution-id",
-						"value": "{{x-institution-id}}",
-						"type": "text"
-					}
-				],
-				"url": {
-					"raw": "{{cpAccountsBaseUrl}}/accounts?providerId={{providerId}}&userId={{accountsUserId}}&offset={{offset}}",
-					"host": [
-						"{{cpAccountsBaseUrl}}"
-					],
-					"path": [
-						"accounts"
-					],
-					"query": [
-						{
-							"key": "providerId",
-							"value": "{{providerId}}"
-						},
-						{
-							"key": "userId",
-							"value": "{{accountsUserId}}"
-						},
-						{
-							"key": "offset",
-							"value": "{{offset}}"
-						}
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "GetAccounts_500",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"const schema = {\r",
-							"  \"$schema\": \"http://json-schema.org/draft-04/schema#\",\r",
-							"  \"type\": \"object\",\r",
-							"  \"properties\": {\r",
-							"    \"code\": {\r",
-							"      \"type\": \"string\"\r",
-							"    },\r",
-							"    \"message\": {\r",
-							"      \"type\": \"string\"\r",
-							"    }\r",
-							"  },\r",
-							"  \"required\": [\r",
-							"    \"code\",\r",
-							"    \"message\"\r",
-							"  ]\r",
-							"};\r",
-							"\r",
-							"pm.test(\"Verify Status Code: Accounts GET - 500\", function () {\r",
-							"    pm.response.to.have.status(500);\r",
-							"});\r",
-							"\r",
-							"var responseJson = pm.response.json();\r",
-							"\r",
-							"pm.test(\"Response Schema validation: Accounts GET - 500\", function () {\r",
-							"    var result = tv4.validateResult(responseJson, schema);\r",
-							"    if(!(result.valid)){\r",
-							"        console.log(result);\r",
-							"    }\r",
-							"    pm.expect(result.valid).to.be.true;\r",
-							"});\r",
-							"\r",
-							"pm.test(\"Response time is less than 10 seconds\", () => {\r",
-							"  pm.expect(pm.response.responseTime).to.be.below(10000);\r",
-							"});"
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"method": "GET",
-				"header": [
-					{
-						"key": "Content-Type",
-						"value": "application/font-woff",
-						"type": "text"
-					},
-					{
-						"key": "x-institution-id",
-						"value": "{{x-institution-id}}",
+						"key": "Authorization",
+						"value": "Bearer {{accountsBearerToken}}",
 						"type": "text"
 					}
 				],
@@ -1278,9 +1043,9 @@
 						"exec": [
 							"const schema = {\r",
 							"    \"$schema\": \"http://json-schema.org/draft-06/schema#\",\r",
-							"    \"$ref\": \"#/definitions/Welcome4\",\r",
+							"    \"$ref\": \"#/definitions/cpAccount\",\r",
 							"    \"definitions\": {\r",
-							"        \"Welcome4\": {\r",
+							"        \"cpAccount\": {\r",
 							"            \"type\": \"object\",\r",
 							"            \"additionalProperties\": false,\r",
 							"            \"properties\": {\r",
@@ -1291,35 +1056,32 @@
 							"                    \"type\": \"string\",\r",
 							"                    \"format\": \"date-time\"\r",
 							"                },\r",
-							"                \"owners\": {\r",
-							"                    \"type\": \"array\",\r",
-							"                    \"items\": {\r",
-							"                        \"$ref\": \"#/definitions/Owner\"\r",
-							"                    }\r",
-							"                },\r",
 							"                \"status\": {\r",
 							"                    \"type\": \"string\"\r",
 							"                },\r",
 							"                \"balance\": {\r",
-							"                    \"type\": \"string\"\r",
+							"                    \"type\": \"number\"\r",
 							"                },\r",
 							"                \"assetSymbol\": {\r",
 							"                    \"type\": \"string\"\r",
 							"                },\r",
 							"                \"assetName\": {\r",
 							"                    \"type\": \"string\"\r",
+							"                },\r",
+							"                \"owners\": {\r",
+							"                    \"type\": \"array\",\r",
+							"                    \"items\": {\r",
+							"                        \"$ref\": \"#/definitions/Owner\"\r",
+							"                    }\r",
 							"                }\r",
 							"            },\r",
 							"            \"required\": [\r",
-							"                \"assetName\",\r",
-							"                \"assetSymbol\",\r",
 							"                \"balance\",\r",
-							"                \"created\",\r",
 							"                \"id\",\r",
 							"                \"owners\",\r",
 							"                \"status\"\r",
 							"            ],\r",
-							"            \"title\": \"Welcome4\"\r",
+							"            \"title\": \"cpAccount\"\r",
 							"        },\r",
 							"        \"Owner\": {\r",
 							"            \"type\": \"object\",\r",
@@ -1345,7 +1107,7 @@
 							"    pm.response.to.have.status(200);\r",
 							"});\r",
 							"\r",
-							"var responseJson = pm.response.json();\r",
+							"const responseJson = pm.response.json();\r",
 							"\r",
 							"pm.test(\"Response Schema validation: Account GET - 200\", function () {\r",
 							"    var result = tv4.validateResult(responseJson, schema);\r",
@@ -1375,16 +1137,21 @@
 						"key": "x-institution-id",
 						"value": "{{x-institution-id}}",
 						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{accountsBearerToken}}",
+						"type": "text"
 					}
 				],
 				"url": {
-					"raw": "{{cpAccountsBaseUrl}}/accounts/300002823056",
+					"raw": "{{cpAccountsBaseUrl}}/accounts/{{accountId}}",
 					"host": [
 						"{{cpAccountsBaseUrl}}"
 					],
 					"path": [
 						"accounts",
-						"300002823056"
+						"{{accountId}}"
 					]
 				}
 			},
@@ -1418,7 +1185,7 @@
 							"    pm.response.to.have.status(400);\r",
 							"});\r",
 							"\r",
-							"var responseJson = pm.response.json();\r",
+							"const responseJson = pm.response.json();\r",
 							"\r",
 							"pm.test(\"Response Schema validation: Account GET - 400\", function () {\r",
 							"    var result = tv4.validateResult(responseJson, schema);\r",
@@ -1447,18 +1214,22 @@
 					{
 						"key": "x-institution-id",
 						"value": "{{x-institution-id}}",
-						"type": "text",
-						"disabled": true
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{accountsBearerToken}}",
+						"type": "text"
 					}
 				],
 				"url": {
-					"raw": "{{cpAccountsBaseUrl}}/accounts/{{accountId}}",
+					"raw": "{{cpAccountsBaseUrl}}/accounts/{{invalidAccountId}}1",
 					"host": [
 						"{{cpAccountsBaseUrl}}"
 					],
 					"path": [
 						"accounts",
-						"{{accountId}}"
+						"{{invalidAccountId}}1"
 					]
 				}
 			},
@@ -1492,7 +1263,7 @@
 							"    pm.response.to.have.status(401);\r",
 							"});\r",
 							"\r",
-							"var responseJson = pm.response.json();\r",
+							"const responseJson = pm.response.json();\r",
 							"\r",
 							"pm.test(\"Response Schema validation: Account GET - 401\", function () {\r",
 							"    var result = tv4.validateResult(responseJson, schema);\r",
@@ -1519,8 +1290,8 @@
 						"type": "text"
 					},
 					{
-						"key": "x-institution-id",
-						"value": "{{x-institution-id}}",
+						"key": "Authorization",
+						"value": "Bearer {{accountsBearerToken}}",
 						"type": "text"
 					}
 				],
@@ -1545,27 +1316,43 @@
 					"script": {
 						"exec": [
 							"const schema = {\r",
-							"  \"$schema\": \"http://json-schema.org/draft-04/schema#\",\r",
-							"  \"type\": \"object\",\r",
-							"  \"properties\": {\r",
-							"    \"code\": {\r",
-							"      \"type\": \"string\"\r",
-							"    },\r",
-							"    \"message\": {\r",
-							"      \"type\": \"string\"\r",
+							"    \"$schema\": \"http://json-schema.org/draft-06/schema#\",\r",
+							"    \"$ref\": \"#/definitions/Welcome2\",\r",
+							"    \"definitions\": {\r",
+							"        \"Welcome2\": {\r",
+							"            \"type\": \"object\",\r",
+							"            \"additionalProperties\": false,\r",
+							"            \"properties\": {\r",
+							"                \"timestamp\": {\r",
+							"                    \"type\": \"string\",\r",
+							"                    \"format\": \"date-time\"\r",
+							"                },\r",
+							"                \"status\": {\r",
+							"                    \"type\": \"integer\"\r",
+							"                },\r",
+							"                \"error\": {\r",
+							"                    \"type\": \"string\"\r",
+							"                },\r",
+							"                \"path\": {\r",
+							"                    \"type\": \"string\"\r",
+							"                }\r",
+							"            },\r",
+							"            \"required\": [\r",
+							"                \"error\",\r",
+							"                \"path\",\r",
+							"                \"status\",\r",
+							"                \"timestamp\"\r",
+							"            ],\r",
+							"            \"title\": \"Welcome2\"\r",
+							"        }\r",
 							"    }\r",
-							"  },\r",
-							"  \"required\": [\r",
-							"    \"code\",\r",
-							"    \"message\"\r",
-							"  ]\r",
 							"};\r",
 							"\r",
 							"pm.test(\"Verify Status Code: Account GET - 403\", function () {\r",
 							"    pm.response.to.have.status(403);\r",
 							"});\r",
 							"\r",
-							"var responseJson = pm.response.json();\r",
+							"const responseJson = pm.response.json();\r",
 							"\r",
 							"pm.test(\"Response Schema validation: Account GET - 403\", function () {\r",
 							"    var result = tv4.validateResult(responseJson, schema);\r",
@@ -1594,6 +1381,11 @@
 					{
 						"key": "x-institution-id",
 						"value": "{{x-institution-id}}",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{invalidBearerToken}}",
 						"type": "text"
 					}
 				],
@@ -1638,7 +1430,7 @@
 							"    pm.response.to.have.status(404);\r",
 							"});\r",
 							"\r",
-							"var responseJson = pm.response.json();\r",
+							"const responseJson = pm.response.json();\r",
 							"\r",
 							"pm.test(\"Response Schema validation: Account GET - 404\", function () {\r",
 							"    var result = tv4.validateResult(responseJson, schema);\r",
@@ -1668,162 +1460,21 @@
 						"key": "x-institution-id",
 						"value": "{{x-institution-id}}",
 						"type": "text"
-					}
-				],
-				"url": {
-					"raw": "{{cpAccountsBaseUrl}}/accounts/{{accountId}}",
-					"host": [
-						"{{cpAccountsBaseUrl}}"
-					],
-					"path": [
-						"accounts",
-						"{{accountId}}"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "GetAccount_409",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"const schema = {\r",
-							"  \"$schema\": \"http://json-schema.org/draft-04/schema#\",\r",
-							"  \"type\": \"object\",\r",
-							"  \"properties\": {\r",
-							"    \"code\": {\r",
-							"      \"type\": \"string\"\r",
-							"    },\r",
-							"    \"message\": {\r",
-							"      \"type\": \"string\"\r",
-							"    }\r",
-							"  },\r",
-							"  \"required\": [\r",
-							"    \"code\",\r",
-							"    \"message\"\r",
-							"  ]\r",
-							"};\r",
-							"\r",
-							"pm.test(\"Verify Status Code: Account GET - 409\", function () {\r",
-							"    pm.response.to.have.status(409);\r",
-							"});\r",
-							"\r",
-							"var responseJson = pm.response.json();\r",
-							"\r",
-							"pm.test(\"Response Schema validation: Account GET - 409\", function () {\r",
-							"    var result = tv4.validateResult(responseJson, schema);\r",
-							"    if(!(result.valid)){\r",
-							"        console.log(result);\r",
-							"    }\r",
-							"    pm.expect(result.valid).to.be.true;\r",
-							"});\r",
-							"\r",
-							"pm.test(\"Response time is less than 10 seconds\", () => {\r",
-							"  pm.expect(pm.response.responseTime).to.be.below(10000);\r",
-							"});"
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"method": "GET",
-				"header": [
-					{
-						"key": "Content-Type",
-						"value": "application/json",
-						"type": "text"
 					},
 					{
-						"key": "x-institution-id",
-						"value": "{{x-institution-id}}",
+						"key": "Authorization",
+						"value": "Bearer {{accountsBearerToken}}",
 						"type": "text"
 					}
 				],
 				"url": {
-					"raw": "{{cpAccountsBaseUrl}}/accounts/{{accountId}}",
+					"raw": "{{cpAccountsBaseUrl}}/accounts/{{invalidAccountId}}",
 					"host": [
 						"{{cpAccountsBaseUrl}}"
 					],
 					"path": [
 						"accounts",
-						"{{accountId}}"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "GetAccount_500",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"const schema = {\r",
-							"  \"$schema\": \"http://json-schema.org/draft-04/schema#\",\r",
-							"  \"type\": \"object\",\r",
-							"  \"properties\": {\r",
-							"    \"code\": {\r",
-							"      \"type\": \"string\"\r",
-							"    },\r",
-							"    \"message\": {\r",
-							"      \"type\": \"string\"\r",
-							"    }\r",
-							"  },\r",
-							"  \"required\": [\r",
-							"    \"code\",\r",
-							"    \"message\"\r",
-							"  ]\r",
-							"};\r",
-							"\r",
-							"pm.test(\"Verify Status Code: Account GET - 500\", function () {\r",
-							"    pm.response.to.have.status(500);\r",
-							"});\r",
-							"\r",
-							"var responseJson = pm.response.json();\r",
-							"\r",
-							"pm.test(\"Response Schema validation: Account GET - 500\", function () {\r",
-							"    var result = tv4.validateResult(responseJson, schema);\r",
-							"    if(!(result.valid)){\r",
-							"        console.log(result);\r",
-							"    }\r",
-							"    pm.expect(result.valid).to.be.true;\r",
-							"});\r",
-							"\r",
-							"pm.test(\"Response time is less than 10 seconds\", () => {\r",
-							"  pm.expect(pm.response.responseTime).to.be.below(10000);\r",
-							"});"
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"method": "GET",
-				"header": [
-					{
-						"key": "Content-Type",
-						"value": "application/font-woff",
-						"type": "text"
-					},
-					{
-						"key": "x-institution-id",
-						"value": "{{x-institution-id}}",
-						"type": "text"
-					}
-				],
-				"url": {
-					"raw": "{{cpAccountsBaseUrl}}/accounts/{{accountId}}",
-					"host": [
-						"{{cpAccountsBaseUrl}}"
-					],
-					"path": [
-						"accounts",
-						"{{accountId}}"
+						"{{invalidAccountId}}"
 					]
 				}
 			},
@@ -1836,13 +1487,28 @@
 					"listen": "test",
 					"script": {
 						"exec": [
-							"const schema = {};\r",
+							"const schema = {\r",
+							"  \"$schema\": \"http://json-schema.org/draft-04/schema#\",\r",
+							"  \"type\": \"object\",\r",
+							"  \"properties\": {\r",
+							"    \"code\": {\r",
+							"      \"type\": \"string\"\r",
+							"    },\r",
+							"    \"message\": {\r",
+							"      \"type\": \"string\"\r",
+							"    }\r",
+							"  },\r",
+							"  \"required\": [\r",
+							"    \"code\",\r",
+							"    \"message\"\r",
+							"  ]\r",
+							"};\r",
 							"\r",
-							"pm.test(\"Verify Status Code: Accounts PUT - 200\", function () {\r",
-							"    pm.response.to.have.status(200);\r",
+							"pm.test(\"Verify Not Implimented: Accounts PUT - 200\", function () {\r",
+							"    pm.response.to.have.status(501);\r",
 							"});\r",
 							"\r",
-							"var responseJson = pm.response.json();\r",
+							"const responseJson = pm.response.json();\r",
 							"\r",
 							"pm.test(\"Response Schema validation: Accounts PUT - 200\", function () {\r",
 							"    var result = tv4.validateResult(responseJson, schema);\r",
@@ -1871,6 +1537,11 @@
 					{
 						"key": "x-institution-id",
 						"value": "{{x-institution-id}}",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{accountsBearerToken}}",
 						"type": "text"
 					}
 				],
@@ -1915,11 +1586,11 @@
 							"  ]\r",
 							"};\r",
 							"\r",
-							"pm.test(\"Verify Status Code: Accounts PUT - 400\", function () {\r",
-							"    pm.response.to.have.status(400);\r",
+							"pm.test(\"Verify Not Implimented: Accounts PUT - 400\", function () {\r",
+							"    pm.response.to.have.status(501);\r",
 							"});\r",
 							"\r",
-							"var responseJson = pm.response.json();\r",
+							"const responseJson = pm.response.json();\r",
 							"\r",
 							"pm.test(\"Response Schema validation: Accounts PUT - 400\", function () {\r",
 							"    var result = tv4.validateResult(responseJson, schema);\r",
@@ -1948,8 +1619,12 @@
 					{
 						"key": "x-institution-id",
 						"value": "{{x-institution-id}}",
-						"type": "text",
-						"disabled": true
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{accountsBearerToken}}",
+						"type": "text"
 					}
 				],
 				"body": {
@@ -1997,7 +1672,7 @@
 							"    pm.response.to.have.status(401);\r",
 							"});\r",
 							"\r",
-							"var responseJson = pm.response.json();\r",
+							"const responseJson = pm.response.json();\r",
 							"\r",
 							"pm.test(\"Response Schema validation: Accounts PUT - 401\", function () {\r",
 							"    var result = tv4.validateResult(responseJson, schema);\r",
@@ -2024,8 +1699,8 @@
 						"type": "text"
 					},
 					{
-						"key": "x-institution-id",
-						"value": "{{x-institution-id}}",
+						"key": "Authorization",
+						"value": "Bearer {{accountsBearerToken}}",
 						"type": "text"
 					}
 				],
@@ -2054,27 +1729,42 @@
 					"script": {
 						"exec": [
 							"const schema = {\r",
-							"  \"$schema\": \"http://json-schema.org/draft-04/schema#\",\r",
-							"  \"type\": \"object\",\r",
-							"  \"properties\": {\r",
-							"    \"code\": {\r",
-							"      \"type\": \"string\"\r",
-							"    },\r",
-							"    \"message\": {\r",
-							"      \"type\": \"string\"\r",
+							"    \"$schema\": \"http://json-schema.org/draft-06/schema#\",\r",
+							"    \"$ref\": \"#/definitions/Welcome2\",\r",
+							"    \"definitions\": {\r",
+							"        \"Welcome2\": {\r",
+							"            \"type\": \"object\",\r",
+							"            \"additionalProperties\": false,\r",
+							"            \"properties\": {\r",
+							"                \"timestamp\": {\r",
+							"                    \"type\": \"string\",\r",
+							"                    \"format\": \"date-time\"\r",
+							"                },\r",
+							"                \"status\": {\r",
+							"                    \"type\": \"integer\"\r",
+							"                },\r",
+							"                \"error\": {\r",
+							"                    \"type\": \"string\"\r",
+							"                },\r",
+							"                \"path\": {\r",
+							"                    \"type\": \"string\"\r",
+							"                }\r",
+							"            },\r",
+							"            \"required\": [\r",
+							"                \"error\",\r",
+							"                \"path\",\r",
+							"                \"status\",\r",
+							"                \"timestamp\"\r",
+							"            ],\r",
+							"            \"title\": \"Welcome2\"\r",
+							"        }\r",
 							"    }\r",
-							"  },\r",
-							"  \"required\": [\r",
-							"    \"code\",\r",
-							"    \"message\"\r",
-							"  ]\r",
 							"};\r",
-							"\r",
 							"pm.test(\"Verify Status Code: Accounts PUT - 403\", function () {\r",
 							"    pm.response.to.have.status(403);\r",
 							"});\r",
 							"\r",
-							"var responseJson = pm.response.json();\r",
+							"const responseJson = pm.response.json();\r",
 							"\r",
 							"pm.test(\"Response Schema validation: Accounts PUT - 403\", function () {\r",
 							"    var result = tv4.validateResult(responseJson, schema);\r",
@@ -2103,6 +1793,11 @@
 					{
 						"key": "x-institution-id",
 						"value": "{{x-institution-id}}",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{invalidBearerToken}}",
 						"type": "text"
 					}
 				],
@@ -2147,11 +1842,11 @@
 							"  ]\r",
 							"};\r",
 							"\r",
-							"pm.test(\"Verify Status Code: Accounts PUT - 404\", function () {\r",
-							"    pm.response.to.have.status(404);\r",
+							"pm.test(\"Verify Not Implimented: Accounts PUT - 404\", function () {\r",
+							"    pm.response.to.have.status(501);\r",
 							"});\r",
 							"\r",
-							"var responseJson = pm.response.json();\r",
+							"const responseJson = pm.response.json();\r",
 							"\r",
 							"pm.test(\"Response Schema validation: Accounts PUT - 404\", function () {\r",
 							"    var result = tv4.validateResult(responseJson, schema);\r",
@@ -2181,159 +1876,10 @@
 						"key": "x-institution-id",
 						"value": "{{x-institution-id}}",
 						"type": "text"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n    \"id\": \"829553c1cca04fa081529ad9194da788\",\r\n    \"created\": \"2021-06-08T18:08:44Z\",\r\n    \"owners\": [\r\n        {\r\n            \"userId\": \"bc58352026824e85b80c369e7db091ab\",\r\n            \"primary\": true\r\n        }\r\n    ],\r\n    \"status\": \"open\",\r\n    \"balance\": \"0.12345678\",\r\n    \"assetSymbol\": \"btc\",\r\n    \"assetName\": \"Bitcoin\"\r\n}"
-				},
-				"url": {
-					"raw": "{{cpAccountsBaseUrl}}/accounts/{{putAccountId}}",
-					"host": [
-						"{{cpAccountsBaseUrl}}"
-					],
-					"path": [
-						"accounts",
-						"{{putAccountId}}"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "PutAccounts_409",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"const schema = {\r",
-							"  \"$schema\": \"http://json-schema.org/draft-04/schema#\",\r",
-							"  \"type\": \"object\",\r",
-							"  \"properties\": {\r",
-							"    \"code\": {\r",
-							"      \"type\": \"string\"\r",
-							"    },\r",
-							"    \"message\": {\r",
-							"      \"type\": \"string\"\r",
-							"    }\r",
-							"  },\r",
-							"  \"required\": [\r",
-							"    \"code\",\r",
-							"    \"message\"\r",
-							"  ]\r",
-							"};\r",
-							"\r",
-							"pm.test(\"Verify Status Code: Accounts PUT - 409\", function () {\r",
-							"    pm.response.to.have.status(409);\r",
-							"});\r",
-							"\r",
-							"var responseJson = pm.response.json();\r",
-							"\r",
-							"pm.test(\"Response Schema validation: Accounts PUT - 409\", function () {\r",
-							"    var result = tv4.validateResult(responseJson, schema);\r",
-							"    if(!(result.valid)){\r",
-							"        console.log(result);\r",
-							"    }\r",
-							"    pm.expect(result.valid).to.be.true;\r",
-							"});\r",
-							"\r",
-							"pm.test(\"Response time is less than 10 seconds\", () => {\r",
-							"  pm.expect(pm.response.responseTime).to.be.below(10000);\r",
-							"});"
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"method": "PUT",
-				"header": [
-					{
-						"key": "Content-Type",
-						"value": "application/json",
-						"type": "text"
 					},
 					{
-						"key": "x-institution-id",
-						"value": "{{x-institution-id}}",
-						"type": "text"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n    \"id\": \"829553c1cca04fa081529ad9194da788\",\r\n    \"created\": \"2021-06-08T18:08:44Z\",\r\n    \"owners\": [\r\n        {\r\n            \"userId\": \"bc58352026824e85b80c369e7db091ab\",\r\n            \"primary\": true\r\n        }\r\n    ],\r\n    \"status\": \"open\",\r\n    \"balance\": \"0.12345678\",\r\n    \"assetSymbol\": \"btc\",\r\n    \"assetName\": \"Bitcoin\"\r\n}"
-				},
-				"url": {
-					"raw": "{{cpAccountsBaseUrl}}/accounts/{{putAccountId}}",
-					"host": [
-						"{{cpAccountsBaseUrl}}"
-					],
-					"path": [
-						"accounts",
-						"{{putAccountId}}"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "PutAccounts_500",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"const schema = {\r",
-							"  \"$schema\": \"http://json-schema.org/draft-04/schema#\",\r",
-							"  \"type\": \"object\",\r",
-							"  \"properties\": {\r",
-							"    \"code\": {\r",
-							"      \"type\": \"string\"\r",
-							"    },\r",
-							"    \"message\": {\r",
-							"      \"type\": \"string\"\r",
-							"    }\r",
-							"  },\r",
-							"  \"required\": [\r",
-							"    \"code\",\r",
-							"    \"message\"\r",
-							"  ]\r",
-							"};\r",
-							"\r",
-							"pm.test(\"Verify Status Code: Accounts PUT - 500\", function () {\r",
-							"    pm.response.to.have.status(500);\r",
-							"});\r",
-							"\r",
-							"var responseJson = pm.response.json();\r",
-							"\r",
-							"pm.test(\"Response Schema validation: Accounts PUT - 500\", function () {\r",
-							"    var result = tv4.validateResult(responseJson, schema);\r",
-							"    if(!(result.valid)){\r",
-							"        console.log(result);\r",
-							"    }\r",
-							"    pm.expect(result.valid).to.be.true;\r",
-							"});\r",
-							"\r",
-							"pm.test(\"Response time is less than 10 seconds\", () => {\r",
-							"  pm.expect(pm.response.responseTime).to.be.below(10000);\r",
-							"});"
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"method": "PUT",
-				"header": [
-					{
-						"key": "Content-Type",
-						"value": "application/font-woff",
-						"type": "text"
-					},
-					{
-						"key": "x-institution-id",
-						"value": "{{x-institution-id}}",
+						"key": "Authorization",
+						"value": "Bearer {{accountsBearerToken}}",
 						"type": "text"
 					}
 				],
@@ -2414,7 +1960,7 @@
 							"    pm.response.to.have.status(200);\r",
 							"});\r",
 							"\r",
-							"var responseJson = pm.response.json();\r",
+							"const responseJson = pm.response.json();\r",
 							"\r",
 							"pm.test(\"Response Schema validation: Accounts Restrictions GET - 200\", function () {\r",
 							"    var result = tv4.validateResult(responseJson, schema);\r",
@@ -2447,6 +1993,11 @@
 					{
 						"key": "x-institution-id",
 						"value": "{{x-institution-id}}",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{accountsBearerToken}}",
 						"type": "text"
 					}
 				],
@@ -2523,7 +2074,7 @@
 							"    pm.response.to.have.status(200);\r",
 							"});\r",
 							"\r",
-							"var responseJson = pm.response.json();\r",
+							"const responseJson = pm.response.json();\r",
 							"\r",
 							"pm.test(\"Response Schema validation: Accounts Restrictions GET - 200\", function () {\r",
 							"    var result = tv4.validateResult(responseJson, schema);\r",
@@ -2557,6 +2108,11 @@
 					{
 						"key": "x-institution-id",
 						"value": "{{x-institution-id}}",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{accountsBearerToken}}",
 						"type": "text"
 					}
 				],
@@ -2633,7 +2189,7 @@
 							"    pm.response.to.have.status(200);\r",
 							"});\r",
 							"\r",
-							"var responseJson = pm.response.json();\r",
+							"const responseJson = pm.response.json();\r",
 							"\r",
 							"pm.test(\"Response Schema validation: Accounts Restrictions GET - 200\", function () {\r",
 							"    var result = tv4.validateResult(responseJson, schema);\r",
@@ -2667,6 +2223,11 @@
 					{
 						"key": "x-institution-id",
 						"value": "{{x-institution-id}}",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{accountsBearerToken}}",
 						"type": "text"
 					}
 				],
@@ -2711,7 +2272,7 @@
 							"    pm.response.to.have.status(400);\r",
 							"});\r",
 							"\r",
-							"var responseJson = pm.response.json();\r",
+							"const responseJson = pm.response.json();\r",
 							"\r",
 							"pm.test(\"Response Schema validation: Accounts Restrictions GET - 400\", function () {\r",
 							"    var result = tv4.validateResult(responseJson, schema);\r",
@@ -2741,16 +2302,21 @@
 						"key": "x-institution-id",
 						"value": "{{x-institution-id}}",
 						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{accountsBearerToken}}",
+						"type": "text"
 					}
 				],
 				"url": {
-					"raw": "{{cpAccountsBaseUrl}}/restrictions/{{restrictionsAccountId_one}}",
+					"raw": "{{cpAccountsBaseUrl}}/restrictions/{{restrictionsAccountId_one}}1",
 					"host": [
 						"{{cpAccountsBaseUrl}}"
 					],
 					"path": [
 						"restrictions",
-						"{{restrictionsAccountId_one}}"
+						"{{restrictionsAccountId_one}}1"
 					]
 				}
 			},
@@ -2784,7 +2350,7 @@
 							"    pm.response.to.have.status(401);\r",
 							"});\r",
 							"\r",
-							"var responseJson = pm.response.json();\r",
+							"const responseJson = pm.response.json();\r",
 							"\r",
 							"pm.test(\"Response Schema validation: Accounts Restrictions GET - 401\", function () {\r",
 							"    var result = tv4.validateResult(responseJson, schema);\r",
@@ -2809,6 +2375,11 @@
 						"key": "Content-Type",
 						"value": "application/json",
 						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{accountsBearerToken}}",
+						"type": "text"
 					}
 				],
 				"url": {
@@ -2832,27 +2403,43 @@
 					"script": {
 						"exec": [
 							"const schema = {\r",
-							"  \"$schema\": \"http://json-schema.org/draft-04/schema#\",\r",
-							"  \"type\": \"object\",\r",
-							"  \"properties\": {\r",
-							"    \"code\": {\r",
-							"      \"type\": \"string\"\r",
-							"    },\r",
-							"    \"message\": {\r",
-							"      \"type\": \"string\"\r",
+							"    \"$schema\": \"http://json-schema.org/draft-06/schema#\",\r",
+							"    \"$ref\": \"#/definitions/Welcome2\",\r",
+							"    \"definitions\": {\r",
+							"        \"Welcome2\": {\r",
+							"            \"type\": \"object\",\r",
+							"            \"additionalProperties\": false,\r",
+							"            \"properties\": {\r",
+							"                \"timestamp\": {\r",
+							"                    \"type\": \"string\",\r",
+							"                    \"format\": \"date-time\"\r",
+							"                },\r",
+							"                \"status\": {\r",
+							"                    \"type\": \"integer\"\r",
+							"                },\r",
+							"                \"error\": {\r",
+							"                    \"type\": \"string\"\r",
+							"                },\r",
+							"                \"path\": {\r",
+							"                    \"type\": \"string\"\r",
+							"                }\r",
+							"            },\r",
+							"            \"required\": [\r",
+							"                \"error\",\r",
+							"                \"path\",\r",
+							"                \"status\",\r",
+							"                \"timestamp\"\r",
+							"            ],\r",
+							"            \"title\": \"Welcome2\"\r",
+							"        }\r",
 							"    }\r",
-							"  },\r",
-							"  \"required\": [\r",
-							"    \"code\",\r",
-							"    \"message\"\r",
-							"  ]\r",
 							"};\r",
 							"\r",
 							"pm.test(\"Verify Status Code: Accounts Restrictions GET - 403\", function () {\r",
 							"    pm.response.to.have.status(403);\r",
 							"});\r",
 							"\r",
-							"var responseJson = pm.response.json();\r",
+							"const responseJson = pm.response.json();\r",
 							"\r",
 							"pm.test(\"Response Schema validation: Accounts Restrictions GET - 403\", function () {\r",
 							"    var result = tv4.validateResult(responseJson, schema);\r",
@@ -2882,16 +2469,21 @@
 						"key": "x-institution-id",
 						"value": "{{x-institution-id}}",
 						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{invalidBearerToken}}",
+						"type": "text"
 					}
 				],
 				"url": {
-					"raw": "{{cpAccountsBaseUrl}}/restrictions/{{restrictionsAccountId}}",
+					"raw": "{{cpAccountsBaseUrl}}/restrictions/{{restrictionsAccountId_one}}",
 					"host": [
 						"{{cpAccountsBaseUrl}}"
 					],
 					"path": [
 						"restrictions",
-						"{{restrictionsAccountId}}"
+						"{{restrictionsAccountId_one}}"
 					]
 				}
 			},
@@ -2925,7 +2517,7 @@
 							"    pm.response.to.have.status(404);\r",
 							"});\r",
 							"\r",
-							"var responseJson = pm.response.json();\r",
+							"const responseJson = pm.response.json();\r",
 							"\r",
 							"pm.test(\"Response Schema validation: Accounts Restrictions GET - 404\", function () {\r",
 							"    var result = tv4.validateResult(responseJson, schema);\r",
@@ -2955,16 +2547,21 @@
 						"key": "x-institution-id",
 						"value": "{{x-institution-id}}",
 						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{accountsBearerToken}}",
+						"type": "text"
 					}
 				],
 				"url": {
-					"raw": "{{cpAccountsBaseUrl}}/restrictions/{{restrictionsAccountId_one}}1",
+					"raw": "{{cpAccountsBaseUrl}}/restrictions/{{restrictionsAccountId_DoesntExist}}",
 					"host": [
 						"{{cpAccountsBaseUrl}}"
 					],
 					"path": [
 						"restrictions",
-						"{{restrictionsAccountId_one}}1"
+						"{{restrictionsAccountId_DoesntExist}}"
 					]
 				}
 			},
@@ -2977,7 +2574,27 @@
 			"script": {
 				"type": "text/javascript",
 				"exec": [
-					""
+					"const AUTHBODY = 'client_id=7168155c594e45fbabf9e8fe1560aae6&client_secret=4ce94149b9244c59811953477d4db499&grant_type=client_credentials'",
+					"",
+					"const TOKENPOSTREQUEST = {",
+					"    url: \"https://ncrdev-dev.apigee.net/security/access-key-authentication/oauth2/token\",",
+					"    method: 'POST',",
+					"    header: { 'Content-type': 'application/x-www-form-urlencoded' },",
+					"    body: {",
+					"        mode: 'raw',",
+					"        raw: AUTHBODY",
+					"    }",
+					"}; ",
+					"",
+					"pm.sendRequest(TOKENPOSTREQUEST, function (err, res) {",
+					"    if (err) {",
+					"        console.log(err);",
+					"    }",
+					"    else {",
+					"        var jsonResponseData = res.json();",
+					"        pm.environment.set(\"accountsBearerToken\", jsonResponseData.access_token);",
+					"    }",
+					"});"
 				]
 			}
 		},
@@ -2986,27 +2603,15 @@
 			"script": {
 				"type": "text/javascript",
 				"exec": [
-					""
+					"var possibleErrorKeywords = pm.globals.get( \"errorKeywords\").split(\"~\");",
+					"",
+					"pm.test(\"Verify stack trace\", () => {",
+					"    for (var i = 0; i < possibleErrorKeywords.length; i++) {",
+					"        pm.expect(pm.response.text()).to.not.include(possibleErrorKeywords[i]);  ",
+					"    }      ",
+					"});"
 				]
 			}
-		}
-	],
-	"variable": [
-		{
-			"key": "baseUrl",
-			"value": "https://tbd"
-		},
-		{
-			"key": "relationshipInstitutionId",
-			"value": ""
-		},
-		{
-			"key": "cryptoProviderId",
-			"value": ""
-		},
-		{
-			"key": "userId",
-			"value": ""
 		}
 	]
 }

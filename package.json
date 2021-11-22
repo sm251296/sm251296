@@ -1,23 +1,26 @@
 {
-  "name": "hhs-userapi-automation",
+  "name": "Nydig Provider",
   "version": "1.0.0",
-  "description": "To run hhs user api tests locally",
+  "description": "To run nidig user api tests",
   "main": "newman-run.js",
   "dependencies": {
-    "balanced-match": "^1.0.0",
+    "balanced-match": "^1.0.2",
     "newman": "^4.5.0",
     "newman-reporter-allure": "^1.0.7",
-    "newman-reporter-html": "^1.0.3",
-    "newman-reporter-htmlextra": "^1.5.5",
-    "newman-reporter-json-summary": "^1.0.9"
+    "newman-reporter-html": "^1.0.5",
+    "newman-reporter-htmlextra": "^1.22.3",
+    "newman-reporter-json-summary": "^1.0.14",
+    "request": "^2.88.2",
+    "request-promise": "^4.2.6"
   },
   "devDependencies": {},
   "scripts": {
     "test": "./local_SetUp.ps1"
   },
   "keywords": [
-    "hhs",
-    "userapi",
+    "api",
+    "nydig",
+    "ncr",
     "atuomation"
   ],
   "author": "satish muraharisetti",

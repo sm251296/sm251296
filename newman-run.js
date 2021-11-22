@@ -1,13 +1,21 @@
-var i = 0,
-  fs = require('fs'),
+const fs = require('fs'),
   sm = require('./summaryMerger.js'),
   newman = require('newman'),
+  path = require('path'),
   _ = require('lodash');
 
-var iterationData = []; // initialize empty array to run once
-var fileNames = new Set(); // to keep list of files that are modified
-var itrCount = ""; // keep count of iteration
+var iterationData = [], // initialize empty array to run once
+  fileNames = new Set(), // to keep list of files that are modified
+  itrCount = "", // keep count of iteration
+  i = 0,
+  cleanFolder = true,
+  collectionName;
+
 if (process.argv[5] !== undefined) {
+  cleanFolder = process.argv[5];
+}
+
+if (process.argv[6] !== undefined) {
   iterationData = require(process.argv[5]);
 }
 
@@ -39,13 +47,46 @@ function datetimestamp()
 	return sToday;
 }
 
-var resultsFolder = "Postman_RunResults_" + datetimestamp();
+collectionName = process.argv[2].match(/(?<=.\/)(.*)(?=.postman_collection.json)/s)[0];
+
+var resultsFolder = collectionName + "_Postman_RunResults_" + datetimestamp();
 fs.mkdirSync(resultsFolder);
+
+fs.access("./newman", function(error) {
+  if (error) {
+    console.log("### Created 'newman' results folder ###");
+    fs.mkdirSync("newman");
+  } else {
+    if (cleanFolder === true) {
+      console.log("### Cleaning 'newman' results folder ###");
+      fs.readdir("newman", (err, files) => {
+        if (err) throw err;
+
+        for (const file of files) {
+          fs.unlink(path.join("newman", file), err => {
+            if (err) throw err;
+          });
+        }
+      });
+    }
+  }
+});
 
 newman.run({
   collection: require(process.argv[2]),
   reporters: ['html', 'htmlextra', 'json-summary', 'allure'],
-  global: require(process.argv[3]),
+  reporter: {
+        html: {
+            export: './' + resultsFolder + '/' + collectionName + '_htmlResults.html'
+		},
+        htmlextra: {
+            export: './' + resultsFolder + '/' + collectionName + '_htmlExtraResults.html'
+		},
+        'json-summary': {
+            export: './newman/' + collectionName + '.json'
+		}		
+  },
+  globals: require(process.argv[3]),
   environment: require(process.argv[4]),
   iterationData: iterationData,
 }, function (err, summary) {
@@ -60,7 +101,7 @@ newman.run({
     }
   });
 }).on('start', function (err, args) { // on start of run, log to console
-  console.log('running a collection');
+  console.log('\n\n### Running ' + collectionName + ' collection ###');
   fs.appendFileSync('./newman/consoleLogger.log',
     `*** ${process.argv[2]} console log *** \n\n`,
     function (error) {
@@ -72,7 +113,7 @@ newman.run({
   if (err) {
     return console.error(err);
   }
-  console.log(summary.item.name);
+  // console.log(" =summary.item.name >>>>>>>>>>>> " + summary.item.name);
   if (summary.response.code !== 204) {
     var responseHeaders = JSON.parse(JSON.stringify(summary.response));
     var contentType = getContentType(responseHeaders);
@@ -82,7 +123,18 @@ newman.run({
       if (contentType === 'application/json') {
         responseBuffer = JSON.stringify(JSON.parse(responseBuffer), null, 4)
       }
-      var responseFileName = './' + resultsFolder +'/' + `${summary.item.name.replace('/', "-")}_response.json`;
+	  //console.log(summary);
+	  // console.log(" -summary.item >>>>>>>>>>>> " + summary.item);
+      // var responseFileName = './' + resultsFolder +'/' + `${summary.item.name.replace('/', "-")}_response.json`;
+	  
+	  var responseFileName;
+	  if(summary.item.name === 'undefined' || summary.item.name == null){
+		  responseFileName = datetimestamp() + '_response.json';
+	  }
+	  else {
+		  responseFileName = `${summary.item.name.replace('/', "-")}_response.json`;
+	  }
+      responseFileName = './' + resultsFolder +'/' + responseFileName;
       fileNames.add(responseFileName);
       if (fs.existsSync(responseFileName)) {
         fs.appendFileSync(responseFileName, ',\n');
@@ -99,7 +151,15 @@ newman.run({
     }
   }
   
-  var summaryFileName = './' + resultsFolder +'/' + `${summary.item.name.replace('/', "-")}_summary.json`;
+  var summaryFileName;
+  if(summary.item.name === 'undefined' || summary.item.name == null){
+    summaryFileName = datetimestamp() + '_summary.json';
+  }
+  else {
+    summaryFileName = `${summary.item.name.replace('/', "-")}_summary.json`;
+  }
+	  
+  summaryFileName = './' + resultsFolder +'/' + summaryFileName;
   fileNames.add(summaryFileName);
   if (fs.existsSync(summaryFileName)) {
     fs.appendFileSync(summaryFileName, ',\n');
@@ -126,7 +186,7 @@ newman.run({
   if (err || summary.error) {
     console.error('collection run encountered an error.');
   } else {
-    console.log('collection run completed.');
+    console.log('### Collection run completed. ###');
   }
   if (itrCount > 1) {
     _.forEach(Array.from(fileNames), function (fileName) {
