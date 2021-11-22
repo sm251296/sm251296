@@ -28,6 +28,7 @@ jobs:
         cache: 'npm'
         cache-dependency-path: package-lock.json
     - run: npm install
+    - run: npm update
     - run: npm audit fix
     - run: node "./newman-run.js" "./NydigProvider-MarketData.postman_collection.json" "./NCR.postman_globals.json" "./NydigProvider_dev.postman_environment.json"
     - run: node ./slackApiNotification.js 'Nydig'
