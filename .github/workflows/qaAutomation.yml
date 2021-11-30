@@ -42,8 +42,6 @@ jobs:
         mkdir newman
         dir
         echo ===================================
-        eco dir
-        echo -----------------------------------
         cd newman
         echo newman
         node "./newman-run.js" "./NydigProvider-MarketData.postman_collection.json" "./NCR.postman_globals.json" "./NydigProvider_Dev.postman_environment.json"
