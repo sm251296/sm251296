@@ -34,7 +34,7 @@ jobs:
         cd QaAutomation
         npm install
         npm install newman
-        npm install htmlextra
+        npm install newman-reporter-htmlextra
     - name: Running NydigProvider-MarketData
       run: |
         cd QaAutomation
