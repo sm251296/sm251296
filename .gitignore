@@ -1,1 +1,6 @@
 node_modules/*
+QaAutomation/allure-report/*
+QaAutomation/node_modules/*
+QaAutomation/allure-results/*
+QaAutomation/NydigProvider-*/*
+QaAutomation/newman/*
