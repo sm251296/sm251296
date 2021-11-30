@@ -34,9 +34,11 @@ jobs:
         cd QaAutomation
         npm install
         npm install newman
+        npm install htmlextra
     - name: Running NydigProvider-MarketData
       run: |
         cd QaAutomation
+        mkdir newman
         node "./newman-run.js" "./NydigProvider-MarketData.postman_collection.json" "./NCR.postman_globals.json" "./NydigProvider_Dev.postman_environment.json"
       
       
