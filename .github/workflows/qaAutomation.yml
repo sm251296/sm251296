@@ -32,7 +32,6 @@ jobs:
     - name: Install dependencies
       run: |
         cd QaAutomation
-        npm run build
         npm install
         npm install newman
         npm install newman-reporter-htmlextra
