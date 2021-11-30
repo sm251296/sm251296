@@ -32,7 +32,7 @@ jobs:
     - name: Install dependencies
       run: |
         cd QaAutomation
-        npm ci
+        npm install
     - name: Running NydigProvider-MarketData
       run: node "./newman-run.js" "./NydigProvider-MarketData.postman_collection.json" "./NCR.postman_globals.json" "./NydigProvider_dev.postman_environment.json"
       
