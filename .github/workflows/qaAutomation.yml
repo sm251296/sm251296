@@ -51,6 +51,7 @@ jobs:
         cd newman
         echo newman
         cd ..
+        dir
         node "./newman-run.js" "./NydigProvider-MarketData.postman_collection.json" "./NCR.postman_globals.json" "./NydigProvider_Dev.postman_environment.json"
       
       
