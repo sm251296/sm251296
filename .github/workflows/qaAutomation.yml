@@ -45,6 +45,8 @@ jobs:
     - name: Running NydigProvider-MarketData
       run: |
         cd QaAutomation
+        dir
+        echo +++++++++++++++++++++++++++++++++++
         mkdir newman
         dir
         echo ===================================
