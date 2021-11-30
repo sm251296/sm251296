@@ -28,5 +28,5 @@ jobs:
         cache: 'npm'
         cache-dependency-path: package-lock.json
     - run: npm install
-    - run: node "./newman-run.js" "./QaAutomation/NydigProvider-MarketData.postman_collection.json" "./QaAutomation/NCR.postman_globals.json" "./QaAutomation/NydigProvider_dev.postman_environment.json"
+    - run: node "./QaAutomation/newman-run.js" "./QaAutomation/NydigProvider-MarketData.postman_collection.json" "./QaAutomation/NCR.postman_globals.json" "./QaAutomation/NydigProvider_dev.postman_environment.json"
 
