@@ -34,6 +34,8 @@ jobs:
         cd QaAutomation
         npm install
     - name: Running NydigProvider-MarketData
-      run: node "./newman-run.js" "./NydigProvider-MarketData.postman_collection.json" "./NCR.postman_globals.json" "./NydigProvider_dev.postman_environment.json"
+      run: |
+        cd QaAutomation
+        node "./newman-run.js" "./NydigProvider-MarketData.postman_collection.json" "./NCR.postman_globals.json" "./NydigProvider_dev.postman_environment.json"
       
       
