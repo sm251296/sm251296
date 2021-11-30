@@ -1,0 +1,10 @@
+{
+  "name": "Satish M",
+  "type": "LocalTesting",
+  "url": "http://example.org",
+  "buildOrder": 13,
+  "buildName": "allure-report_deploy#13",
+  "buildUrl": "http://example.org/build#13",
+  "reportUrl": "http://example.org/build#13/AllureReport",
+  "reportName": "Currency Provider API test execution report"
+}

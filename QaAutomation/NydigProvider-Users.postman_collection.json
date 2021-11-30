@@ -100,8 +100,8 @@
 						"type": "text"
 					},
 					{
-						"key": "x-institution-id",
-						"value": "{{x-institution-id}}",
+						"key": "x-tenant-id",
+						"value": "{{x-tenant-id}}",
 						"type": "text"
 					},
 					{
@@ -181,8 +181,8 @@
 						"type": "text"
 					},
 					{
-						"key": "x-institution-id",
-						"value": "{{x-institution-id}}",
+						"key": "x-tenant-id",
+						"value": "{{x-tenant-id}}",
 						"type": "text"
 					},
 					{
@@ -353,8 +353,8 @@
 						"type": "text"
 					},
 					{
-						"key": "x-institution-id",
-						"value": "{{x-institution-id}}",
+						"key": "x-tenant-id",
+						"value": "{{x-tenant-id}}",
 						"type": "text"
 					},
 					{
@@ -434,8 +434,8 @@
 						"type": "text"
 					},
 					{
-						"key": "x-institution-id",
-						"value": "{{x-institution-id}}",
+						"key": "x-tenant-id",
+						"value": "{{x-tenant-id}}",
 						"type": "text"
 					},
 					{
@@ -515,8 +515,8 @@
 						"type": "text"
 					},
 					{
-						"key": "x-institution-id",
-						"value": "{{x-institution-id}}",
+						"key": "x-tenant-id",
+						"value": "{{x-tenant-id}}",
 						"type": "text"
 					},
 					{
@@ -625,8 +625,8 @@
 						"type": "text"
 					},
 					{
-						"key": "x-institution-id",
-						"value": "{{x-institution-id}}",
+						"key": "x-tenant-id",
+						"value": "{{x-tenant-id}}",
 						"type": "text"
 					},
 					{
@@ -703,8 +703,8 @@
 						"type": "text"
 					},
 					{
-						"key": "x-institution-id",
-						"value": "{{x-institution-id}}",
+						"key": "x-tenant-id",
+						"value": "{{x-tenant-id}}",
 						"type": "text"
 					},
 					{
@@ -869,8 +869,8 @@
 						"type": "text"
 					},
 					{
-						"key": "x-institution-id",
-						"value": "{{x-institution-id}}",
+						"key": "x-tenant-id",
+						"value": "{{x-tenant-id}}",
 						"type": "text"
 					},
 					{
@@ -947,8 +947,8 @@
 						"type": "text"
 					},
 					{
-						"key": "x-institution-id",
-						"value": "{{x-institution-id}}1",
+						"key": "x-tenant-id",
+						"value": "{{x-tenant-id}}1",
 						"type": "text"
 					},
 					{
@@ -1004,8 +1004,8 @@
 						"type": "text"
 					},
 					{
-						"key": "x-institution-id",
-						"value": "{{x-institution-id}}",
+						"key": "x-tenant-id",
+						"value": "{{x-tenant-id}}",
 						"type": "text"
 					},
 					{
@@ -1086,8 +1086,8 @@
 						"type": "text"
 					},
 					{
-						"key": "x-institution-id",
-						"value": "{{x-institution-id}}",
+						"key": "x-tenant-id",
+						"value": "{{x-tenant-id}}",
 						"type": "text"
 					},
 					{
@@ -1261,8 +1261,8 @@
 						"type": "text"
 					},
 					{
-						"key": "x-institution-id",
-						"value": "{{x-institution-id}}",
+						"key": "x-tenant-id",
+						"value": "{{x-tenant-id}}",
 						"type": "text"
 					},
 					{
@@ -1345,8 +1345,8 @@
 						"type": "text"
 					},
 					{
-						"key": "x-institution-id",
-						"value": "{{x-institution-id}}",
+						"key": "x-tenant-id",
+						"value": "{{x-tenant-id}}",
 						"type": "text"
 					},
 					{
@@ -1430,8 +1430,8 @@
 						"type": "text"
 					},
 					{
-						"key": "x-institution-id",
-						"value": "{{x-institution-id}}",
+						"key": "x-tenant-id",
+						"value": "{{x-tenant-id}}",
 						"type": "text"
 					},
 					{
@@ -1511,8 +1511,8 @@
 						"type": "text"
 					},
 					{
-						"key": "x-institution-id",
-						"value": "{{x-institution-id}}",
+						"key": "x-tenant-id",
+						"value": "{{x-tenant-id}}",
 						"type": "text"
 					},
 					{
@@ -1584,7 +1584,7 @@
 				}
 			],
 			"request": {
-				"method": "POST_401",
+				"method": "POST",
 				"header": [
 					{
 						"key": "Content-Type",
@@ -1597,10 +1597,6 @@
 						"type": "text"
 					}
 				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n    \"dob\": \"1985-01-01\",\r\n    \"stateProvinceRegion\": \"IL\",\r\n    \"ageCheckOverride\": false\r\n}"
-				},
 				"url": {
 					"raw": "{{cpUsersBaseUrl}}/eligibility",
 					"host": [
@@ -1684,8 +1680,8 @@
 						"type": "text"
 					},
 					{
-						"key": "x-institution-id",
-						"value": "{{x-institution-id}}",
+						"key": "x-tenant-id",
+						"value": "{{x-tenant-id}}",
 						"type": "text"
 					},
 					{
@@ -1765,8 +1761,8 @@
 						"type": "text"
 					},
 					{
-						"key": "x-institution-id",
-						"value": "{{x-institution-id}}",
+						"key": "x-tenant-id",
+						"value": "{{x-tenant-id}}",
 						"type": "text"
 					},
 					{
@@ -1843,18 +1839,6 @@
 		}
 	],
 	"variable": [
-		{
-			"key": "relationshipInstitutionId",
-			"value": ""
-		},
-		{
-			"key": "cryptoProviderId",
-			"value": ""
-		},
-		{
-			"key": "uniqueUserId",
-			"value": ""
-		},
 		{
 			"key": "legalName",
 			"value": ""
