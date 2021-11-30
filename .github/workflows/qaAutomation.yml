@@ -33,6 +33,7 @@ jobs:
       run: |
         cd QaAutomation
         npm install
+        npm install newman
     - name: Running NydigProvider-MarketData
       run: |
         cd QaAutomation
