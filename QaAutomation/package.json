@@ -1,5 +1,5 @@
 {
-  "name": "Nydig Provider",
+  "name": "nydig_provider",
   "version": "1.0.0",
   "description": "To run nidig user api tests",
   "main": "newman-run.js",

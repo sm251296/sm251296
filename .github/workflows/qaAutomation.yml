@@ -32,15 +32,21 @@ jobs:
     - name: Install dependencies
       run: |
         cd QaAutomation
+        npm run build
         npm install
         npm install newman
         npm install newman-reporter-htmlextra
+        npm audit fix
     - name: Running NydigProvider-MarketData
       run: |
         cd QaAutomation
         mkdir newman
         dir
+        echo ===================================
         eco dir
+        echo -----------------------------------
+        cd newman
+        echo newman
         node "./newman-run.js" "./NydigProvider-MarketData.postman_collection.json" "./NCR.postman_globals.json" "./NydigProvider_Dev.postman_environment.json"
       
       
