@@ -5,7 +5,7 @@ module.exports = {
   merge: function index() {
     const baseDirectory = './newman/';
 
-    var matchedFiles = fs.readdirSync('.\\newman')
+    var matchedFiles = fs.readdirSync('.\newman')
       .filter(fn => fn.endsWith('.json'));
 
     if (matchedFiles.length === 0) {
