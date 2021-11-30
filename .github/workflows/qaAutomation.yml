@@ -34,7 +34,13 @@ jobs:
         cd QaAutomation
         npm install
         npm install newman
+        npm install balanced-match
+        npm install newman-reporter-allure
+        npm install newman-reporter-html
         npm install newman-reporter-htmlextra
+        npm install newman-reporter-json-summary
+        npm install request
+        npm install request-promise
         npm audit fix
     - name: Running NydigProvider-MarketData
       run: |
