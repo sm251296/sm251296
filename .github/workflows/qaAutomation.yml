@@ -50,6 +50,7 @@ jobs:
         cd newman
         dir
         echo =======================
+        pwd
     - name: Read file contents
       id: read_file
       uses: andstor/file-reader-action@v1
