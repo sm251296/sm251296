@@ -42,6 +42,7 @@ jobs:
         npm install request
         npm install request-promise
         npm audit fix
+        
     - name: Running NydigProvider-MarketData
       run: |
         cd QaAutomation
@@ -51,10 +52,7 @@ jobs:
         node "./newman-run.js" "./NydigProvider-Accounts.postman_collection.json" "./NCR.postman_globals.json" "./NydigProvider_Dev.postman_environment.json"
         node "./newman-run.js" "./NydigProvider-Orders.postman_collection.json" "./NCR.postman_globals.json" "./NydigProvider_Dev.postman_environment.json"
         cd newman
-        dir
-        echo =======================
-        pwd
-        env
+        
     - name: Read file contents
       id: read_file
       uses: andstor/file-reader-action@v1
