@@ -52,9 +52,9 @@ jobs:
       id: read_file
       uses: andstor/file-reader-action@v1
       with:
-        path: "./newman/Result.json"
+        path: "Result.json"
         
     - name: File contents
       run: |
-        pwd
+        cd newman
         echo "${ steps.read_file.outputs.contents }"
