@@ -1,26 +1,28 @@
 {
-  "name": "nydig_provider",
+  "name": "Nydig Provider",
   "version": "1.0.0",
-  "description": "node setup to run nydig endpoints",
+  "description": "To run nidig user api tests",
   "main": "newman-run.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "keywords": [
-    "newman",
-    "nydig",
-    "api",
-    "provider",
-    "ncr",
-    "crypto"
-  ],
-  "author": "satish muraharisetti",
-  "license": "ISC",
   "dependencies": {
+    "balanced-match": "^2.0.0",
     "newman": "^5.3.0",
     "newman-reporter-allure": "^1.0.7",
     "newman-reporter-html": "^1.0.5",
     "newman-reporter-htmlextra": "^1.22.3",
-    "newman-reporter-json-summary": "^1.0.14"
-  }
+    "newman-reporter-json-summary": "^1.0.14",
+    "request": "^2.88.2",
+    "request-promise": "^4.2.6"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "./local_SetUp.ps1"
+  },
+  "keywords": [
+    "api",
+    "nydig",
+    "ncr",
+    "atuomation"
+  ],
+  "author": "satish muraharisetti",
+  "license": "MIT"
 }

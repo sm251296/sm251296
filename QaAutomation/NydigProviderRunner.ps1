@@ -35,9 +35,9 @@ Write-Host "Current Execution Environment ++++++++ $env  ++++++++"
 Get-Date
 
 node newman-run.js "./NydigProvider-MarketData.postman_collection.json" "./NCR.postman_globals.json" "./NydigProvider_$env.postman_environment.json"
-#node newman-run.js "./NydigProvider-Users.postman_collection.json" "./NCR.postman_globals.json" "./NydigProvider_$env.postman_environment.json" false
-#node newman-run.js "./NydigProvider-Accounts.postman_collection.json" "./NCR.postman_globals.json" "./NydigProvider_$env.postman_environment.json" false
-#node newman-run.js "./NydigProvider-Orders.postman_collection.json" "./NCR.postman_globals.json" "./NydigProvider_$env.postman_environment.json" false
+node newman-run.js "./NydigProvider-Users.postman_collection.json" "./NCR.postman_globals.json" "./NydigProvider_$env.postman_environment.json" false
+node newman-run.js "./NydigProvider-Accounts.postman_collection.json" "./NCR.postman_globals.json" "./NydigProvider_$env.postman_environment.json" false
+node newman-run.js "./NydigProvider-Orders.postman_collection.json" "./NCR.postman_globals.json" "./NydigProvider_$env.postman_environment.json" false
 
 #Copy-Item -Path './allure-report/history' -Destination './allure-results/history' -recurse -Force
 #allure generate './allure-results/' -o './allure-report/' --clean

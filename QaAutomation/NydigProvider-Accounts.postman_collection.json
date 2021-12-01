@@ -125,6 +125,11 @@
 						"key": "Authorization",
 						"value": "Bearer {{accountsBearerToken}}",
 						"type": "text"
+					},
+					{
+						"key": "x-master-account-number",
+						"value": "{{x-master-account-number}}",
+						"type": "text"
 					}
 				],
 				"body": {
@@ -182,7 +187,7 @@
 							"});\r",
 							"\r",
 							"pm.test(\"Response body validation: Accounts POST - 400\", function () {\r",
-							"    pm.expect(responseJson.code).to.be.eql(400);\r",
+							"    pm.expect(responseJson.code).to.be.eql('400');\r",
 							"});\r",
 							"\r",
 							"pm.test(\"Response time is less than 10 seconds\", () => {\r",
@@ -218,6 +223,11 @@
 					{
 						"key": "Authorization",
 						"value": "Bearer {{accountsBearerToken}}",
+						"type": "text"
+					},
+					{
+						"key": "x-master-account-number",
+						"value": "{{x-master-account-number}}",
 						"type": "text"
 					}
 				],
@@ -294,6 +304,11 @@
 					{
 						"key": "Authorization",
 						"value": "Bearer {{accountsBearerToken}}",
+						"type": "text"
+					},
+					{
+						"key": "x-master-account-number",
+						"value": "{{x-master-account-number}}",
 						"type": "text"
 					}
 				],
@@ -392,6 +407,11 @@
 						"key": "Authorization",
 						"value": "Bearer {{invalidBearerToken}}",
 						"type": "text"
+					},
+					{
+						"key": "x-master-account-number",
+						"value": "{{x-master-account-number}}",
+						"type": "text"
 					}
 				],
 				"body": {
@@ -473,6 +493,11 @@
 						"key": "Authorization",
 						"value": "Bearer {{accountsBearerToken}}",
 						"type": "text"
+					},
+					{
+						"key": "x-master-account-number",
+						"value": "{{x-master-account-number}}",
+						"type": "text"
 					}
 				],
 				"body": {
@@ -553,6 +578,11 @@
 					{
 						"key": "Authorization",
 						"value": "Bearer {{accountsBearerToken}}",
+						"type": "text"
+					},
+					{
+						"key": "x-master-account-number",
+						"value": "{{x-master-account-number}}",
 						"type": "text"
 					}
 				],
@@ -961,7 +991,7 @@
 							"      \"type\": \"string\"\r",
 							"    },\r",
 							"    \"message\": {\r",
-							"      \"type\": \"bool\"\r",
+							"      \"type\": \"string\"\r",
 							"    }\r",
 							"  },\r",
 							"  \"required\": [\r",

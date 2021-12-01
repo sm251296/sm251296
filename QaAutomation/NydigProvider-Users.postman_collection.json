@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "3833bc73-8021-43b9-8ea7-22f512577f87",
+		"_postman_id": "94c18f7f-630d-4948-93ad-d04e009d8e4b",
 		"name": "NydigProvider-Users",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -1389,10 +1389,14 @@
 							"            \"properties\": {\r",
 							"                \"eligible\": {\r",
 							"                    \"type\": \"boolean\"\r",
+							"                },\r",
+							"                \"message\": {\r",
+							"                    \"type\": \"string\"\r",
 							"                }\r",
 							"            },\r",
 							"            \"required\": [\r",
-							"                \"eligible\"\r",
+							"                \"eligible\",\r",
+							"                \"message\"\r",
 							"            ],\r",
 							"            \"title\": \"Welcome4\"\r",
 							"        }\r",
@@ -1523,7 +1527,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"dob\": \"1985-01-01\",\r\n    \"stateProvinceRegion\": \"IL\",\r\n    \"ageCheckOverride\": false\r\n}"
+					"raw": "{\r\n    \"dob\": \"2010-01-\",\r\n    \"stateProvinceRegion\": \"IL\",\r\n    \"ageCheckOverride\": false\r\n}"
 				},
 				"url": {
 					"raw": "{{cpUsersBaseUrl}}/eligibility",
@@ -1773,7 +1777,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"dob\": \"1985-01-01\",\r\n    \"stateProvinceRegion\": \"IL\",\r\n    \"ageCheckOverride\": false\r\n}"
+					"raw": "{\r\n    \"treu\": \"1985-01-01\",\r\n    \"stateProvinceRegion\": \"IL\",\r\n    \"ageCheckOverride\": false\r\n}"
 				},
 				"url": {
 					"raw": "{{cpUsersBaseUrl}}/eligibility",
