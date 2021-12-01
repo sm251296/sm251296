@@ -48,6 +48,7 @@ jobs:
         mkdir newman
         node "./newman-run.js" "./NydigProvider-MarketData.postman_collection.json" "./NCR.postman_globals.json" "./NydigProvider_Dev.postman_environment.json"
         cd newman
+        dir
     - name: Read file contents
       id: read_file
       uses: andstor/file-reader-action@v1
