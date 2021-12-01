@@ -59,7 +59,7 @@ jobs:
       id: read_file
       uses: andstor/file-reader-action@v1
       with:
-        path: "${RUNNER_WORKSPACE}/QaAutomation/newman/Result.json"
+        path: "${env: RUNNER_WORKSPACE}/QaAutomation/newman/Result.json"
         
     - name: File contents
       run:  echo "${{ steps.read_file.outputs.contents }}"
