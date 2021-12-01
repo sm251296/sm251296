@@ -47,8 +47,6 @@ jobs:
         cd QaAutomation
         mkdir newman
         node "./newman-run.js" "./NydigProvider-MarketData.postman_collection.json" "./NCR.postman_globals.json" "./NydigProvider_Dev.postman_environment.json"
-        dir
-        echo ----------------------
         cd newman
         dir
         echo =======================
@@ -56,7 +54,7 @@ jobs:
       id: read_file
       uses: andstor/file-reader-action@v1
       with:
-        path: "Result.json"
+        path: "./Result.json"
         
     - name: File contents
       run:  echo "${ steps.read_file.outputs.contents }"
