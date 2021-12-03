@@ -65,11 +65,14 @@ jobs:
         path: "/home/runner/work/sm251296/sm251296/QaAutomation/newman/"
      
     - name: Display structure of downloaded files
-      run: ls -R
+      run: |
+        ls -R
+        pwd
       working-directory: "/home/runner/work/sm251296/sm251296/QaAutomation/newman/"
       
-    - uses: actions/upload-artifact@v2
-      name: TestRunResults
+      
+    - uses: actions/upload-artifact@v2      
+      name: TestRunResults      
       with:
         name: 'my-artifact'
         path: "/home/runner/work/sm251296/sm251296/QaAutomation/newman/"
