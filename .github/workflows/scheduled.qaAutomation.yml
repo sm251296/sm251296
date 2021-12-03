@@ -61,7 +61,7 @@ jobs:
       with:
         name: 'TestRun-artifact'
         path: |
-          ./NydigProvider-*
-          ./newman
-          ./allure-report
-          ./allure-results
+          './NydigProvider-*'
+          './newman'
+          './allure-report'
+          './allure-results'
