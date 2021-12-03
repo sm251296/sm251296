@@ -44,8 +44,7 @@ jobs:
     - name: Running NydigProvider-MarketData
       run: |
         cd QaAutomation
-        mkdir newman
-        echo: ~
+        mkdir newman        
         node "./newman-run.js" "./NydigProvider-MarketData.postman_collection.json" "./NCR.postman_globals.json" "./NydigProvider_Dev.postman_environment.json"
         #node "./newman-run.js" "./NydigProvider-Users.postman_collection.json" "./NCR.postman_globals.json" "./NydigProvider_Dev.postman_environment.json"
         #node "./newman-run.js" "./NydigProvider-Accounts.postman_collection.json" "./NCR.postman_globals.json" "./NydigProvider_Dev.postman_environment.json"
@@ -53,7 +52,8 @@ jobs:
      
     - name: Display structure of downloaded files
       run: |
-        ls -R
+        #ls -R
+        cd ${{GITHUB_WORKSPACE}}
         pwd
       #working-directory: "/home/runner/work/sm251296/sm251296/QaAutomation/newman/"      
       
