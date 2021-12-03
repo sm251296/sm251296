@@ -59,7 +59,7 @@ jobs:
     - uses: actions/upload-artifact@v2      
       name: TestRunResults      
       with:
-        name: 'my-artifact'
+        name: 'TestRun-artifact'
         path: |
           .*.json
           ./newman
