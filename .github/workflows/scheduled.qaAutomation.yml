@@ -46,9 +46,9 @@ jobs:
         cd QaAutomation
         mkdir newman
         node "./newman-run.js" "./NydigProvider-MarketData.postman_collection.json" "./NCR.postman_globals.json" "./NydigProvider_Dev.postman_environment.json"
-        node "./newman-run.js" "./NydigProvider-Users.postman_collection.json" "./NCR.postman_globals.json" "./NydigProvider_Dev.postman_environment.json"
-        node "./newman-run.js" "./NydigProvider-Accounts.postman_collection.json" "./NCR.postman_globals.json" "./NydigProvider_Dev.postman_environment.json"
-        node "./newman-run.js" "./NydigProvider-Orders.postman_collection.json" "./NCR.postman_globals.json" "./NydigProvider_Dev.postman_environment.json"
+        #node "./newman-run.js" "./NydigProvider-Users.postman_collection.json" "./NCR.postman_globals.json" "./NydigProvider_Dev.postman_environment.json"
+        #node "./newman-run.js" "./NydigProvider-Accounts.postman_collection.json" "./NCR.postman_globals.json" "./NydigProvider_Dev.postman_environment.json"
+        #node "./newman-run.js" "./NydigProvider-Orders.postman_collection.json" "./NCR.postman_globals.json" "./NydigProvider_Dev.postman_environment.json"
         cd newman
         
     - name: Read file contents
@@ -59,3 +59,12 @@ jobs:
         
     - name: File contents
       run:  echo "${{ steps.read_file.outputs.contents }}"
+      
+    - uses: actions/download-artifact@v2
+      with:
+        path: "/home/runner/work/sm251296/sm251296/QaAutomation/newman/"
+     
+    - name: Display structure of downloaded files
+      run: ls -R
+      working-directory: "/home/runner/work/sm251296/sm251296/QaAutomation/newman/"
+      
