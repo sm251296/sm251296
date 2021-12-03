@@ -14,7 +14,7 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [14.x]
+        node-version: [16.x]
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
 
     steps:
@@ -24,7 +24,37 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
-        cache-dependency-path: QaAutomation/package-lock.json
-    - run: npm install
-    - run: npm audit fix
-    - run: node "./QaAutomation/newman-run.js" "./QaAutomation/NydigProvider-MarketData.postman_collection.json" "./QaAutomation/NCR.postman_globals.json" "./QaAutomation/NydigProvider_dev.postman_environment.json"
+        cache-dependency-path: ./QaAutomation/package-lock.json
+      
+    - name: Install dependencies
+      run: |
+        cd QaAutomation
+        npm install
+        npm install newman
+        npm install balanced-match
+        npm install newman-reporter-allure
+        npm install newman-reporter-html
+        npm install newman-reporter-htmlextra
+        npm install newman-reporter-json-summary
+        npm install request
+        npm install request-promise
+        npm audit fix
+        
+    - name: Running NydigProvider-MarketData
+      run: |
+        cd QaAutomation
+        mkdir newman
+        node "./newman-run.js" "./NydigProvider-MarketData.postman_collection.json" "./NCR.postman_globals.json" "./NydigProvider_Dev.postman_environment.json"
+        node "./newman-run.js" "./NydigProvider-Users.postman_collection.json" "./NCR.postman_globals.json" "./NydigProvider_Dev.postman_environment.json"
+        node "./newman-run.js" "./NydigProvider-Accounts.postman_collection.json" "./NCR.postman_globals.json" "./NydigProvider_Dev.postman_environment.json"
+        node "./newman-run.js" "./NydigProvider-Orders.postman_collection.json" "./NCR.postman_globals.json" "./NydigProvider_Dev.postman_environment.json"
+        cd newman
+        
+    - name: Read file contents
+      id: read_file
+      uses: andstor/file-reader-action@v1
+      with:
+        path: "/home/runner/work/sm251296/sm251296/QaAutomation/newman/Result.json"
+        
+    - name: File contents
+      run:  echo "${{ steps.read_file.outputs.contents }}"
