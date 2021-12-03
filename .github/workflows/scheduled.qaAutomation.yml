@@ -54,7 +54,7 @@ jobs:
       run: |
         ls -R
         pwd
-      working-directory: "/home/runner/work/sm251296/sm251296/QaAutomation/newman/"      
+      #working-directory: "/home/runner/work/sm251296/sm251296/QaAutomation/newman/"      
       
     - uses: actions/upload-artifact@v2      
       name: TestRunResults      
