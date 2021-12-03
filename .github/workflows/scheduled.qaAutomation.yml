@@ -4,8 +4,9 @@
 name: NightlyQARegressionMF
 
 on:
-  schedule:
-    - cron: "01 02 1-31 * 1-5"
+  [workflow_dispatch]
+#  schedule:
+#    - cron: "01 02 1-31 * 1-5"
     
 jobs:
   build:
