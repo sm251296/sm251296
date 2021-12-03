@@ -49,31 +49,17 @@ jobs:
         #node "./newman-run.js" "./NydigProvider-Users.postman_collection.json" "./NCR.postman_globals.json" "./NydigProvider_Dev.postman_environment.json"
         #node "./newman-run.js" "./NydigProvider-Accounts.postman_collection.json" "./NCR.postman_globals.json" "./NydigProvider_Dev.postman_environment.json"
         #node "./newman-run.js" "./NydigProvider-Orders.postman_collection.json" "./NCR.postman_globals.json" "./NydigProvider_Dev.postman_environment.json"
-        cd newman
-        
-    - name: Read file contents
-      id: read_file
-      uses: andstor/file-reader-action@v1
-      with:
-        path: "/home/runner/work/sm251296/sm251296/QaAutomation/newman/Result.json"
-        
-    - name: File contents
-      run:  echo "${{ steps.read_file.outputs.contents }}"
-      
-    - uses: actions/download-artifact@v2
-      with:
-        path: "/home/runner/work/sm251296/sm251296/QaAutomation/newman/"
      
     - name: Display structure of downloaded files
       run: |
         ls -R
         pwd
-      working-directory: "/home/runner/work/sm251296/sm251296/QaAutomation/newman/"
-      
+      working-directory: "/home/runner/work/sm251296/sm251296/QaAutomation/newman/"      
       
     - uses: actions/upload-artifact@v2      
       name: TestRunResults      
       with:
         name: 'my-artifact'
-        path: "/home/runner/work/sm251296/sm251296/QaAutomation/newman/"
-      
+        path: |
+          .
+          !./node_modules      
