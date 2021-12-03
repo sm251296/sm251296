@@ -68,12 +68,9 @@ jobs:
       run: ls -R
       working-directory: "/home/runner/work/sm251296/sm251296/QaAutomation/newman/"
       
-    - uses: actions/download-artifact@v2
-      id: download
+    - uses: actions/upload-artifact@v2
+      name: TestRunResults
       with:
         name: 'my-artifact'
         path: "/home/runner/work/sm251296/sm251296/QaAutomation/newman/"
-
-    - name: 'Echo download path'
-      run: echo ${{steps.download.outputs.download-path}}
       
