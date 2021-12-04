@@ -64,4 +64,8 @@ jobs:
       name: TestRunResults      
       with:
         name: TestRun-artifact
-        path: /home/runner/work/sm251296/sm251296/QaAutomation/newman/
+        path: |
+          /home/runner/work/sm251296/sm251296/QaAutomation/newman/
+          ${{ github.workspace }}/QAAutomation/newman/
+          ${{ github.workspace }}/QAAutomation/allure-report/
+          ${{ github.workspace }}/QAAutomation/allure-results/
