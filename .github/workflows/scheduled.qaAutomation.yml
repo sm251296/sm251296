@@ -65,7 +65,7 @@ jobs:
       with:
         name: TestRun-artifact
         path: |
-          /home/runner/work/sm251296/sm251296/QaAutomation/newman/
-          ${{ github.workspace }}/QAAutomation/newman/
-          ${{ github.workspace }}/QAAutomation/allure-report/
-          ${{ github.workspace }}/QAAutomation/allure-results/
+          ${{ github.workspace }}/QaAutomation/newman/
+          ${{ github.workspace }}/QaAutomation/allure-report/
+          ${{ github.workspace }}/QaAutomation/allure-results/
+          ${{ github.workspace }}/QaAutomation/NydigProvider-*/
