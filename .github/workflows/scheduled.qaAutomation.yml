@@ -55,13 +55,14 @@ jobs:
     - name: Display structure of downloaded files
       run: |
         pwd
+        ls
         #cd QAAutomation
       #working-directory: "/home/runner/work/sm251296/sm251296/QaAutomation/newman/"      
       
     - uses: actions/upload-artifact@v2      
       name: TestRunResults      
       with:
-        name: 'TestRun-artifact'
+        name: TestRun-artifact
         path: |
           ${{ github.workspace }}/QAAutomation/newman/
           ${{ github.workspace }}/QAAutomation/allure-report/
