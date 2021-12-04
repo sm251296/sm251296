@@ -1,12 +1,11 @@
 # This workflow will do a clean install of node dependencies, cache/restore them, build the source code and run tests across different versions of node
 # For more information see: https://help.github.com/actions/language-and-framework-guides/using-nodejs-with-github-actions
 
-name: NightlyQARegressionMF
+name: Dev.Scheduled.QaRegression
 
 on:
-  [workflow_dispatch]
-#  schedule:
-#    - cron: "01 02 1-31 * 1-5"
+  schedule:
+    - cron: "01 02 1-31 * 1-5"
     
 jobs:
   build:
@@ -16,7 +15,6 @@ jobs:
     strategy:
       matrix:
         node-version: [14.x]
-        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
 
     steps:
     - uses: actions/checkout@v2
@@ -58,9 +56,9 @@ jobs:
         ls -a
         
     - uses: actions/upload-artifact@v2      
-      name: TestRunResults      
+      name: Nightly QARegression      
       with:
-        name: TestRun-artifact
+        name: Nightly-QARegression-Run-artifact-${{ steps.date.outputs.date }}
         path: |
           ${{ github.workspace }}/QaAutomation/newman/
           ${{ github.workspace }}/QaAutomation/allure-report/
