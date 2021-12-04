@@ -31,7 +31,9 @@ jobs:
       run: |
         pwd
         cd $GITHUB_WORKSPACE
-        cd QaAutomation        
+        cd QaAutomation
+        env:
+          QAAUTOMATION_FOLDER: pwd
         npm install
         npm install newman
         npm install balanced-match
@@ -57,6 +59,7 @@ jobs:
         pwd
         cd QAAutomation
         pwd
+        $QAAUTOMATION_FOLDER
       #working-directory: "/home/runner/work/sm251296/sm251296/QaAutomation/newman/"      
       
     - uses: actions/upload-artifact@v2      
@@ -64,7 +67,7 @@ jobs:
       with:
         name: 'TestRun-artifact'
         path: |
-          './NydigProvider-*'
+          QAAUTOMATION_FOLDER/NydigProvider-*
           './newman'
           '$GITHUB_WORKSPACE/QAAutomation/allure-report'
           '$GITHUB_WORKSPACE/QAAutomation/allure-results'
