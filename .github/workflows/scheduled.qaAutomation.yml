@@ -53,7 +53,7 @@ jobs:
     - name: Display structure of downloaded files
       run: |
         #ls -R
-        cd ${GITHUB_WORKSPACE}
+        cd $GITHUB_WORKSPACE
         cd QAAutomation
         pwd
       #working-directory: "/home/runner/work/sm251296/sm251296/QaAutomation/newman/"      
@@ -65,5 +65,5 @@ jobs:
         path: |
           './NydigProvider-*'
           './newman'
-          '${GITHUB_WORKSPACE}/QAAutomation/allure-report'
-          '${GITHUB_WORKSPACE}/QAAutomation/allure-results'
+          '$GITHUB_WORKSPACE/QAAutomation/allure-report'
+          '$GITHUB_WORKSPACE/QAAutomation/allure-results'
