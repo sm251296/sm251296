@@ -63,7 +63,7 @@ jobs:
       with:
         name: 'TestRun-artifact'
         path: |
-          $GITHUB_WORKSPACE/QAAutomation/NydigProvider-*
+          ${{ github.workspace }}/QAAutomation/NydigProvider-*
           './newman'
           '$GITHUB_WORKSPACE/QAAutomation/allure-report'
           '$GITHUB_WORKSPACE/QAAutomation/allure-results'
