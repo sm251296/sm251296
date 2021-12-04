@@ -53,7 +53,7 @@ jobs:
     - name: Display structure of downloaded files
       run: |
         #ls -R
-        cd ${env.GITHUB_WORKSPACE}
+        cd ${GITHUB_WORKSPACE}
         pwd
       #working-directory: "/home/runner/work/sm251296/sm251296/QaAutomation/newman/"      
       
