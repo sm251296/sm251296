@@ -29,7 +29,9 @@ jobs:
       
     - name: Install dependencies
       run: |
-        cd QaAutomation
+        pwd
+        CD $GITHUB_WORKSPACE
+        cd QaAutomation        
         npm install
         npm install newman
         npm install balanced-match
@@ -52,6 +54,7 @@ jobs:
      
     - name: Display structure of downloaded files
       run: |
+        pwd
         #ls -R
         cd $GITHUB_WORKSPACE
         cd QAAutomation
