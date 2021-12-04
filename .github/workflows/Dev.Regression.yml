@@ -58,9 +58,9 @@ jobs:
         ls -a
         
     - uses: actions/upload-artifact@v2      
-      name: QA Regression Run
+      name: Dev - Regression Run
       with:
-        name: QARegression-Run-artifact-${{ steps.date.outputs.date }}
+        name: Dev-Regression-Run-artifact-${{ steps.date.outputs.date }}
         path: |
           ${{ github.workspace }}/QaAutomation/newman/
           ${{ github.workspace }}/QaAutomation/allure-report/

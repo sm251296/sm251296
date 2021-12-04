@@ -26,6 +26,10 @@ jobs:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
         cache-dependency-path: ./QaAutomation/package-lock.json
+
+    - name: Get current date
+      id: date
+      run: echo "::set-output name=date::$(date +'%Y%m%d_%H%M%S')"        
       
     - name: Install dependencies
       run: |
@@ -44,18 +48,24 @@ jobs:
     - name: Running NydigProvider-MarketData
       run: |
         cd QaAutomation
-        mkdir newman
+        mkdir newman        
         node "./newman-run.js" "./NydigProvider-MarketData.postman_collection.json" "./NCR.postman_globals.json" "./NydigProvider_Dev.postman_environment.json"
         node "./newman-run.js" "./NydigProvider-Users.postman_collection.json" "./NCR.postman_globals.json" "./NydigProvider_Dev.postman_environment.json"
         node "./newman-run.js" "./NydigProvider-Accounts.postman_collection.json" "./NCR.postman_globals.json" "./NydigProvider_Dev.postman_environment.json"
         node "./newman-run.js" "./NydigProvider-Orders.postman_collection.json" "./NCR.postman_globals.json" "./NydigProvider_Dev.postman_environment.json"
-        cd newman
+     
+    - name: Display structure of downloaded files
+      run: |
+        cd QaAutomation
+        ls -a
         
-    - name: Read file contents
-      id: read_file
-      uses: andstor/file-reader-action@v1
+    - uses: actions/upload-artifact@v2      
+      name: Dev - Code Change Regressions
       with:
-        path: "/home/runner/work/sm251296/sm251296/QaAutomation/newman/Result.json"
-        
-    - name: File contents
-      run:  echo "${{ steps.read_file.outputs.contents }}"
+        name: Dev-CodeChange-Regressions-artifact-${{ steps.date.outputs.date }}
+        path: |
+          ${{ github.workspace }}/QaAutomation/newman/
+          ${{ github.workspace }}/QaAutomation/allure-report/
+          ${{ github.workspace }}/QaAutomation/allure-results/
+          ${{ github.workspace }}/QaAutomation/NydigProvider-*/
+          ${{ github.workspace }}/QaAutomation/openAllureReport.ps1
