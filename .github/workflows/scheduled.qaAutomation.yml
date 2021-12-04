@@ -56,7 +56,7 @@ jobs:
       run: |
         pwd
         ls -a
-        cd QAAutomation
+        cd QaAutomation
         ls -a
       #working-directory: "/home/runner/work/sm251296/sm251296/QaAutomation/newman/"      
       
@@ -64,4 +64,4 @@ jobs:
       name: TestRunResults      
       with:
         name: TestRun-artifact
-        path: /home/runner/work/sm251296/sm251296/QAAutomation/newman/
+        path: /home/runner/work/sm251296/sm251296/QaAutomation/newman/
