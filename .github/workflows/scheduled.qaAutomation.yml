@@ -30,7 +30,7 @@ jobs:
     - name: Install dependencies
       run: |
         pwd
-        CD $GITHUB_WORKSPACE
+        cd $GITHUB_WORKSPACE
         cd QaAutomation        
         npm install
         npm install newman
