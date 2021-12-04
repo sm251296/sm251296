@@ -55,8 +55,9 @@ jobs:
     - name: Display structure of downloaded files
       run: |
         pwd
-        ls
-        #cd QAAutomation
+        ls -a
+        cd QAAutomation
+        ls -a
       #working-directory: "/home/runner/work/sm251296/sm251296/QaAutomation/newman/"      
       
     - uses: actions/upload-artifact@v2      
