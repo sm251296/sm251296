@@ -55,7 +55,6 @@ jobs:
     - name: Display structure of downloaded files
       run: |
         pwd
-        #ls -R
         cd QAAutomation
         pwd
       #working-directory: "/home/runner/work/sm251296/sm251296/QaAutomation/newman/"      
