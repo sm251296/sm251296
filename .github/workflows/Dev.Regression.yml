@@ -43,7 +43,7 @@ jobs:
         npm install request-promise
         npm audit fix
         
-    - name: Running NydigProvider-MarketData
+    - name: Running NydigProvider-APIs
       run: |
         cd QaAutomation
         mkdir newman        
