@@ -1,5 +1,5 @@
 ﻿try{
-    $allureVersion = allures --version
+    $allureVersion = allure --version
 }
 catch {
  Write-Host  "Install allure reports for windows"
