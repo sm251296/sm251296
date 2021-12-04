@@ -48,18 +48,15 @@ jobs:
         cd QaAutomation
         mkdir newman        
         node "./newman-run.js" "./NydigProvider-MarketData.postman_collection.json" "./NCR.postman_globals.json" "./NydigProvider_Dev.postman_environment.json"
-        #node "./newman-run.js" "./NydigProvider-Users.postman_collection.json" "./NCR.postman_globals.json" "./NydigProvider_Dev.postman_environment.json"
-        #node "./newman-run.js" "./NydigProvider-Accounts.postman_collection.json" "./NCR.postman_globals.json" "./NydigProvider_Dev.postman_environment.json"
-        #node "./newman-run.js" "./NydigProvider-Orders.postman_collection.json" "./NCR.postman_globals.json" "./NydigProvider_Dev.postman_environment.json"
+        node "./newman-run.js" "./NydigProvider-Users.postman_collection.json" "./NCR.postman_globals.json" "./NydigProvider_Dev.postman_environment.json"
+        node "./newman-run.js" "./NydigProvider-Accounts.postman_collection.json" "./NCR.postman_globals.json" "./NydigProvider_Dev.postman_environment.json"
+        node "./newman-run.js" "./NydigProvider-Orders.postman_collection.json" "./NCR.postman_globals.json" "./NydigProvider_Dev.postman_environment.json"
      
     - name: Display structure of downloaded files
       run: |
-        pwd
-        ls -a
         cd QaAutomation
         ls -a
-      #working-directory: "/home/runner/work/sm251296/sm251296/QaAutomation/newman/"      
-      
+        
     - uses: actions/upload-artifact@v2      
       name: TestRunResults      
       with:
@@ -69,3 +66,4 @@ jobs:
           ${{ github.workspace }}/QaAutomation/allure-report/
           ${{ github.workspace }}/QaAutomation/allure-results/
           ${{ github.workspace }}/QaAutomation/NydigProvider-*/
+          ${{ github.workspace }}/QaAutomation/openAllureReport.ps1
