@@ -26,8 +26,8 @@ jobs:
         cache-dependency-path: ./QaAutomation/package-lock.json
       
     - name: Get current date
-        id: date
-        run: echo "::set-output name=date::$(date +'%Y%m%d_%H%M%S')"
+      id: date
+      run: echo "::set-output name=date::$(date +'%Y%m%d_%H%M%S')"
         
     - name: Install dependencies
       run: |
