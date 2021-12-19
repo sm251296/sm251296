@@ -72,7 +72,7 @@ jobs:
       id: package
       uses: juliangruber/read-file-action@v1
       with:
-        path: ./package.json
+        path: ${{ github.workspace }}/QaAutomation/newman/Result.json
       
     - name: Echo package.json
       run: echo "${{ steps.package.outputs.content }}"
