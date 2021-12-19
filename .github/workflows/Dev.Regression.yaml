@@ -65,5 +65,5 @@ jobs:
           ${{ github.workspace }}/QaAutomation/newman/
           ${{ github.workspace }}/QaAutomation/allure-report/
           ${{ github.workspace }}/QaAutomation/allure-results/
-          ${{ github.workspace }}/QaAutomation/NydigProvider-*/
+          ${{ github.workspace }}/QaAutomation/NydigProvider-*/*.html
           ${{ github.workspace }}/QaAutomation/openAllureReport.ps1
