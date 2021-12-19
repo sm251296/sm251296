@@ -67,3 +67,19 @@ jobs:
           ${{ github.workspace }}/QaAutomation/allure-results/
           ${{ github.workspace }}/QaAutomation/NydigProvider-*/*.html
           ${{ github.workspace }}/QaAutomation/openAllureReport.ps1
+   
+    - name: Read package.json
+      id: package
+      uses: juliangruber/read-file-action@v1
+      with:
+        path: ./package.json
+      
+    - name: Echo package.json
+      run: echo "${{ steps.package.outputs.content }}"
+    
+    - name: A/B Check
+      if: ${{steps.package.outputs.content.Run.Stats.Assertions.failed}} > 0
+      uses: actions/github-script@v3
+      with:
+        script: |
+          core.setFailed('Tests Failed')
