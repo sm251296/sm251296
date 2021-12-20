@@ -74,11 +74,11 @@ jobs:
       with:
         path: ${{ github.workspace }}/QaAutomation/newman/Result.json
       
-    - name: Echo package.json
+    - name: Echo Results.json
       run: |
         echo "${{ steps.package.outputs.content }}"
         echo "--------------------------------------------------------------"
-        echo "${{steps.package.outputs.content.Run.Stats.Assertions.failed}}"
+        echo "${{ parseJSON(steps.package.outputs.content).Run.Stats.Assertions.failed}}"
     
     - name: TestResults Check
       if: ${{steps.package.outputs.content.Run.Stats.Assertions.failed}} > 0
