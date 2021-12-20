@@ -78,7 +78,8 @@ jobs:
       run: |
         echo "${{ steps.package.outputs.content }}"
         echo "--------------------------------------------------------------"
-        echo "${{ parseJSON(steps.package.outputs.content).Run.Stats.Assertions.failed}}"
+        echo "${{ steps.package.outputs.content.Run.Stats.Assertions.failed}}"
+        echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
     
     - name: TestResults Check
       if: ${{steps.package.outputs.content.Run.Stats.Assertions.failed}} > 0
