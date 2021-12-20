@@ -85,7 +85,7 @@ jobs:
         echo "${{ steps.package.outputs.content }}"
         echo "--------------------------------------------------------------"
         echo "${{ steps.package.outputs.content.Run.Stats.Assertions.failed}}"
-        echo '${{ steps.package.outputs.content}}'.Run.Stats.Assertions.failed
+        echo '${{ steps.package.outputs.content.Run.Stats.Assertions.failed}}'
         echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
     
     - name: TestResults Check
