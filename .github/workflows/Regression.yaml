@@ -4,8 +4,14 @@
 name: Dev-Regression
 
 on:
-  [workflow_dispatch]
-    
+  workflow_dispatch:
+    inputs:
+      testenvironment:
+        description: 'Environment'     
+        required: true
+        default: 'QA'
+      tags:
+        description: 'Test scenario tags'   
 jobs:
   build:
 
