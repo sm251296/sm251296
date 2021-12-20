@@ -75,11 +75,14 @@ jobs:
         path: ${{ github.workspace }}/QaAutomation/newman/Result.json
       
     - name: Echo package.json
-      run: echo "${{ steps.package.outputs.content }}"
+      run: |
+        echo "${{ steps.package.outputs.content }}"
+        echo "--------------------------------------------------------------"
+        echo "${{steps.package.outputs.content.Run.Stats.Assertions.failed}}"
     
-    - name: A/B Check
+    - name: TestResults Check
       if: ${{steps.package.outputs.content.Run.Stats.Assertions.failed}} > 0
       uses: actions/github-script@v3
       with:
         script: |
-          core.setFailed('Tests Failed')
+          core.setFailed('Some tests failed')
