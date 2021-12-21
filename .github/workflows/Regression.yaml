@@ -84,10 +84,7 @@ jobs:
       id: test-results
       run: |
         echo "::set-output name=testResultsJson::${{ steps.package.outputs.content }}"
-        echo "${{ steps.package.outputs.content }}"
-        
-    - name: debugger   
-      run: echo ${{ steps.test-results.outputs.testResultsJson }}
+        echo "${{ steps.package.outputs.content }}"        
       
     - name: Read JsonFile
     - id: data
