@@ -91,7 +91,7 @@ jobs:
       uses: gr2m/get-json-paths-action@v1.x
       with:
         json: ${{ steps.test-results.outputs.testResultsJson }}
-        bar: "Run.Stats"
+        bar: "Run.Stats.Assertions.failed"
     - run: "echo bar is ${{ steps.data.outputs.bar }}"
     
     - name: TestResults Check
