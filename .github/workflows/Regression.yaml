@@ -82,10 +82,13 @@ jobs:
       
     - name: Echo Results.json
       run: |
+        content="${{ steps.package.outputs.content }}"
+        echo "::set-output name=packageJson::$content"
+        echo "${{fromJson(steps.set_var.outputs.packageJson).Run.Stats.Assertions.failed}}"
         echo "${{ steps.package.outputs.content }}"
         echo "--------------------------------------------------------------"
         echo "${{ steps.package.outputs.content.Run.Stats.Assertions.failed}}"
-        echo '${{ steps.package.outputs.content.Run.Stats.Assertions.failed}}'
+        echo "${{fromJson(steps.set_var.outputs.packageJson).version}}"
         echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
     
     - name: TestResults Check
