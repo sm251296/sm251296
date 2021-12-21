@@ -79,25 +79,11 @@ jobs:
       uses: juliangruber/read-file-action@v1
       with:
         path: ${{ github.workspace }}/QaAutomation/newman/Result.json
-  
-    - name: Read JsonFile
-      id: data
-      uses: gr2m/get-json-paths-action@v1.x
-      with:
-        data: ${{ steps.package.outputs.content }}
-        json: ${{ steps.action_with_json_output.outputs.data }}
-        bar: "Run.Stats"
-    - run: "echo bar is ${{ steps.data.outputs.bar }}"
-      
+        
     - name: Echo Results.json
       run: |
         echo "${{ steps.package.outputs.content }}"
-        echo "::set-output name=packageJson::${{ steps.package.outputs.content }}"
-        echo "${{fromJson(steps.set_var.outputs.packageJson).Run}}"
-        echo "--------------------------------------------------------------"
-        echo "${{ steps.package.outputs.content.Run.Stats.Assertions.failed}}"
-        echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
-    
+        
     - name: TestResults Check
       if: ${{steps.package.outputs.content.Run.Stats.Assertions.failed}} > 0
       uses: actions/github-script@v3
