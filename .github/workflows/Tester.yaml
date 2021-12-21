@@ -71,7 +71,7 @@ jobs:
       with:
         json: ${{ steps.test-results.outputs.testResultsJson }}
         #bar: "Run.Stats.Assertions.failed"
-    - run: "echo bar is ${{ steps.test-results.outputs.testResultsJson.Run.Stats }}"
+    - run: "echo bar is ${{ steps.package.outputs.content.Run.Stats }}"
     
     - name: TestResults Check
       if: ${{steps.package.outputs.content.Run.Stats.Assertions.failed}} > 0
