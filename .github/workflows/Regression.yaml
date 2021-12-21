@@ -81,9 +81,19 @@ jobs:
         path: ${{ github.workspace }}/QaAutomation/newman/Result.json
         
     - name: Echo Results.json
+      id: test-results
       run: |
+        echo "::set-output name=testResultsJson::${{ steps.package.outputs.content }}"
         echo "${{ steps.package.outputs.content }}"
         
+    - name: Read JsonFile
+      id: data
+      uses: gr2m/get-json-paths-action@v1.x
+      with:
+        json: ${{ steps.test-results.outputs.testResultsJson }}
+        bar: "Run.Stats"
+    - run: "echo bar is ${{ steps.data.outputs.bar }}"
+    
     - name: TestResults Check
       if: ${{steps.package.outputs.content.Run.Stats.Assertions.failed}} > 0
       uses: actions/github-script@v3
