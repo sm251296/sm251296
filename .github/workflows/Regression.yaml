@@ -82,10 +82,8 @@ jobs:
       
     - name: Echo Results.json
       run: |
-        echo "${{fromJson(steps.set_var.outputs.packageJson)}}"
-        content=`cat ${{ github.workspace }}/QaAutomation/newman/Result.json`
-        echo "::set-output name=packageJson::$content"
-        echo "${{fromJson(steps.set_var.outputs.packageJson).Run.Stats.Assertions.failed}}"
+        echo "::set-output name=packageJson::$${{ steps.package.outputs.content }}"
+        echo "${{fromJson(steps.set_var.outputs.packageJson).Run}}"
         echo "${{ steps.package.outputs.content }}"
         echo "--------------------------------------------------------------"
         echo "${{ steps.package.outputs.content.Run.Stats.Assertions.failed}}"
