@@ -11,5 +11,5 @@ inputs:
     required: true
     default: 0
 runs:
-  using: 'node16'
+  using: 'node14'
   main: 'index.js'
