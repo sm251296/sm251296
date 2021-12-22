@@ -63,7 +63,7 @@ jobs:
     
     - name: TestResults Check
       uses: |
-        actions/checkout@main
+        actions/checkout@latest
         ./.github/actions/automationexecutionstatus
       with:
         test-results-json: ${{ steps.package.outputs.content }}
