@@ -1,0 +1,15 @@
+name: Automation Execution Status
+author: Nydig QA team
+description: fails the action if any of the tests fail
+inputs:
+  test-results-json:
+    description: 'the file generated in reports'
+    required: true
+    default: {}
+  known-failures:
+    description: 'mark it failed only if failed test case are greater than this known-failures'
+    required: true
+    default: 0
+runs:
+  using: 'node16'
+  main: 'index.js'
