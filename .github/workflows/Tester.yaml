@@ -63,8 +63,7 @@ jobs:
     
     - name: TestResults Check
       uses: |
-        actions/checkout@v2
-        ./.github/actions/automationexecutionstatus
+        ${{ github.workspace }}/.github/actions/automationexecutionstatus
       with:
         test-results-json: ${{ steps.package.outputs.content }}
         known-failures: 0
