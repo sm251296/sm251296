@@ -62,8 +62,7 @@ jobs:
         echo "${{ steps.package.outputs.content }}"          
     
     - name: TestResults Check
-      uses: |
-        ${{ github.workspace }}/.github/actions/automationexecutionstatus
+      uses: ./.github/actions/automationexecutionstatus
       with:
         test-results-json: ${{ steps.package.outputs.content }}
         known-failures: 0
