@@ -1,11 +1,17 @@
 # This workflow will do a clean install of node dependencies, cache/restore them, build the source code and run tests across different versions of node
 # For more information see: https://help.github.com/actions/language-and-framework-guides/using-nodejs-with-github-actions
 
-name: Dev-Regression
+name: Regression
 
 on:
-  [workflow_dispatch]
-    
+  workflow_dispatch:
+    inputs:
+      testenvironment:
+        description: 'Environment (DEV/QA/PTE)'     
+        required: true
+        default: 'QA'
+      tags:
+        description: 'Test scenario tags'   
 jobs:
   build:
 
@@ -48,9 +54,9 @@ jobs:
         cd QaAutomation
         mkdir newman        
         node "./newman-run.js" "./NydigProvider-MarketData.postman_collection.json" "./NCR.postman_globals.json" "./NydigProvider_Dev.postman_environment.json"
-        node "./newman-run.js" "./NydigProvider-Users.postman_collection.json" "./NCR.postman_globals.json" "./NydigProvider_Dev.postman_environment.json"
-        node "./newman-run.js" "./NydigProvider-Accounts.postman_collection.json" "./NCR.postman_globals.json" "./NydigProvider_Dev.postman_environment.json"
-        node "./newman-run.js" "./NydigProvider-Orders.postman_collection.json" "./NCR.postman_globals.json" "./NydigProvider_Dev.postman_environment.json"
+        # node "./newman-run.js" "./NydigProvider-Users.postman_collection.json" "./NCR.postman_globals.json" "./NydigProvider_Dev.postman_environment.json"
+        # node "./newman-run.js" "./NydigProvider-Accounts.postman_collection.json" "./NCR.postman_globals.json" "./NydigProvider_Dev.postman_environment.json"
+        # node "./newman-run.js" "./NydigProvider-Orders.postman_collection.json" "./NCR.postman_globals.json" "./NydigProvider_Dev.postman_environment.json"
      
     - name: Display structure of downloaded files
       run: |
@@ -65,5 +71,36 @@ jobs:
           ${{ github.workspace }}/QaAutomation/newman/
           ${{ github.workspace }}/QaAutomation/allure-report/
           ${{ github.workspace }}/QaAutomation/allure-results/
-          ${{ github.workspace }}/QaAutomation/NydigProvider-*/
+          ${{ github.workspace }}/QaAutomation/NydigProvider-*/*.html
           ${{ github.workspace }}/QaAutomation/openAllureReport.ps1
+   
+    - name: Read package.json
+      id: package
+      uses: juliangruber/read-file-action@v1
+      with:
+        path: ${{ github.workspace }}/QaAutomation/newman/Result.json
+        
+    - name: Echo Results.json
+      id: test-results
+      run: |
+        echo "::set-output name=testResultsJson::${{ steps.package.outputs.content }}"
+        echo "${{ steps.package.outputs.content }}"        
+    
+    - name: debugger
+      id: test-debugger
+      run: echo ${{ steps.test-results.outputs.testResultsJson }}
+      
+    - name: Read JsonFile
+      id: data
+      uses: gr2m/get-json-paths-action@v1.x
+      with:
+        json: ${{ steps.test-results.outputs.testResultsJson }}
+        bar: "Run.Stats.Assertions.failed"
+    - run: "echo bar is ${{ steps.data.outputs.bar }}"
+    
+    - name: TestResults Check
+      if: ${{steps.package.outputs.content.Run.Stats.Assertions.failed}} > 0
+      uses: actions/github-script@v3
+      with:
+        script: |
+          core.setFailed('Some tests failed')
