@@ -71,34 +71,3 @@ jobs:
           ${{ github.workspace }}/QaAutomation/allure-results/
           ${{ github.workspace }}/QaAutomation/NydigProvider-*/*.html
           ${{ github.workspace }}/QaAutomation/openAllureReport.ps1
-   
-    - name: Read package.json
-      id: package
-      uses: juliangruber/read-file-action@v1
-      with:
-        path: ${{ github.workspace }}/QaAutomation/newman/Result.json
-        
-    - name: Echo Results.json
-      id: test-results
-      run: |
-        echo "::set-output name=testResultsJson::${{ steps.package.outputs.content }}"
-        echo "${{ steps.package.outputs.content }}"        
-    
-    - name: debugger
-      id: test-debugger
-      run: echo ${{ steps.test-results.outputs.testResultsJson }}
-      
-    - name: Read JsonFile
-      id: data
-      uses: gr2m/get-json-paths-action@v1.x
-      with:
-        json: ${{ steps.test-results.outputs.testResultsJson }}
-        bar: "Run.Stats.Assertions.failed"
-    - run: "echo bar is ${{ steps.data.outputs.bar }}"
-    
-    - name: TestResults Check
-      if: ${{steps.package.outputs.content.Run.Stats.Assertions.failed}} > 0
-      uses: actions/github-script@v3
-      with:
-        script: |
-          core.setFailed('Some tests failed')
