@@ -28,7 +28,6 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
-        cache-dependency-path: ./QaAutomation/package-lock.json
       
     - name: Get current date
       id: date
