@@ -59,20 +59,10 @@ jobs:
       id: test-results
       run: |
         echo "::set-output name=testResultsJson::${{ steps.package.outputs.content }}"
-        echo "${{ steps.package.outputs.content }}"        
-    
-    - name: debugger
-      id: test-debugger
-      run: echo ${{ steps.test-results.outputs.testResultsJson }}
-      
-    - name: Read JsonFile
-      id: data
-      uses: gr2m/get-json-paths-action@v1.x
-    - run: "echo bar is ${{ steps.package.outputs.content.Run.Stats }}"
+        echo "${{ steps.package.outputs.content }}"          
     
     - name: TestResults Check
-      if: ${{steps.package.outputs.content.Run.Stats.Assertions.failed}} > 0
-      uses: actions/github-script@v3
+      uses: ./.github/actions/automationexecutionstatus
       with:
-        script: |
-          core.setFailed('Some tests failed')
+        test-results-json: ${{ steps.package.outputs.content }}
+        known-failures: 0
