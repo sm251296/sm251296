@@ -4,7 +4,14 @@
 name: Reusable
 
 on:
-  [workflow_dispatch]
+  workflow_dispatch:
+    inputs:
+      testenvironment:
+        description: 'Environment (DEV/QAL/PTE)'     
+        required: true
+        default: 'QAL'
+      tags:
+        description: 'Test scenario tags'  
 
 jobs:
   test-api:
@@ -27,12 +34,13 @@ jobs:
     - name: Running CryptoCurrency-APIs
       run: |
         cd automation
+        {{testenvironment}}
         mkdir newman
         node "./newman-run.js" "./CryptoCurrency-MarketData.postman_collection.json" "./NCR.postman_globals.json" "./dev-crypto-currency.postman_environment.json"
-        node "./newman-run.js" "./CryptoCurrency-Users.postman_collection.json" "./NCR.postman_globals.json" "./dev-crypto-currency.postman_environment.json" false
-        node "./newman-run.js" "./CryptoCurrency-Accounts.postman_collection.json" "./NCR.postman_globals.json" "./dev-crypto-currency.postman_environment.json" false
-        node "./newman-run.js" "./CryptoCurrency-Orders.postman_collection.json" "./NCR.postman_globals.json" "./dev-crypto-currency.postman_environment.json" false
-        node "./newman-run.js" "./CryptoCurrency-Receipts.postman_collection.json" "./NCR.postman_globals.json" "./dev-crypto-currency.postman_environment.json" false
+        #node "./newman-run.js" "./CryptoCurrency-Users.postman_collection.json" "./NCR.postman_globals.json" "./dev-crypto-currency.postman_environment.json" false
+        #node "./newman-run.js" "./CryptoCurrency-Accounts.postman_collection.json" "./NCR.postman_globals.json" "./dev-crypto-currency.postman_environment.json" false
+        #node "./newman-run.js" "./CryptoCurrency-Orders.postman_collection.json" "./NCR.postman_globals.json" "./dev-crypto-currency.postman_environment.json" false
+        #node "./newman-run.js" "./CryptoCurrency-Receipts.postman_collection.json" "./NCR.postman_globals.json" "./dev-crypto-currency.postman_environment.json" false
     - uses: actions/upload-artifact@v2
       name: Generate artifacts
       with:
