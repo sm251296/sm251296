@@ -10,18 +10,18 @@ on:
         #description: 'Environment (dev/qal/pte)'     
         #required: true
         #default: 'qal'
-      tags:
-        description: 'Test scenario tags' 
       use-emoji:
         type: boolean
         description: Donot send notification
       environment:
         type: choice
-        description: Environment (dev/qal/pte)
+        description: Available Environment Available Environment Available Environment Available Environment (dev/qal/pte)
         options: 
         - dev
         - qal
         - pte
+      tags:
+        description: 'Test trigger reason tags' 
 
 jobs:
   test-api:
