@@ -7,11 +7,17 @@ on:
   workflow_dispatch:
     inputs:
       environment:
-        description: 'Environment (DEV/QAL/PTE)'     
+        description: 'Environment (dev/qal/pte)'     
         required: true
-        default: 'QAL'
+        default: 'qal'
       tags:
-        description: 'Test scenario tags'  
+        description: 'Test scenario tags' 
+      name:
+        type: choice
+        description: Who to greet
+        options: 
+        - monalisa
+        - cschleiden
 
 jobs:
   test-api:
