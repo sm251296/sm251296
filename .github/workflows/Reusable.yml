@@ -6,18 +6,22 @@ name: Reusable
 on:
   workflow_dispatch:
     inputs:
-      environment:
-        description: 'Environment (dev/qal/pte)'     
-        required: true
-        default: 'qal'
+      #environment:
+        #description: 'Environment (dev/qal/pte)'     
+        #required: true
+        #default: 'qal'
       tags:
         description: 'Test scenario tags' 
+      use-emoji:
+        type: boolean
+        description: Include 🎉🤣 emojis
       name:
-        type: choice
-        description: Who to greet
+        type: Environment
+        description: Environment (dev/qal/pte)
         options: 
-        - monalisa
-        - cschleiden
+        - dev
+        - qal
+        - pte
 
 jobs:
   test-api:
@@ -33,7 +37,7 @@ jobs:
         node-version: '14.x'
     - name: Install dependencies
       run: |
-        echo "Env: ${{ github.event.inputs.environment }}"         
+        echo "Env: ${{ github.event.inputs.choic }}"         
         cd QaAutomation
         npm install newman
         npm install newman-reporter-allure
@@ -42,7 +46,7 @@ jobs:
       run: |
         cd QaAutomation
         mkdir newman
-        node "./newman-run.js" "./CryptoCurrency-MarketData.postman_collection.json" "./NCR.postman_globals.json" "./${{ github.event.inputs.environment }}-crypto-currency.postman_environment.json"
+        node "./newman-run.js" "./CryptoCurrency-MarketData.postman_collection.json" "./NCR.postman_globals.json" "./${{ github.event.inputs.choice }}-crypto-currency.postman_environment.json"
         #node "./newman-run.js" "./CryptoCurrency-Users.postman_collection.json" "./NCR.postman_globals.json" "./dev-crypto-currency.postman_environment.json" false
         #node "./newman-run.js" "./CryptoCurrency-Accounts.postman_collection.json" "./NCR.postman_globals.json" "./dev-crypto-currency.postman_environment.json" false
         #node "./newman-run.js" "./CryptoCurrency-Orders.postman_collection.json" "./NCR.postman_globals.json" "./dev-crypto-currency.postman_environment.json" false
