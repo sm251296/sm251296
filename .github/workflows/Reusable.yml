@@ -6,7 +6,7 @@ name: Reusable
 on:
   workflow_dispatch:
     inputs:
-      testenvironment:
+      environment:
         description: 'Environment (DEV/QAL/PTE)'     
         required: true
         default: 'QAL'
@@ -27,7 +27,7 @@ jobs:
         node-version: '14.x'
     - name: Install dependencies
       run: |
-        ${{testenvironment}}
+        echo "Env: ${{ github.event.inputs.environment }}"         
         cd QaAutomation
         npm install newman
         npm install newman-reporter-allure
