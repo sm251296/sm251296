@@ -18,7 +18,7 @@ on:
         description: will promote build irrespective of test outcome
       environment:
         type: choice
-        description: Available Environment Available Environment Available Environment Available Environment (dev/qal/pte)
+        description: Available Environments (dev/qal/pte)
         options: 
         - dev
         - qal
