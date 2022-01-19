@@ -14,9 +14,9 @@ on:
         description: 'Test scenario tags' 
       use-emoji:
         type: boolean
-        description: Include 🎉🤣 emojis
-      name:
-        type: Environment
+        description: Donot send notification
+      environment:
+        type: choice
         description: Environment (dev/qal/pte)
         options: 
         - dev
