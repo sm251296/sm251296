@@ -1,0 +1,2677 @@
+{
+	"info": {
+		"_postman_id": "30be1a77-a014-4cf0-9fc0-e7d6b4a25bdb",
+		"name": "CryptoCurrency-Accounts",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Accounts",
+			"item": [
+				{
+					"name": "Success",
+					"item": [
+						{
+							"name": "Get",
+							"item": [
+								{
+									"name": "MultiResult",
+									"item": [
+										{
+											"name": "GetAccountsByInstitutionUserId",
+											"event": [
+												{
+													"listen": "test",
+													"script": {
+														"exec": [
+															""
+														],
+														"type": "text/javascript"
+													}
+												}
+											],
+											"protocolProfileBehavior": {
+												"disableBodyPruning": true
+											},
+											"request": {
+												"method": "GET",
+												"header": [
+													{
+														"key": "Content-Type",
+														"value": "application/json",
+														"type": "text"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": ""
+												},
+												"url": {
+													"raw": "{{externalLoadBalancer}}/v1/accounts?institutionUserId={{institutionUserId}}",
+													"host": [
+														"{{externalLoadBalancer}}"
+													],
+													"path": [
+														"v1",
+														"accounts"
+													],
+													"query": [
+														{
+															"key": "institutionUserId",
+															"value": "{{institutionUserId}}"
+														}
+													]
+												}
+											},
+											"response": []
+										},
+										{
+											"name": "GetAccountsByInstitutionUserIdOffsetOne",
+											"event": [
+												{
+													"listen": "test",
+													"script": {
+														"exec": [
+															""
+														],
+														"type": "text/javascript"
+													}
+												}
+											],
+											"protocolProfileBehavior": {
+												"disableBodyPruning": true
+											},
+											"request": {
+												"method": "GET",
+												"header": [
+													{
+														"key": "Content-Type",
+														"value": "application/json",
+														"type": "text"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": ""
+												},
+												"url": {
+													"raw": "{{externalLoadBalancer}}/v1/accounts?institutionUserId={{institutionUserId}}&offset=1",
+													"host": [
+														"{{externalLoadBalancer}}"
+													],
+													"path": [
+														"v1",
+														"accounts"
+													],
+													"query": [
+														{
+															"key": "institutionUserId",
+															"value": "{{institutionUserId}}"
+														},
+														{
+															"key": "offset",
+															"value": "1"
+														}
+													]
+												}
+											},
+											"response": []
+										}
+									],
+									"event": [
+										{
+											"listen": "prerequest",
+											"script": {
+												"type": "text/javascript",
+												"exec": [
+													""
+												]
+											}
+										},
+										{
+											"listen": "test",
+											"script": {
+												"type": "text/javascript",
+												"exec": [
+													"const actualResponse = pm.response.json();",
+													"const expectedOwner = {",
+													"    \"userId\": pm.variables.get(\"userId\"),",
+													"    \"primary\": true",
+													"};",
+													"",
+													"pm.test(\"Verify content\", () => {",
+													"    _.each(actualResponse.results, (item) => {",
+													"        pm.expect(item).to.contain(JSON.parse(pm.collectionVariables.get(\"expectedAccountResponse\")));",
+													"        pm.expect(item.owners[0]).to.contain(expectedOwner);",
+													"    })",
+													"});",
+													"",
+													"pm.test(\"Verify Schema\", () => {",
+													"    pm.response.to.have.jsonSchema(JSON.parse(pm.collectionVariables.get(\"multiAccountSchema\")));",
+													"});",
+													"",
+													"pm.test(\"Status code is 200\", function () {",
+													"    pm.response.to.have.status(200);",
+													"    pm.response.to.be.success;",
+													"    pm.response.to.be.ok;",
+													"});"
+												]
+											}
+										}
+									]
+								},
+								{
+									"name": "GetAccountById",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"const actualResponse = pm.response.json();\r",
+													"const expectedOwner = {\r",
+													"    \"userId\": pm.variables.get(\"userId\"),\r",
+													"    \"primary\": true\r",
+													"};\r",
+													"\r",
+													"pm.test(\"Verify content\", () => {\r",
+													"    pm.expect(actualResponse).to.contain(JSON.parse(pm.collectionVariables.get(\"expectedAccountResponse\")));\r",
+													"    pm.expect(actualResponse.owners[0]).to.contain(expectedOwner);\r",
+													"});\r",
+													"\r",
+													"pm.test(\"Verify Schema\", () => {\r",
+													"    pm.response.to.have.jsonSchema(JSON.parse(pm.collectionVariables.get(\"accountSchema\")));\r",
+													"});\r",
+													"\r",
+													"pm.test(\"Status code is 200\", function () {\r",
+													"    pm.response.to.have.status(200);\r",
+													"    pm.response.to.be.success;\r",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "x-institution-id",
+												"value": "67890",
+												"type": "text",
+												"disabled": true
+											}
+										],
+										"url": {
+											"raw": "{{externalLoadBalancer}}/v1/accounts/{{accountId}}",
+											"host": [
+												"{{externalLoadBalancer}}"
+											],
+											"path": [
+												"v1",
+												"accounts",
+												"{{accountId}}"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "GetAccountsEmptyResult",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"const actualResponse = pm.response.json();\r",
+													"const expectedResponse = {\r",
+													"    \"results\": []\r",
+													"};\r",
+													"pm.test(\"Verify content\", () => {\r",
+													"    pm.expect(actualResponse).to.eql(expectedResponse);\r",
+													"});\r",
+													"\r",
+													"pm.test(\"Status code is 200\", function () {\r",
+													"    pm.response.to.have.status(200);\r",
+													"    pm.response.to.be.success;\r",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"protocolProfileBehavior": {
+										"disableBodyPruning": true
+									},
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": ""
+										},
+										"url": {
+											"raw": "{{externalLoadBalancer}}/v1/accounts?institutionUserId={{institutionUserIdNoOrders}}",
+											"host": [
+												"{{externalLoadBalancer}}"
+											],
+											"path": [
+												"v1",
+												"accounts"
+											],
+											"query": [
+												{
+													"key": "institutionUserId",
+													"value": "{{institutionUserIdNoOrders}}"
+												}
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "Create",
+							"item": [
+								{
+									"name": "PostAccountsSingle",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													""
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"owners\": [\r\n        {\r\n            \"userId\": \"{{userId}}\"\r\n        }\r\n    ]\r\n}"
+										},
+										"url": {
+											"raw": "{{externalLoadBalancer}}/v1/accounts",
+											"host": [
+												"{{externalLoadBalancer}}"
+											],
+											"path": [
+												"v1",
+												"accounts"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "PostAccountsNewUser",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													""
+												],
+												"type": "text/javascript"
+											}
+										},
+										{
+											"listen": "prerequest",
+											"script": {
+												"exec": [
+													""
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"owners\": [\r\n        {\r\n            \"user\": {\r\n                \"institutionUserId\": \"{{$guid}}\",\r\n                \"legalName\": \"Jonâthan Edwörd Sçott Odínson\",\r\n                \"preferredName\": \"Jon\",\r\n                \"taxWithholding\": false,\r\n                \"address\": {\r\n                    \"line1\": \"123 Main St\",\r\n                    \"city\": \"New York\",\r\n                    \"stateProvinceRegion\": \"NY\",\r\n                    \"zipCode\": \"10092\",\r\n                    \"country\": \"US\"\r\n                },\r\n                \"email\": \"jon-odin+35@example.com\",\r\n                \"phone\": \"+19049055000\"\r\n            }\r\n        }\r\n    ]\r\n}"
+										},
+										"url": {
+											"raw": "{{externalLoadBalancer}}/v1/accounts",
+											"host": [
+												"{{externalLoadBalancer}}"
+											],
+											"path": [
+												"v1",
+												"accounts"
+											]
+										}
+									},
+									"response": []
+								}
+							],
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"type": "text/javascript",
+										"exec": [
+											""
+										]
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"type": "text/javascript",
+										"exec": [
+											"const actualResponse = pm.response.json();",
+											"const expectedOwner = {",
+											"    \"primary\": true",
+											"};",
+											"",
+											"pm.test(\"Verify Schema\", () => {",
+											"    pm.response.to.have.jsonSchema(JSON.parse(pm.collectionVariables.get(\"accountSchema\")));",
+											"});",
+											"pm.test(\"Verify content\", () => {",
+											"    pm.expect(actualResponse).to.contain(JSON.parse(pm.collectionVariables.get(\"expectedAccountResponse\")));",
+											"    pm.expect(actualResponse.owners[0]).to.contain(expectedOwner);",
+											"});",
+											"pm.test(\"Status code is 201\", function () {",
+											"    pm.response.to.have.status(201);",
+											"    pm.response.to.be.success;",
+											"});"
+										]
+									}
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "Error",
+					"item": [
+						{
+							"name": "PostAccountsInvalidRequest_400",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"eval(pm.variables.get(\"verifyRequestInvalid\"))();"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{externalLoadBalancer}}/v1/accounts",
+									"host": [
+										"{{externalLoadBalancer}}"
+									],
+									"path": [
+										"v1",
+										"accounts"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GetAccountById_400",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"eval(pm.variables.get(\"verifyResponseError\"))(\"getAccountById.id: Must be a valid UUID\");"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "x-institution-id",
+										"value": "67890",
+										"type": "text",
+										"disabled": true
+									}
+								],
+								"url": {
+									"raw": "{{externalLoadBalancer}}/v1/accounts/FAKE",
+									"host": [
+										"{{externalLoadBalancer}}"
+									],
+									"path": [
+										"v1",
+										"accounts",
+										"FAKE"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GetAccountNoInstitutionUserId_400",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"eval(pm.variables.get(\"verifyResponseError\"))(\"Required request parameter 'institutionUserId' for method parameter type String is not present\");"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "x-institution-id",
+										"value": "67890",
+										"type": "text",
+										"disabled": true
+									}
+								],
+								"url": {
+									"raw": "{{externalLoadBalancer}}/v1/accounts",
+									"host": [
+										"{{externalLoadBalancer}}"
+									],
+									"path": [
+										"v1",
+										"accounts"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GetAccountNoInstitutionId_400",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"eval(pm.globals.get(\"verifyInstitutionHeader\"))();"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"pm.request.headers.remove('x-institution-id');"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "x-institution-id",
+										"value": "67890",
+										"type": "text",
+										"disabled": true
+									}
+								],
+								"url": {
+									"raw": "{{externalLoadBalancer}}/v1/accounts/02bcac21-8ccc-4c64-9583-63cb01d84ed2",
+									"host": [
+										"{{externalLoadBalancer}}"
+									],
+									"path": [
+										"v1",
+										"accounts",
+										"02bcac21-8ccc-4c64-9583-63cb01d84ed2"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "PostAccountsMultiple_400",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"eval(pm.variables.get(\"verifyResponseError\"))(\"Account must not have owners more than 1\");"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"owners\": [\r\n        {\r\n            \"userId\": \"2720aefa-e677-4fb5-aca8-775316109fbe\",\r\n            \"primary\": true\r\n        },\r\n        {\r\n            \"userId\": \"8d937a3a-3b77-4c70-9dd7-5df6948e6a55\"\r\n        },\r\n        {\r\n            \"userId\": \"509e21bb-46f8-4048-aa43-94ee22ded4d9\"\r\n        }\r\n    ]\r\n}"
+								},
+								"url": {
+									"raw": "{{externalLoadBalancer}}/v1/accounts",
+									"host": [
+										"{{externalLoadBalancer}}"
+									],
+									"path": [
+										"v1",
+										"accounts"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "PostAccountsNewUserWithMoreThan45Chars_400",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"eval(pm.variables.get(\"verifyResponseError\"))(\"The request is invalid institutionUserId:size must be between 1 and 45\");"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"owners\": [\r\n        {\r\n            \"user\": {\r\n                \"institutionUserId\": \"5361513193197748541257152672125792945112312789\",\r\n                \"legalName\": \"Jonâthan Edwörd Sçott Odínson\",\r\n                \"preferredName\": \"Jon\",\r\n                \"taxWithholding\": false,\r\n                \"address\": {\r\n                    \"line1\": \"123 Main St\",\r\n                    \"city\": \"New York\",\r\n                    \"stateProvinceRegion\": \"NY\",\r\n                    \"zipCode\": \"10092\",\r\n                    \"country\": \"US\"\r\n                },\r\n                \"email\": \"jon-odin+35@example.com\",\r\n                \"phone\": \"+19049055000\"\r\n            }\r\n        }\r\n    ]\r\n}"
+								},
+								"url": {
+									"raw": "{{externalLoadBalancer}}/v1/accounts",
+									"host": [
+										"{{externalLoadBalancer}}"
+									],
+									"path": [
+										"v1",
+										"accounts"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GetAccountsMissingParameters_400",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"eval(pm.variables.get(\"verifyResponseError\"))(\"Required request parameter 'institutionUserId' for method parameter type String is not present\");"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{externalLoadBalancer}}/v1/accounts",
+									"host": [
+										"{{externalLoadBalancer}}"
+									],
+									"path": [
+										"v1",
+										"accounts"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GetAccountById_403",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"pm.request.headers.remove('Authorization');"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"eval(pm.globals.get(\"verify403\"))();"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "x-institution-id",
+										"value": "67890",
+										"type": "text",
+										"disabled": true
+									}
+								],
+								"url": {
+									"raw": "{{externalLoadBalancer}}/v1/accounts/02bcac21-8ccc-4c64-9583-63cb01d84ed2",
+									"host": [
+										"{{externalLoadBalancer}}"
+									],
+									"path": [
+										"v1",
+										"accounts",
+										"02bcac21-8ccc-4c64-9583-63cb01d84ed2"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GetAccountsNoResult_404",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"eval(pm.globals.get(\"verify404\"))(\"No result was found\");"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{externalLoadBalancer}}/v1/accounts?institutionUserId=FAKE",
+									"host": [
+										"{{externalLoadBalancer}}"
+									],
+									"path": [
+										"v1",
+										"accounts"
+									],
+									"query": [
+										{
+											"key": "institutionUserId",
+											"value": "FAKE"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GetAccountById_404",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"eval(pm.variables.get(\"verify404\"))(\"Not Found\");"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "x-institution-id",
+										"value": "67890",
+										"type": "text",
+										"disabled": true
+									}
+								],
+								"url": {
+									"raw": "{{externalLoadBalancer}}/v1/accounts/02bcac21-8ccc-4c64-9583-63cb01d84ed2",
+									"host": [
+										"{{externalLoadBalancer}}"
+									],
+									"path": [
+										"v1",
+										"accounts",
+										"02bcac21-8ccc-4c64-9583-63cb01d84ed2"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "PostAccountsNewUser_409",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"eval(pm.variables.get(\"verify409\"))(pm.variables.get(\"institutionUserId\"));"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"owners\": [\r\n        {\r\n            \"user\": {\r\n                \"institutionUserId\": \"{{institutionUserId}}\",\r\n                \"legalName\": \"Jonâthan Edwörd Sçott Odínson\",\r\n                \"preferredName\": \"Jon\",\r\n                \"taxWithholding\": false,\r\n                \"address\": {\r\n                    \"line1\": \"123 Main St\",\r\n                    \"city\": \"New York\",\r\n                    \"stateProvinceRegion\": \"NY\",\r\n                    \"zipCode\": \"10092\",\r\n                    \"country\": \"US\"\r\n                },\r\n                \"email\": \"jon-odin+35@example.com\",\r\n                \"phone\": \"+19049055000\"\r\n            }\r\n        }\r\n    ]\r\n}"
+								},
+								"url": {
+									"raw": "{{externalLoadBalancer}}/v1/accounts",
+									"host": [
+										"{{externalLoadBalancer}}"
+									],
+									"path": [
+										"v1",
+										"accounts"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "PutAccountsSingle_501",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"eval(pm.variables.get(\"verify501\"))(\"Update account endpoint not implemented by NYDIG provider\");"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"id\": \"8f64ad15-ae08-437f-8191-feb3d5b8a30a\",\r\n    \"created\": \"2021-11-25T05:12:25Z\",\r\n    \"status\": \"open\",\r\n    \"balance\": 0.0,\r\n    \"assetSymbol\": \"btc\",\r\n    \"assetName\": \"Bitcoin\",\r\n    \"owners\": [\r\n        {\r\n            \"userId\": \"ae6b5369-2daa-4946-af80-fb15012abe2e\",\r\n            \"primary\": true\r\n        }\r\n    ]\r\n}"
+								},
+								"url": {
+									"raw": "{{externalLoadBalancer}}/v1/accounts/{{accountId}}",
+									"host": [
+										"{{externalLoadBalancer}}"
+									],
+									"path": [
+										"v1",
+										"accounts",
+										"{{accountId}}"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "AccountRelationships",
+			"item": [
+				{
+					"name": "Succes",
+					"item": [
+						{
+							"name": "OneResult",
+							"item": [
+								{
+									"name": "GetAccountRelationshipByUserId",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													""
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{externalLoadBalancer}}/v1/account-relationships/account-user?relationshipUserId={{userIdNoOrders}}",
+											"host": [
+												"{{externalLoadBalancer}}"
+											],
+											"path": [
+												"v1",
+												"account-relationships",
+												"account-user"
+											],
+											"query": [
+												{
+													"key": "relationshipUserId",
+													"value": "{{userIdNoOrders}}",
+													"description": "User uuid"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "GetAccountRelationshipByProviderAccountId",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													""
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{externalLoadBalancer}}/v1/account-relationships/account-user?providerAccountId={{providerAccountIdNoOrders}}",
+											"host": [
+												"{{externalLoadBalancer}}"
+											],
+											"path": [
+												"v1",
+												"account-relationships",
+												"account-user"
+											],
+											"query": [
+												{
+													"key": "providerAccountId",
+													"value": "{{providerAccountIdNoOrders}}"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "GetAccountUserByAllParametersOneResult",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													""
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{externalLoadBalancer}}/v1/account-relationships/account-user?providerAccountId={{providerAccountIdNoOrders}}&relationshipUserId={{userIdNoOrders}}",
+											"host": [
+												"{{externalLoadBalancer}}"
+											],
+											"path": [
+												"v1",
+												"account-relationships",
+												"account-user"
+											],
+											"query": [
+												{
+													"key": "providerAccountId",
+													"value": "{{providerAccountIdNoOrders}}"
+												},
+												{
+													"key": "relationshipUserId",
+													"value": "{{userIdNoOrders}}"
+												}
+											]
+										}
+									},
+									"response": []
+								}
+							],
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"type": "text/javascript",
+										"exec": [
+											""
+										]
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"type": "text/javascript",
+										"exec": [
+											"const actualResponse = pm.response.json();",
+											"const expectedResponse = {",
+											"    \"results\": [",
+											"        {",
+											"            \"id\": pm.environment.get('accountIdNoOrders'),",
+											"            \"userRelationshipId\": pm.environment.get('userIdNoOrders'),",
+											"            \"primary\": true,",
+											"            \"accountId\": pm.environment.get('providerAccountIdNoOrders')",
+											"        }",
+											"    ]",
+											"};",
+											"",
+											"pm.test(\"Verify schema\", () => {",
+											"    pm.response.to.have.jsonSchema(JSON.parse(pm.collectionVariables.get(\"multiRelationshipSchema\")));",
+											"});",
+											"pm.test(\"Verify response body\", () => {",
+											"    pm.expect(actualResponse).to.eql(expectedResponse);",
+											"});",
+											"pm.test(\"Status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"    pm.response.to.be.success;",
+											"    pm.response.to.be.ok;",
+											"});"
+										]
+									}
+								}
+							]
+						},
+						{
+							"name": "MultiResult",
+							"item": [
+								{
+									"name": "GetAccountUserByRelationshipUserIdMultipleResults",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"const actualResponse = pm.response.json();\r",
+													"const expectedItem = {\r",
+													"    \"userRelationshipId\": pm.environment.get(\"userId\"),\r",
+													"    \"primary\": true,\r",
+													"};\r",
+													"pm.test(\"Verify schema\", () => {\r",
+													"    pm.response.to.have.jsonSchema(JSON.parse(pm.collectionVariables.get(\"multiRelationshipSchema\")));\r",
+													"});\r",
+													"\r",
+													"pm.test(\"Verify response body\", () => {\r",
+													"    _.each(actualResponse.results, (item) => {\r",
+													"        pm.expect(item).to.contain(expectedItem);\r",
+													"    })\r",
+													"});\r",
+													"\r",
+													"pm.test(\"Status code is 200\", function () {\r",
+													"    pm.response.to.have.status(200);\r",
+													"    pm.response.to.be.success;\r",
+													"    pm.response.to.be.ok;\r",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{externalLoadBalancer}}/v1/account-relationships/account-user?relationshipUserId={{userId}}",
+											"host": [
+												"{{externalLoadBalancer}}"
+											],
+											"path": [
+												"v1",
+												"account-relationships",
+												"account-user"
+											],
+											"query": [
+												{
+													"key": "relationshipUserId",
+													"value": "{{userId}}",
+													"description": "User uuid"
+												}
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "GetAccountRelationshipByAccountId",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"const actualResponse = pm.response.json();\r",
+											"const expectedResponse = {\r",
+											"    \"id\": pm.environment.get('accountIdNoOrders'),\r",
+											"    \"userRelationshipId\": pm.environment.get('userIdNoOrders'),\r",
+											"    \"primary\": true,\r",
+											"    \"accountId\": pm.environment.get('providerAccountIdNoOrders')\r",
+											"};\r",
+											"\r",
+											"pm.test(\"Verify schema\", () => {\r",
+											"    pm.response.to.have.jsonSchema(JSON.parse(pm.collectionVariables.get(\"singleRelationshipSchema\")));\r",
+											"});\r",
+											"pm.test(\"Verify response body\", () => {\r",
+											"    pm.expect(actualResponse).to.eql(expectedResponse);\r",
+											"});\r",
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"    pm.response.to.be.success;\r",
+											"    pm.response.to.be.ok;\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{externalLoadBalancer}}/v1/account-relationships/account-user/{{accountIdNoOrders}}",
+									"host": [
+										"{{externalLoadBalancer}}"
+									],
+									"path": [
+										"v1",
+										"account-relationships",
+										"account-user",
+										"{{accountIdNoOrders}}"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Error",
+					"item": [
+						{
+							"name": "Parameter",
+							"item": [
+								{
+									"name": "GetAccountUserEmptyRelationshipUserId_400",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													""
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{externalLoadBalancer}}/v1/account-relationships/account-user?relationshipUserId=",
+											"host": [
+												"{{externalLoadBalancer}}"
+											],
+											"path": [
+												"v1",
+												"account-relationships",
+												"account-user"
+											],
+											"query": [
+												{
+													"key": "relationshipUserId",
+													"value": "",
+													"description": "User uuid"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "GetAccountUserEmptyProviderAccountId_400",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													""
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{externalLoadBalancer}}/v1/account-relationships/account-user?providerAccountId=",
+											"host": [
+												"{{externalLoadBalancer}}"
+											],
+											"path": [
+												"v1",
+												"account-relationships",
+												"account-user"
+											],
+											"query": [
+												{
+													"key": "providerAccountId",
+													"value": ""
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "GetAccountUserNoParameters_400",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													""
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{externalLoadBalancer}}/v1/account-relationships/account-user",
+											"host": [
+												"{{externalLoadBalancer}}"
+											],
+											"path": [
+												"v1",
+												"account-relationships",
+												"account-user"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "GetAccountUserIncorrectParameter_400",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													""
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{externalLoadBalancer}}/v1/account-relationships/account-user?fake=fake",
+											"host": [
+												"{{externalLoadBalancer}}"
+											],
+											"path": [
+												"v1",
+												"account-relationships",
+												"account-user"
+											],
+											"query": [
+												{
+													"key": "fake",
+													"value": "fake"
+												}
+											]
+										}
+									},
+									"response": []
+								}
+							],
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"type": "text/javascript",
+										"exec": [
+											""
+										]
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"type": "text/javascript",
+										"exec": [
+											"eval(pm.variables.get(\"verifyResponseError\"))(\"At least 1 parameter should be sent: relationshipUserId or providerAccountId\");"
+										]
+									}
+								}
+							]
+						},
+						{
+							"name": "NoRelationship",
+							"item": [
+								{
+									"name": "GetAccountUserIncorrectRelationshipUserId_404",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													""
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{externalLoadBalancer}}/v1/account-relationships/account-user?relationshipUserId=fake",
+											"host": [
+												"{{externalLoadBalancer}}"
+											],
+											"path": [
+												"v1",
+												"account-relationships",
+												"account-user"
+											],
+											"query": [
+												{
+													"key": "relationshipUserId",
+													"value": "fake",
+													"description": "User uuid"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "GetAccountUserIncorrectProviderAccountId_404",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													""
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{externalLoadBalancer}}/v1/account-relationships/account-user?providerAccountId=fake",
+											"host": [
+												"{{externalLoadBalancer}}"
+											],
+											"path": [
+												"v1",
+												"account-relationships",
+												"account-user"
+											],
+											"query": [
+												{
+													"key": "providerAccountId",
+													"value": "fake"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "GetAccountUserIncorrectRelationshipId_404",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													""
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{externalLoadBalancer}}/v1/account-relationships/account-user/fake",
+											"host": [
+												"{{externalLoadBalancer}}"
+											],
+											"path": [
+												"v1",
+												"account-relationships",
+												"account-user",
+												"fake"
+											]
+										}
+									},
+									"response": []
+								}
+							],
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"type": "text/javascript",
+										"exec": [
+											""
+										]
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"type": "text/javascript",
+										"exec": [
+											"eval(pm.variables.get(\"verify404\"))(\"Account not found\");"
+										]
+									}
+								}
+							]
+						},
+						{
+							"name": "GetAccountRelationshipNoInstitutionId_400",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"eval(pm.globals.get(\"verifyInstitutionHeader\"))();"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"pm.request.headers.remove('x-institution-id');"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{externalLoadBalancer}}/v1/account-relationships/account-user?providerAccountId={{providerAccountIdNoOrders}}&relationshipUserId={{userIdNoOrders}}",
+									"host": [
+										"{{externalLoadBalancer}}"
+									],
+									"path": [
+										"v1",
+										"account-relationships",
+										"account-user"
+									],
+									"query": [
+										{
+											"key": "providerAccountId",
+											"value": "{{providerAccountIdNoOrders}}"
+										},
+										{
+											"key": "relationshipUserId",
+											"value": "{{userIdNoOrders}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GetAccountRelationshipByAccountId_403",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"eval(pm.globals.get(\"verify403\"))();"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"pm.request.headers.remove('Authorization');"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{externalLoadBalancer}}/v1/account-relationships/account-user/{{accountIdNoOrders}}",
+									"host": [
+										"{{externalLoadBalancer}}"
+									],
+									"path": [
+										"v1",
+										"account-relationships",
+										"account-user",
+										"{{accountIdNoOrders}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GetAccountRelationshipByAccountId_404",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"eval(pm.globals.get(\"verify404\"))();"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{externalLoadBalancer}}/v1/account-relationships/account-userFAKE/{{accountIdNoOrders}}",
+									"host": [
+										"{{externalLoadBalancer}}"
+									],
+									"path": [
+										"v1",
+										"account-relationships",
+										"account-userFAKE",
+										"{{accountIdNoOrders}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GetAccountRelationshipByAccountId_405",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"eval(pm.globals.get(\"verify405\"))(\"POST\");"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{externalLoadBalancer}}/v1/account-relationships/account-user/{{accountIdNoOrders}}",
+									"host": [
+										"{{externalLoadBalancer}}"
+									],
+									"path": [
+										"v1",
+										"account-relationships",
+										"account-user",
+										"{{accountIdNoOrders}}"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Positions",
+			"item": [
+				{
+					"name": "Success",
+					"item": [
+						{
+							"name": "Zero",
+							"item": [
+								{
+									"name": "GetAccountPositionsNoBalance",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													""
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "x-institution-id",
+												"value": "67890",
+												"type": "text",
+												"disabled": true
+											}
+										],
+										"url": {
+											"raw": "{{externalLoadBalancer}}/v1/accounts/{{accountId}}/positions",
+											"host": [
+												"{{externalLoadBalancer}}"
+											],
+											"path": [
+												"v1",
+												"accounts",
+												"{{accountId}}",
+												"positions"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "GetAccountPositionsNoOrders",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													""
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "x-institution-id",
+												"value": "67890",
+												"type": "text",
+												"disabled": true
+											}
+										],
+										"url": {
+											"raw": "{{externalLoadBalancer}}/v1/accounts/{{accountIdNoOrders}}/positions",
+											"host": [
+												"{{externalLoadBalancer}}"
+											],
+											"path": [
+												"v1",
+												"accounts",
+												"{{accountIdNoOrders}}",
+												"positions"
+											]
+										}
+									},
+									"response": []
+								}
+							],
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"type": "text/javascript",
+										"exec": [
+											""
+										]
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"type": "text/javascript",
+										"exec": [
+											"const actualResponse = pm.response.json();",
+											"const expectedResponse = [",
+											"    {",
+											"        \"quantity\": \"0.00000000\",",
+											"        \"marketValue\": \"0.00\",",
+											"        \"assetSymbol\": \"btc\",",
+											"        \"assetName\": \"Bitcoin\"",
+											"    }",
+											"];",
+											"",
+											"pm.test(\"Verify content\", () => { pm.expect(actualResponse).to.be.eql(expectedResponse) });"
+										]
+									}
+								}
+							]
+						},
+						{
+							"name": "GetAccountPositionsBalance",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"const actualResponse = pm.response.json();\r",
+											"const expectedResponse = {\r",
+											"    \"quantity\": \"0.10100000\",\r",
+											"    \"assetSymbol\": \"btc\",\r",
+											"    \"assetName\": \"Bitcoin\"\r",
+											"};\r",
+											"\r",
+											"pm.test(\"Verify content\", () => { pm.expect(actualResponse[0]).to.be.contain(expectedResponse) });"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "x-institution-id",
+										"value": "67890",
+										"type": "text",
+										"disabled": true
+									}
+								],
+								"url": {
+									"raw": "{{externalLoadBalancer}}/v1/accounts/{{accountIdWithBalance}}/positions",
+									"host": [
+										"{{externalLoadBalancer}}"
+									],
+									"path": [
+										"v1",
+										"accounts",
+										"{{accountIdWithBalance}}",
+										"positions"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"Verify schema\", () => { pm.response.to.have.jsonSchema(JSON.parse(pm.collectionVariables.get(\"positionsSchema\"))) });",
+									"",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"    pm.response.to.be.success;",
+									"    pm.response.to.be.ok;",
+									"});"
+								]
+							}
+						}
+					]
+				},
+				{
+					"name": "Error",
+					"item": [
+						{
+							"name": "GetAccountPositionsNoInstitutionId_400",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"eval(pm.globals.get(\"verifyInstitutionHeader\"))();"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"pm.request.headers.remove('x-institution-id');"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "x-institution-id",
+										"value": "67890",
+										"type": "text",
+										"disabled": true
+									}
+								],
+								"url": {
+									"raw": "{{externalLoadBalancer}}/v1/accounts/1d68fff7-080e-441c-94ff-d4aab0b26df3/positions",
+									"host": [
+										"{{externalLoadBalancer}}"
+									],
+									"path": [
+										"v1",
+										"accounts",
+										"1d68fff7-080e-441c-94ff-d4aab0b26df3",
+										"positions"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GetAccountPositionsMalformed_400",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"eval(pm.globals.get(\"verifyMalformedRequest\"))();"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "x-institution-id",
+										"value": "67890",
+										"type": "text",
+										"disabled": true
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"test\": \"test\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{externalLoadBalancer}}/v1/accounts/1d68fff7-080e-441c-94ff-d4aab0b26df3/positions",
+									"host": [
+										"{{externalLoadBalancer}}"
+									],
+									"path": [
+										"v1",
+										"accounts",
+										"1d68fff7-080e-441c-94ff-d4aab0b26df3",
+										"positions"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GetAccountPositionsIncorrectId_400",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"eval(pm.globals.get(\"verifyResponseError\"))(\"getAccountPositions.id: Must be a valid UUID\");"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "x-institution-id",
+										"value": "67890",
+										"type": "text",
+										"disabled": true
+									}
+								],
+								"url": {
+									"raw": "{{externalLoadBalancer}}/v1/accounts/fake/positions",
+									"host": [
+										"{{externalLoadBalancer}}"
+									],
+									"path": [
+										"v1",
+										"accounts",
+										"fake",
+										"positions"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GetAccountPositions_403",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"eval(pm.globals.get(\"verify403\"))();"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"pm.request.headers.remove('Authorization');"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "x-institution-id",
+										"value": "67890",
+										"type": "text",
+										"disabled": true
+									}
+								],
+								"url": {
+									"raw": "{{externalLoadBalancer}}/v1/accounts/1d68fff7-080e-441c-94ff-d4aab0b26df3/positions",
+									"host": [
+										"{{externalLoadBalancer}}"
+									],
+									"path": [
+										"v1",
+										"accounts",
+										"1d68fff7-080e-441c-94ff-d4aab0b26df3",
+										"positions"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GetAccountPositionsIncorrectId_404",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"eval(pm.globals.get(\"verify404\"))(\"Account not found\");\r",
+											"pm.collectionVariables.unset(\"incorrectAccountId\");"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"pm.collectionVariables.set(\"incorrectAccountId\", \"1bfafca1-39df-4a1b-b481-91c0b99930b6\");"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "x-institution-id",
+										"value": "67890",
+										"type": "text",
+										"disabled": true
+									}
+								],
+								"url": {
+									"raw": "{{externalLoadBalancer}}/v1/accounts/{{incorrectAccountId}}/positions",
+									"host": [
+										"{{externalLoadBalancer}}"
+									],
+									"path": [
+										"v1",
+										"accounts",
+										"{{incorrectAccountId}}",
+										"positions"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GetAccountPositions_404",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"eval(pm.globals.get(\"verify404\"))();"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "x-institution-id",
+										"value": "67890",
+										"type": "text",
+										"disabled": true
+									}
+								],
+								"url": {
+									"raw": "{{externalLoadBalancer}}/v1/accounts/1bfafca1-39df-4a1b-b481-91c0b99930b6/positionsFAKE",
+									"host": [
+										"{{externalLoadBalancer}}"
+									],
+									"path": [
+										"v1",
+										"accounts",
+										"1bfafca1-39df-4a1b-b481-91c0b99930b6",
+										"positionsFAKE"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GetAccountPositions_405",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"eval(pm.globals.get(\"verify405\"))(\"POST\");"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "x-institution-id",
+										"value": "67890",
+										"type": "text",
+										"disabled": true
+									}
+								],
+								"url": {
+									"raw": "{{externalLoadBalancer}}/v1/accounts/1d68fff7-080e-441c-94ff-d4aab0b26df3/positions",
+									"host": [
+										"{{externalLoadBalancer}}"
+									],
+									"path": [
+										"v1",
+										"accounts",
+										"1d68fff7-080e-441c-94ff-d4aab0b26df3",
+										"positions"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "Restrictions",
+			"item": [
+				{
+					"name": "Success",
+					"item": [
+						{
+							"name": "GetRestrictionsByAccountId",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"const actualResponse = pm.response.json();\r",
+											"const expectedResult = {\r",
+											"    \"status\": \"ACTIVE\",\r",
+											"    \"reason\": \"BSA_LEGAL_CONCERN\"\r",
+											"};\r",
+											"\r",
+											"pm.test(\"Verify response body\", () => {\r",
+											"    _.each(actualResponse.results, (item) => {\r",
+											"        pm.expect(item).to.contain(expectedResult);\r",
+											"    })\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Verify Schema\", () => {\r",
+											"    pm.response.to.have.jsonSchema(JSON.parse(pm.collectionVariables.get(\"multiRestrictionSchema\")));\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"    pm.response.to.be.success;\r",
+											"    pm.response.to.be.ok;\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{externalLoadBalancer}}/v1/restrictions/{{accountId}}",
+									"host": [
+										"{{externalLoadBalancer}}"
+									],
+									"path": [
+										"v1",
+										"restrictions",
+										"{{accountId}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GetRestrictionsByAccountIdEmptyResult",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"const actualResponse = pm.response.json();\r",
+											"const expectedResult = {\r",
+											"    \"results\": []\r",
+											"};\r",
+											"\r",
+											"pm.test(\"Verify response body\", () => {\r",
+											"    pm.expect(actualResponse).to.be.eql(expectedResult);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"    pm.response.to.be.success;\r",
+											"    pm.response.to.be.ok;\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{externalLoadBalancer}}/v1/restrictions/{{accountIdNoOrders}}",
+									"host": [
+										"{{externalLoadBalancer}}"
+									],
+									"path": [
+										"v1",
+										"restrictions",
+										"{{accountIdNoOrders}}"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Error",
+					"item": [
+						{
+							"name": "GetRestrictionsNoInstitutionId_400",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"eval(pm.globals.get(\"verifyInstitutionHeader\"))();"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"pm.request.headers.remove('x-institution-id');"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{externalLoadBalancer}}/v1/restrictions/{{accountId}}",
+									"host": [
+										"{{externalLoadBalancer}}"
+									],
+									"path": [
+										"v1",
+										"restrictions",
+										"{{accountId}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GetRestrictionsIncorrectAccountId_400",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"eval(pm.variables.get(\"verifyResponseError\"))(\"getAccountRestrictions.id: Must be a valid UUID\");"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{externalLoadBalancer}}/v1/restrictions/fake",
+									"host": [
+										"{{externalLoadBalancer}}"
+									],
+									"path": [
+										"v1",
+										"restrictions",
+										"fake"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GetRestrictionsByAccountId_403",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"eval(pm.globals.get(\"verify403\"))();"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"pm.request.headers.remove('Authorization');"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{externalLoadBalancer}}/v1/restrictions/{{accountId}}",
+									"host": [
+										"{{externalLoadBalancer}}"
+									],
+									"path": [
+										"v1",
+										"restrictions",
+										"{{accountId}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GetRestrictionsNotFoundAccountId_404",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"eval(pm.variables.get(\"verify404\"))(\"Account not found\");"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{externalLoadBalancer}}/v1/restrictions/9fdc6ed0-9ded-43c1-b005-05ee4fcdff1a",
+									"host": [
+										"{{externalLoadBalancer}}"
+									],
+									"path": [
+										"v1",
+										"restrictions",
+										"9fdc6ed0-9ded-43c1-b005-05ee4fcdff1a"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GetRestrictionsNotFound_404",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"eval(pm.variables.get(\"verify404\"))();"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{externalLoadBalancer}}/v1/restrictions",
+									"host": [
+										"{{externalLoadBalancer}}"
+									],
+									"path": [
+										"v1",
+										"restrictions"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GetRestrictionsByAccountId_405",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"eval(pm.globals.get(\"verify405\"))(\"POST\");"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{externalLoadBalancer}}/v1/restrictions/{{accountId}}",
+									"host": [
+										"{{externalLoadBalancer}}"
+									],
+									"path": [
+										"v1",
+										"restrictions",
+										"{{accountId}}"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					"eval(pm.globals.get(\"authorization\"))();",
+					"pm.request.headers.add({ key: 'x-institution-id', value: pm.environment.get('x-institution-id') });"
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					"eval(pm.globals.get(\"verifyResponseTime\"))();",
+					"eval(pm.globals.get(\"verifyStackTrace\"))();"
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "positionsSchema",
+			"value": "{\n    \"type\": \"array\",\n    \"items\": {\n        \"type\": \"object\",\n        \"properties\": {\n            \"quantity\": { \"type\": \"string\" },\n            \"marketValue\": { \"type\": \"string\" },\n            \"assetSymbol\": { \"type\": \"string\" },\n            \"assetName\": { \"type\": \"string\" }\n        },\n        \"required\": [\n            \"quantity\",\n            \"marketValue\",\n            \"assetSymbol\",\n            \"assetName\"\n        ],\n        \"additionalProperties\": false\n    },\n    \"uniqueItems\": true\n}"
+		},
+		{
+			"key": "accountSchema",
+			"value": "{\n    \"type\": \"object\",\n    \"properties\": {\n        \"id\": { \"type\": \"string\" },\n        \"created\": { \"type\": \"string\" },\n        \"status\": { \"type\": \"string\" },\n        \"owners\": {\n            \"type\": \"array\",\n            \"items\": {\n                \"type\": \"object\",\n                \"properties\": {\n                    \"userId\": { \"type\": \"string\" },\n                    \"primary\": { \"type\": \"boolean\" }\n                },\n                \"required\": [\n                    \"userId\",\n                    \"primary\"\n                ]\n            },\n            \"minItems\": 1,\n            \"uniqueItems\": true\n        }\n    },\n    \"required\": [\n        \"id\",\n        \"created\",\n        \"status\",\n        \"owners\"\n    ],\n    \"additionalProperties\": false\n}"
+		},
+		{
+			"key": "multiAccountSchema",
+			"value": "{\n    \"type\": \"object\",\n    \"properties\": {\n        \"results\": {\n            \"type\": \"array\",\n            \"items\": {\n                \"type\": \"object\",\n                \"properties\": {\n                    \"id\": { \"type\": \"string\" },\n                    \"created\": { \"type\": \"string\" },\n                    \"status\": { \"type\": \"string\" },\n                    \"owners\": {\n                        \"type\": \"array\",\n                        \"items\": {\n                            \"type\": \"object\",\n                            \"properties\": {\n                                \"userId\": { \"type\": \"string\" },\n                                \"primary\": { \"type\": \"boolean\" }\n                            },\n                            \"required\": [\n                                \"userId\",\n                                \"primary\"\n                            ]\n                        },\n                        \"minItems\": 1,\n                        \"uniqueItems\": true\n                    }\n                },\n                \"required\": [\n                    \"id\",\n                    \"created\",\n                    \"status\",\n                    \"owners\"\n                ],\n                \"additionalProperties\": false\n            },\n            \"minItems\": 1,\n            \"uniqueItems\": true\n        }\n    },\n    \"required\": [\n        \"results\"\n    ],\n    \"additionalProperties\": false\n}"
+		},
+		{
+			"key": "singleRelationshipSchema",
+			"value": "{\n    \"type\": \"object\",\n        \"properties\": {\n        \"id\": { \"type\": \"string\" },\n        \"userRelationshipId\": { \"type\": \"string\" },\n        \"primary\": { \"type\": \"boolean\" },\n        \"accountId\": { \"type\": \"string\" }\n    },\n    \"required\": [\n        \"id\",\n        \"userRelationshipId\",\n        \"primary\",\n        \"accountId\"\n    ],\n        \"additionalProperties\": false\n}"
+		},
+		{
+			"key": "multiRelationshipSchema",
+			"value": "{\n    \"type\": \"object\",\n    \"properties\": {\n        \"results\": {\n            \"type\": \"array\",\n            \"items\": {\n                \"type\": \"object\",\n                \"properties\": {\n                    \"id\": { \"type\": \"string\" },\n                    \"userRelationshipId\": { \"type\": \"string\" },\n                    \"primary\": { \"type\": \"boolean\" },\n                    \"accountId\": { \"type\": \"string\" }\n                },\n                \"required\": [\n                    \"id\",\n                    \"userRelationshipId\",\n                    \"primary\",\n                    \"accountId\"\n                ],\n                \"additionalProperties\": false\n            },\n            \"minItems\": 1,\n            \"uniqueItems\": true\n        }\n    },\n    \"required\": [\n        \"results\"\n    ],\n    \"additionalProperties\": false\n}"
+		},
+		{
+			"key": "multiRestrictionSchema",
+			"value": "{\n    \"type\": \"object\",\n    \"properties\": {\n        \"results\": {\n            \"type\": \"array\",\n            \"items\": {\n                \"type\": \"object\",\n                \"properties\": {\n                    \"status\": { \"type\": \"string\" },\n                    \"activity\": { \"type\": \"string\" },\n                    \"reason\": { \"type\": \"string\" },\n                    \"createdAt\": { \"type\": \"string\" }\n                },\n                \"required\": [\n                    \"status\",\n                    \"activity\",\n                    \"reason\",\n                    \"createdAt\"\n                ],\n                \"additionalProperties\": false\n            },\n            \"minItems\": 1,\n            \"uniqueItems\": true\n        }\n    },\n    \"required\": [\n        \"results\"\n    ],\n    \"additionalProperties\": false\n}"
+		},
+		{
+			"key": "expectedAccountResponse",
+			"value": "{\n    \"status\": \"open\"\n}"
+		}
+	]
+}

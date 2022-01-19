@@ -1,0 +1,697 @@
+{
+	"info": {
+		"_postman_id": "bf0fd076-aa75-449a-92dd-c1182605f3bf",
+		"name": "CryptoCurrency-MarketData",
+		"description": "Contains **Ticker** related endpoint. The collection can be run independently and scripts too.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Ticker",
+			"item": [
+				{
+					"name": "Success",
+					"item": [
+						{
+							"name": "Get",
+							"item": [
+								{
+									"name": "GetTicker",
+									"event": [
+										{
+											"listen": "prerequest",
+											"script": {
+												"exec": [
+													"// The only thing you can validate in response are the below properties\r",
+													"// \"symbol\": \"btc\",\r",
+													"// \"currency\": \"usd\"\r",
+													"// tickerSchema also validates the value only in this case"
+												],
+												"type": "text/javascript"
+											}
+										},
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"const schema =  eval(pm.globals.get(\"getSchemaByName\"))(\"tickerSchema\");\r",
+													"eval(pm.globals.get(\"verifyResponseUsingSchema\"))(schema);"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{externalLoadBalancer}}/v1/ticker/btc?toCurrency=usd",
+											"host": [
+												"{{externalLoadBalancer}}"
+											],
+											"path": [
+												"v1",
+												"ticker",
+												"btc"
+											],
+											"query": [
+												{
+													"key": "toCurrency",
+													"value": "usd"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "GetHistory_DailyFrequency",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"let moment = require('moment');\r",
+													"const responseJson = pm.response.json();\r",
+													"const endTimeRange = moment().format();\r",
+													"const beginTimeRange = moment().subtract(5,'years').format();\r",
+													"\r",
+													"const schema =  eval(pm.globals.get(\"getSchemaByName\"))(\"tickerHistorySchema\");\r",
+													"eval(pm.globals.get(\"verifyResponseUsingSchema\"))(schema);\r",
+													"\r",
+													"pm.test(\"Verify all orders are with in past 5 years\", () => {\r",
+													"   for (var i = 0; i < responseJson.data.length; i++) \r",
+													"    {\r",
+													"        pm.expect(moment(responseJson.data[i].timestamp).isBetween(beginTimeRange, endTimeRange)).to.be.true;\r",
+													"    }\r",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										},
+										{
+											"listen": "prerequest",
+											"script": {
+												"exec": [
+													""
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{externalLoadBalancer}}/v1/ticker/btc/history?toCurrency=usd&frequency=ONE_DAY&lookback=FIVE_YEAR",
+											"host": [
+												"{{externalLoadBalancer}}"
+											],
+											"path": [
+												"v1",
+												"ticker",
+												"btc",
+												"history"
+											],
+											"query": [
+												{
+													"key": "toCurrency",
+													"value": "usd"
+												},
+												{
+													"key": "frequency",
+													"value": "ONE_DAY"
+												},
+												{
+													"key": "lookback",
+													"value": "FIVE_YEAR"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "GetHistory_15MinutesFrequency",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"let moment = require('moment');\r",
+													"const responseJson = pm.response.json();\r",
+													"const endTimeRange = moment().format();\r",
+													"const beginTimeRange = moment().subtract(7,'days').format();\r",
+													"\r",
+													"const schema =  eval(pm.globals.get(\"getSchemaByName\"))(\"tickerHistorySchema\");\r",
+													"eval(pm.globals.get(\"verifyResponseUsingSchema\"))(schema);\r",
+													"\r",
+													"pm.test(\"Verify all orders are with in past 7 days\", () => {\r",
+													"   for (var i = 0; i < responseJson.data.length; i++) \r",
+													"    {\r",
+													"        pm.expect(moment(responseJson.data[i].timestamp).isBetween(beginTimeRange, endTimeRange)).to.be.true;\r",
+													"    }\r",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{externalLoadBalancer}}/v1/ticker/btc/history?toCurrency=usd&frequency=FIFTEEN_MINUTE&lookback=WEEK",
+											"host": [
+												"{{externalLoadBalancer}}"
+											],
+											"path": [
+												"v1",
+												"ticker",
+												"btc",
+												"history"
+											],
+											"query": [
+												{
+													"key": "toCurrency",
+													"value": "usd"
+												},
+												{
+													"key": "frequency",
+													"value": "FIFTEEN_MINUTE"
+												},
+												{
+													"key": "lookback",
+													"value": "WEEK"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "GetHistory_MinuteFrequency",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"let moment = require('moment');\r",
+													"const responseJson = pm.response.json();\r",
+													"const endTimeRange = moment().format();\r",
+													"const beginTimeRange = moment().subtract(1,'days').format();\r",
+													"\r",
+													"const schema =  eval(pm.globals.get(\"getSchemaByName\"))(\"tickerHistorySchema\");\r",
+													"eval(pm.globals.get(\"verifyResponseUsingSchema\"))(schema);\r",
+													"\r",
+													"pm.test(\"Verify all orders are with in past day\", () => {\r",
+													"   for (var i = 0; i < responseJson.data.length; i++) \r",
+													"    {\r",
+													"        pm.expect(moment(responseJson.data[i].timestamp).isBetween(beginTimeRange, endTimeRange)).to.be.true;\r",
+													"    }\r",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{externalLoadBalancer}}/v1/ticker/btc/history?toCurrency=usd&frequency=ONE_MINUTE&lookback=DAY",
+											"host": [
+												"{{externalLoadBalancer}}"
+											],
+											"path": [
+												"v1",
+												"ticker",
+												"btc",
+												"history"
+											],
+											"query": [
+												{
+													"key": "toCurrency",
+													"value": "usd"
+												},
+												{
+													"key": "frequency",
+													"value": "ONE_MINUTE"
+												},
+												{
+													"key": "lookback",
+													"value": "DAY"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "GetHistoryDefault",
+									"event": [
+										{
+											"listen": "prerequest",
+											"script": {
+												"exec": [
+													""
+												],
+												"type": "text/javascript"
+											}
+										},
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"let moment = require('moment');\r",
+													"const responseJson = pm.response.json();\r",
+													"const endTimeRange = moment().format();\r",
+													"const beginTimeRange = moment().subtract(24,'hours').format();\r",
+													"\r",
+													"const schema =  eval(pm.globals.get(\"getSchemaByName\"))(\"tickerHistorySchema\");\r",
+													"eval(pm.globals.get(\"verifyResponseUsingSchema\"))(schema);\r",
+													"\r",
+													"pm.test(\"Verify all orders are with in past 24 hours\", () => {\r",
+													"   for (var i = 0; i < responseJson.data.length; i++) \r",
+													"    {\r",
+													"        pm.expect(moment(responseJson.data[i].timestamp).isBetween(beginTimeRange, endTimeRange)).to.be.true;\r",
+													"    }\r",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{externalLoadBalancer}}/v1/ticker/btc/history?toCurrency=usd",
+											"host": [
+												"{{externalLoadBalancer}}"
+											],
+											"path": [
+												"v1",
+												"ticker",
+												"btc",
+												"history"
+											],
+											"query": [
+												{
+													"key": "toCurrency",
+													"value": "usd"
+												}
+											]
+										}
+									},
+									"response": []
+								}
+							],
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"type": "text/javascript",
+										"exec": [
+											""
+										]
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"type": "text/javascript",
+										"exec": [
+											""
+										]
+									}
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "Errors",
+					"item": [
+						{
+							"name": "GetTicker_400",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"eval(pm.globals.get(\"verifyRequestInvalid\"))();"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{externalLoadBalancer}}/v1/ticker/btc?toCurrency=usd1",
+									"host": [
+										"{{externalLoadBalancer}}"
+									],
+									"path": [
+										"v1",
+										"ticker",
+										"btc"
+									],
+									"query": [
+										{
+											"key": "toCurrency",
+											"value": "usd1"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GetTicker_403",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"pm.request.headers.remove('Authorization');"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"eval(pm.globals.get(\"verify403\"))();"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{externalLoadBalancer}}/v1/ticker/btc?toCurrency=usd",
+									"host": [
+										"{{externalLoadBalancer}}"
+									],
+									"path": [
+										"v1",
+										"ticker",
+										"btc"
+									],
+									"query": [
+										{
+											"key": "toCurrency",
+											"value": "usd"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GetHistory_400",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"eval(pm.globals.get(\"verifyRequestInvalid\"))();"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{externalLoadBalancer}}/v1/ticker/btc/history?toCurrency=usd1&frequency=ONE_MINUTE&lookback=FIVE_YEAR",
+									"host": [
+										"{{externalLoadBalancer}}"
+									],
+									"path": [
+										"v1",
+										"ticker",
+										"btc",
+										"history"
+									],
+									"query": [
+										{
+											"key": "toCurrency",
+											"value": "usd1"
+										},
+										{
+											"key": "frequency",
+											"value": "ONE_MINUTE"
+										},
+										{
+											"key": "lookback",
+											"value": "FIVE_YEAR"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GetHistory_403",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"pm.request.headers.remove('Authorization');"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"eval(pm.globals.get(\"verify403\"))();"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{externalLoadBalancer}}/v1/ticker/btc/history?toCurrency=usd&frequency=ONE_MINUTE&lookback=FIVE_YEAR",
+									"host": [
+										"{{externalLoadBalancer}}"
+									],
+									"path": [
+										"v1",
+										"ticker",
+										"btc",
+										"history"
+									],
+									"query": [
+										{
+											"key": "toCurrency",
+											"value": "usd"
+										},
+										{
+											"key": "frequency",
+											"value": "ONE_MINUTE"
+										},
+										{
+											"key": "lookback",
+											"value": "FIVE_YEAR"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GetHistory_Lookback_400",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"eval(pm.globals.get(\"verifyResponseError\"))(\"Lookback 'FIVE_YEAR' does not support Frequency 'ONE_MINUTE'\");"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{externalLoadBalancer}}/v1/ticker/btc/history?toCurrency=usd&frequency=ONE_MINUTE&lookback=FIVE_YEAR",
+									"host": [
+										"{{externalLoadBalancer}}"
+									],
+									"path": [
+										"v1",
+										"ticker",
+										"btc",
+										"history"
+									],
+									"query": [
+										{
+											"key": "toCurrency",
+											"value": "usd"
+										},
+										{
+											"key": "frequency",
+											"value": "ONE_MINUTE"
+										},
+										{
+											"key": "lookback",
+											"value": "FIVE_YEAR"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GetHistory_Lookback_15Minutes_400",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"eval(pm.globals.get(\"verifyResponseError\"))(\"Lookback 'YEAR' does not support Frequency 'FIFTEEN_MINUTE'\");"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{externalLoadBalancer}}/v1/ticker/btc/history?toCurrency=usd&frequency=FIFTEEN_MINUTE&lookback=YEAR",
+									"host": [
+										"{{externalLoadBalancer}}"
+									],
+									"path": [
+										"v1",
+										"ticker",
+										"btc",
+										"history"
+									],
+									"query": [
+										{
+											"key": "toCurrency",
+											"value": "usd"
+										},
+										{
+											"key": "frequency",
+											"value": "FIFTEEN_MINUTE"
+										},
+										{
+											"key": "lookback",
+											"value": "YEAR"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GetHistory_OneMinuteFrequency_400",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"eval(pm.globals.get(\"verifyResponseError\"))(\"Lookback 'MONTH' does not support Frequency 'ONE_MINUTE'\");"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{externalLoadBalancer}}/v1/ticker/btc/history?toCurrency=usd&frequency=ONE_MINUTE&lookback=MONTH",
+									"host": [
+										"{{externalLoadBalancer}}"
+									],
+									"path": [
+										"v1",
+										"ticker",
+										"btc",
+										"history"
+									],
+									"query": [
+										{
+											"key": "toCurrency",
+											"value": "usd"
+										},
+										{
+											"key": "frequency",
+											"value": "ONE_MINUTE"
+										},
+										{
+											"key": "lookback",
+											"value": "MONTH"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					"eval(pm.globals.get(\"authorization\"))();",
+					"pm.request.headers.add({ key: 'x-institution-id', value: pm.environment.get('x-institution-id') });"
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					"eval(pm.globals.get(\"verifyResponseTime\"))();",
+					"eval(pm.globals.get(\"verifyStackTrace\"))();"
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "tickerHistorySchema",
+			"value": "{\n    \"$schema\": \"http://json-schema.org/draft-06/schema#\",\n    \"$ref\": \"#/definitions/Welcome7\",\n    \"definitions\": {\n        \"Welcome7\": {\n            \"type\": \"object\",\n            \"additionalProperties\": false,\n            \"properties\": {\n                \"symbol\": {\n                    \"type\": \"string\",\n\t\t\t\t\t\"pattern\": \"btc\"\n                },\n                \"currency\": {\n                    \"type\": \"string\",\n\t\t\t\t\t\"pattern\": \"usd\"\n                },\n                \"data\": {\n                    \"type\": \"array\",\n                    \"items\": {\n                        \"$ref\": \"#/definitions/Datum\"\n                    }\n                }\n            },\n            \"required\": [\n                \"currency\",\n                \"data\",\n                \"symbol\"\n            ],\n            \"title\": \"Welcome7\"\n        },\n        \"Datum\": {\n            \"type\": \"object\",\n            \"additionalProperties\": false,\n            \"properties\": {\n                \"timestamp\": {\n                    \"type\": \"string\",\n                    \"format\": \"date-time\"\n                },\n                \"price\": {\n                    \"type\": \"number\"\n                }\n            },\n            \"required\": [\n                \"price\",\n                \"timestamp\"\n            ],\n            \"title\": \"Datum\"\n        }\n    }\n}\n"
+		},
+		{
+			"key": "tickerSchema",
+			"value": "{\n    \"$schema\": \"http://json-schema.org/draft-06/schema#\",\n    \"$ref\": \"#/definitions/Welcome10\",\n    \"definitions\": {\n        \"Welcome10\": {\n            \"type\": \"object\",\n            \"additionalProperties\": false,\n            \"properties\": {\n                \"symbol\": {\n                    \"type\": \"string\",\n\t\t\t\t\t\"pattern\": \"btc\"\n                },\n                \"currency\": {\n                    \"type\": \"string\",\n\t\t\t\t\t\"pattern\": \"usd\"\n                },\n                \"price\": {\n                    \"type\": \"number\"\n                }\n            },\n            \"required\": [\n                \"currency\",\n                \"price\",\n                \"symbol\"\n            ],\n            \"title\": \"Welcome10\"\n        }\n    }\n}\n"
+		}
+	]
+}

@@ -1,0 +1,732 @@
+{
+	"info": {
+		"_postman_id": "02187fde-a2f8-4d8b-8b42-14b0ab1ae4cd",
+		"name": "CryptoCurrency-Receipts",
+		"description": "Contains **Receipts** related endpoint. The collection can be run independently and scripts too.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Receipts",
+			"item": [
+				{
+					"name": "Success",
+					"item": [
+						{
+							"name": "Get",
+							"item": [
+								{
+									"name": "GetReceiptsByOrderId",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"const schema =  eval(pm.globals.get(\"getSchemaByName\"))(\"receiptsSchema\");\r",
+													"eval(pm.globals.get(\"verifyResponseUsingSchema\"))(schema);"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{externalLoadBalancer}}/v1/receipts/;orderId={{receipts_DefaultOrderID}}",
+											"host": [
+												"{{externalLoadBalancer}}"
+											],
+											"path": [
+												"v1",
+												"receipts",
+												";orderId={{receipts_DefaultOrderID}}"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "GetReceiptsById",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"const schema =  eval(pm.globals.get(\"getSchemaByName\"))(\"receiptsSchema\");\r",
+													"eval(pm.globals.get(\"verifyResponseUsingSchema\"))(schema);"
+												],
+												"type": "text/javascript"
+											}
+										},
+										{
+											"listen": "prerequest",
+											"script": {
+												"exec": [
+													"// Receipt id's for future \r",
+													"// institution 12345\r",
+													"// ************** QA **************\r",
+													"//be4d7af9-8636-4dd3-af69-c0b76400a77a\r",
+													"//48fbd306-8fed-4693-95ad-339be2223167\r",
+													"//0c385a12-76b2-45cb-b414-8ae1a97ce282\r",
+													"//************** DEV **************\r",
+													"// de389aa4-340e-4d67-b1f1-408bb0fe879f\r",
+													"// 6d0739f4-1ffe-4c81-a755-e068dc768477\r",
+													"// 9adcb3c8-389f-4f05-88f4-22b693ec7a05\r",
+													"// 8c5e7854-029f-44a0-a7f9-f1edce0b98a1\r",
+													"\r",
+													"// institution 04715\r",
+													"//f1100b8d-0f91-48f0-92ee-6d4953b4f031"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{externalLoadBalancer}}/v1/receipts/;id={{receipts_Id}}",
+											"host": [
+												"{{externalLoadBalancer}}"
+											],
+											"path": [
+												"v1",
+												"receipts",
+												";id={{receipts_Id}}"
+											]
+										}
+									},
+									"response": []
+								}
+							],
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"type": "text/javascript",
+										"exec": [
+											""
+										]
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"type": "text/javascript",
+										"exec": [
+											"eval(pm.globals.get(\"verifyResponseUsingSchema\"))(pm.variables.get(\"receiptsSchema\"));",
+											"",
+											"pm.test(\"Status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"    pm.response.to.be.success;",
+											"    pm.response.to.be.ok;",
+											"});"
+										]
+									}
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "Errors",
+					"item": [
+						{
+							"name": "GetReceiptsByOrderId_400",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"eval(pm.variables.get(\"verifyResponseError\"))(\"Request must have a valid id as matrix parameter.\");"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{externalLoadBalancer}}/v1/receipts/;oorderId=od-01frkbarmdg8mqwch0xeypytmt",
+									"host": [
+										"{{externalLoadBalancer}}"
+									],
+									"path": [
+										"v1",
+										"receipts",
+										";oorderId=od-01frkbarmdg8mqwch0xeypytmt"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GetReceiptsById_400",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"eval(pm.variables.get(\"verifyResponseError\"))(\"Request must have a valid id as matrix parameter.\");"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{externalLoadBalancer}}/v1/receipts/;Id=od-01frkbarmdg8mqwch0xeypytmt",
+									"host": [
+										"{{externalLoadBalancer}}"
+									],
+									"path": [
+										"v1",
+										"receipts",
+										";Id=od-01frkbarmdg8mqwch0xeypytmt"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GetReceiptsByOrderId_403",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"pm.request.headers.remove('Authorization');"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"eval(pm.globals.get(\"verify403\"))();"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{externalLoadBalancer}}/v1/receipts/;orderId={{receipts_DefaultOrderID}}",
+									"host": [
+										"{{externalLoadBalancer}}"
+									],
+									"path": [
+										"v1",
+										"receipts",
+										";orderId={{receipts_DefaultOrderID}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GetReceiptsById_403",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"pm.request.headers.remove('Authorization');"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"eval(pm.globals.get(\"verify403\"))();"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{externalLoadBalancer}}/v1/receipts/;id={{receipts_DefaultOrderID}}",
+									"host": [
+										"{{externalLoadBalancer}}"
+									],
+									"path": [
+										"v1",
+										"receipts",
+										";id={{receipts_DefaultOrderID}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GetReceiptsByOrderId_404",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"eval(pm.variables.get(\"verify404\"))(\"Not Found\");"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{externalLoadBalancer}}/v1/receipts/;orderId={{receipts_BadOrderID}}",
+									"host": [
+										"{{externalLoadBalancer}}"
+									],
+									"path": [
+										"v1",
+										"receipts",
+										";orderId={{receipts_BadOrderID}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GetReceiptsById_404",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"eval(pm.variables.get(\"verify404\"))(\"Not Found\");"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{externalLoadBalancer}}/v1/receipts/;id={{receipts_BadOrderID}}",
+									"host": [
+										"{{externalLoadBalancer}}"
+									],
+									"path": [
+										"v1",
+										"receipts",
+										";id={{receipts_BadOrderID}}"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "Pdf",
+			"item": [
+				{
+					"name": "Success",
+					"item": [
+						{
+							"name": "Get",
+							"item": [
+								{
+									"name": "GetReceiptsByIdPDF",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"const schema =  eval(pm.globals.get(\"getSchemaByName\"))(\"receiptsPdfSchema\");\r",
+													"eval(pm.globals.get(\"verifyResponseUsingSchema\"))(schema);"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{externalLoadBalancer}}/v1/receipts/;id={{receipts_Id}}/pdf",
+											"host": [
+												"{{externalLoadBalancer}}"
+											],
+											"path": [
+												"v1",
+												"receipts",
+												";id={{receipts_Id}}",
+												"pdf"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "GetReceiptsByOrderIdPDF",
+									"event": [
+										{
+											"listen": "prerequest",
+											"script": {
+												"exec": [
+													""
+												],
+												"type": "text/javascript"
+											}
+										},
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"const schema =  eval(pm.globals.get(\"getSchemaByName\"))(\"receiptsPdfSchema\");\r",
+													"eval(pm.globals.get(\"verifyResponseUsingSchema\"))(schema);"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{externalLoadBalancer}}/v1/receipts/;orderId={{receipts_DefaultOrderID}}/pdf",
+											"host": [
+												"{{externalLoadBalancer}}"
+											],
+											"path": [
+												"v1",
+												"receipts",
+												";orderId={{receipts_DefaultOrderID}}",
+												"pdf"
+											]
+										}
+									},
+									"response": []
+								}
+							],
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"type": "text/javascript",
+										"exec": [
+											""
+										]
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"type": "text/javascript",
+										"exec": [
+											"eval(pm.globals.get(\"verifyResponseUsingSchema\"))(pm.variables.get(\"receiptsPdfSchema\"));",
+											"",
+											"pm.test(\"Status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"    pm.response.to.be.success;",
+											"    pm.response.to.be.ok;",
+											"});"
+										]
+									}
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "Errors",
+					"item": [
+						{
+							"name": "GetReceiptsByOrderIdPDF_400",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"eval(pm.variables.get(\"verifyResponseError\"))(\"Request must have a valid id as matrix parameter.\");"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{externalLoadBalancer}}/v1/receipts/;oorderId=od-01frkbarmdg8mqwch0xeypytmt/pdf",
+									"host": [
+										"{{externalLoadBalancer}}"
+									],
+									"path": [
+										"v1",
+										"receipts",
+										";oorderId=od-01frkbarmdg8mqwch0xeypytmt",
+										"pdf"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GetReceiptsByIdPDF_400",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"eval(pm.variables.get(\"verifyResponseError\"))(\"Request must have a valid id as matrix parameter.\");"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{externalLoadBalancer}}/v1/receipts/;Id=od-01frkbarmdg8mqwch0xeypytmt/pdf",
+									"host": [
+										"{{externalLoadBalancer}}"
+									],
+									"path": [
+										"v1",
+										"receipts",
+										";Id=od-01frkbarmdg8mqwch0xeypytmt",
+										"pdf"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GetReceiptsByOrderIdPDF_403",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"pm.request.headers.remove('Authorization');"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"eval(pm.globals.get(\"verify403\"))();"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{externalLoadBalancer}}/v1/receipts/;orderId=od-01frkbarmdg8mqwch0xeypytmt",
+									"host": [
+										"{{externalLoadBalancer}}"
+									],
+									"path": [
+										"v1",
+										"receipts",
+										";orderId=od-01frkbarmdg8mqwch0xeypytmt"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GetReceiptsByIdPDF_403",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"pm.request.headers.remove('Authorization');"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"eval(pm.globals.get(\"verify403\"))();"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{externalLoadBalancer}}/v1/receipts/;id=od-01frkbarmdg8mqwch0xeypytmt",
+									"host": [
+										"{{externalLoadBalancer}}"
+									],
+									"path": [
+										"v1",
+										"receipts",
+										";id=od-01frkbarmdg8mqwch0xeypytmt"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GetReceiptsByOrderIdPDF_404",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"eval(pm.variables.get(\"verify404\"))(\"Not Found\");"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{externalLoadBalancer}}/v1/receipts/;id=od-01frkbarmdg8mqwch0xeypy786/pdf",
+									"host": [
+										"{{externalLoadBalancer}}"
+									],
+									"path": [
+										"v1",
+										"receipts",
+										";id=od-01frkbarmdg8mqwch0xeypy786",
+										"pdf"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GetReceiptsByIdPDF_404",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"eval(pm.variables.get(\"verify404\"))(\"Not Found\");"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{externalLoadBalancer}}/v1/receipts/;orderId=od-01frkbarmdg8mqwch0xeypy786/pdf",
+									"host": [
+										"{{externalLoadBalancer}}"
+									],
+									"path": [
+										"v1",
+										"receipts",
+										";orderId=od-01frkbarmdg8mqwch0xeypy786",
+										"pdf"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					"const authPayload = {",
+					"    url: \"https://ncrdev-dev.apigee.net/security/access-key-authentication/oauth2/token\",",
+					"    method: \"POST\",",
+					"    header: {",
+					"            \"Content-Type\": \"application/x-www-form-urlencoded\"",
+					"        },",
+					"    body: {",
+					"        mode: \"x-www-form-urlencoded\",",
+					"        raw: \"client_id=7168155c594e45fbabf9e8fe1560aae6&client_secret=4ce94149b9244c59811953477d4db499&grant_type=client_credentials\"",
+					"        }",
+					"    };",
+					"",
+					"pm.sendRequest(authPayload, (error, response) => {",
+					"    console.log(error ? error : response.json());",
+					"    var responseJson = response.json();",
+					"    var authorization = responseJson.token_type + ' ' + responseJson.access_token;",
+					"    pm.request.headers.add({ key: 'Authorization', value: authorization",
+					"        });",
+					"    });",
+					"",
+					"pm.request.headers.add({ key: 'x-institution-id', value: pm.environment.get('x-institution-id') });"
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					"eval(pm.globals.get(\"verifyResponseTime\"))();",
+					"eval(pm.globals.get(\"verifyStackTrace\"))();"
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "receiptsSchema",
+			"value": "{\n    \"$schema\": \"http://json-schema.org/draft-06/schema#\",\n    \"$ref\": \"#/definitions/Welcome9\",\n    \"definitions\": {\n        \"Welcome9\": {\n            \"type\": \"object\",\n            \"additionalProperties\": false,\n            \"properties\": {\n                \"institutionId\": {\n                    \"type\": \"string\",\n                    \"format\": \"integer\"\n                },\n                \"name\": {\n                    \"type\": \"string\"\n                },\n                \"address\": {\n                    \"$ref\": \"#/definitions/Address\"\n                },\n                \"transactionType\": {\n                    \"type\": \"string\"\n                },\n                \"transactionDate\": {\n                    \"type\": \"string\",\n                    \"format\": \"date-time\"\n                },\n                \"cryptoCurrency\": {\n                    \"$ref\": \"#/definitions/Currency\"\n                },\n                \"physicalCurrency\": {\n                    \"$ref\": \"#/definitions/Currency\"\n                },\n                \"fee\": {\n                    \"type\": \"number\"\n                },\n                \"exchangeRate\": {\n                    \"type\": \"number\"\n                },\n                \"orderId\": {\n                    \"type\": \"string\"\n                },\n                \"settlementDate\": {\n                    \"type\": \"string\",\n                    \"format\": \"date\"\n                },\n                \"source\": {\n                    \"type\": \"string\"\n                },\n                \"total\": {\n                    \"type\": \"number\"\n                },\n                \"providerId\": {\n                    \"type\": \"string\",\n                    \"format\": \"uuid\"\n                }\n            },\n            \"required\": [\n                \"address\",\n                \"cryptoCurrency\",\n                \"exchangeRate\",\n                \"fee\",\n                \"institutionId\",\n                \"name\",\n                \"orderId\",\n                \"physicalCurrency\",\n                \"providerId\",\n                \"settlementDate\",\n                \"source\",\n                \"total\",\n                \"transactionDate\",\n                \"transactionType\"\n            ],\n            \"title\": \"Welcome9\"\n        },\n        \"Address\": {\n            \"type\": \"object\",\n            \"additionalProperties\": false,\n            \"properties\": {\n                \"line1\": {\n                    \"type\": \"string\"\n                },\n\t\t\t\t\"line2\": {\n                    \"type\": \"string\"\n                },\n                \"city\": {\n                    \"type\": \"string\"\n                },\n                \"stateProvinceRegion\": {\n                    \"type\": \"string\"\n                },\n                \"zipcode\":  {\n                    \"type\": \"string\"\n                },\n                \"country\": {\n                    \"type\": \"string\"\n                }\n            },\n            \"required\": [\n                \"city\",\n                \"country\",\n                \"line1\",\n                \"stateProvinceRegion\"\n            ],\n            \"title\": \"Address\"\n        },\n        \"Currency\": {\n            \"type\": \"object\",\n            \"additionalProperties\": false,\n            \"properties\": {\n                \"amount\": {\n                    \"type\": \"string\"\n                },\n                \"symbol\": {\n                    \"type\": \"string\"\n                },\n                \"code\": {\n                    \"type\": \"string\"\n                }\n            },\n            \"required\": [\n                \"amount\",\n                \"code\",\n                \"symbol\"\n            ],\n            \"title\": \"Currency\"\n        }\n    }\n}\n",
+			"type": "string"
+		},
+		{
+			"key": "receiptsPdfSchema",
+			"value": "{\n    \"$schema\": \"http://json-schema.org/draft-06/schema#\",\n    \"$ref\": \"#/definitions/Welcome1\",\n    \"definitions\": {\n        \"Welcome1\": {\n            \"type\": \"object\",\n            \"additionalProperties\": false,\n            \"properties\": {\n                \"pdfUrl\": {\n                    \"type\": \"string\",\n                    \"format\": \"uri\",\n                    \"qt-uri-protocols\": [\n                        \"https\"\n                    ],\n                    \"qt-uri-extensions\": [\n                        \".pdf\"\n                    ]\n                }\n            },\n            \"required\": [\n                \"pdfUrl\"\n            ],\n            \"title\": \"Welcome1\"\n        }\n    }\n}",
+			"type": "string"
+		}
+	]
+}

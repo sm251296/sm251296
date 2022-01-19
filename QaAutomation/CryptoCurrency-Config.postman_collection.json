@@ -1,0 +1,104 @@
+{
+	"info": {
+		"_postman_id": "af4ccc10-8aea-47d1-b188-b942ab292377",
+		"name": "CryptoCurrency-Config",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "CryptoProviders",
+			"item": [
+				{
+					"name": "GetCryptoProviders",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{externalLoadBalancer}}/v1/config/crypto-providers",
+							"host": [
+								"{{externalLoadBalancer}}"
+							],
+							"path": [
+								"v1",
+								"config",
+								"crypto-providers"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetCryptoProviderById",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{externalLoadBalancer}}/v1/config/crypto-providers/26f486b0-e513-4146-b2e7-73d928fab544",
+							"host": [
+								"{{externalLoadBalancer}}"
+							],
+							"path": [
+								"v1",
+								"config",
+								"crypto-providers",
+								"26f486b0-e513-4146-b2e7-73d928fab544"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Relationships",
+			"item": [
+				{
+					"name": "GetInstitutionProvider",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{externalLoadBalancer}}/v1/config/relationships/institution-provider?institutionId=12345",
+							"host": [
+								"{{externalLoadBalancer}}"
+							],
+							"path": [
+								"v1",
+								"config",
+								"relationships",
+								"institution-provider"
+							],
+							"query": [
+								{
+									"key": "institutionId",
+									"value": "12345"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					"eval(pm.globals.get(\"authorization\"))();"
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}

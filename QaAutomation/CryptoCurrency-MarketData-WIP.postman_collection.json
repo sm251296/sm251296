@@ -1,0 +1,59 @@
+{
+	"info": {
+		"_postman_id": "3feab551-7145-412a-9a0b-69c65ba4bea0",
+		"name": "CryptoCurrency-MarketData-WIP",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Ticker",
+			"item": [
+				{
+					"name": "Success",
+					"item": [
+						{
+							"name": "Get",
+							"item": []
+						}
+					]
+				},
+				{
+					"name": "Errors",
+					"item": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					"eval(pm.globals.get(\"authorization\"))();",
+					"pm.request.headers.add({ key: 'x-institution-id', value: pm.environment.get('x-institution-id') });"
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					"eval(pm.globals.get(\"verifyResponseTime\"))();",
+					"eval(pm.globals.get(\"verifyStackTrace\"))();"
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "tickerHistorySchema",
+			"value": "{\n    \"$schema\": \"http://json-schema.org/draft-06/schema#\",\n    \"$ref\": \"#/definitions/Welcome7\",\n    \"definitions\": {\n        \"Welcome7\": {\n            \"type\": \"object\",\n            \"additionalProperties\": false,\n            \"properties\": {\n                \"symbol\": {\n                    \"type\": \"string\"\n                },\n                \"currency\": {\n                    \"type\": \"string\"\n                },\n                \"data\": {\n                    \"type\": \"array\",\n                    \"items\": {\n                        \"$ref\": \"#/definitions/Datum\"\n                    }\n                }\n            },\n            \"required\": [\n                \"currency\",\n                \"data\",\n                \"symbol\"\n            ],\n            \"title\": \"Welcome7\"\n        },\n        \"Datum\": {\n            \"type\": \"object\",\n            \"additionalProperties\": false,\n            \"properties\": {\n                \"timestamp\": {\n                    \"type\": \"string\",\n                    \"format\": \"date-time\"\n                },\n                \"price\": {\n                    \"type\": \"number\"\n                }\n            },\n            \"required\": [\n                \"price\",\n                \"timestamp\"\n            ],\n            \"title\": \"Datum\"\n        }\n    }\n};\nconst tickerSchema = {\n    \"$schema\": \"http://json-schema.org/draft-06/schema#\",\n    \"$ref\": \"#/definitions/Welcome10\",\n    \"definitions\": {\n        \"Welcome10\": {\n            \"type\": \"object\",\n            \"additionalProperties\": false,\n            \"properties\": {\n                \"symbol\": {\n                    \"type\": \"string\"\n                },\n                \"currency\": {\n                    \"type\": \"string\"\n                },\n                \"price\": {\n                    \"type\": \"number\"\n                }\n            },\n            \"required\": [\n                \"currency\",\n                \"price\",\n                \"symbol\"\n            ],\n            \"title\": \"Welcome10\"\n        }\n    }\n};"
+		},
+		{
+			"key": "tickerSchema",
+			"value": "{\n    \"$schema\": \"http://json-schema.org/draft-06/schema#\",\n    \"$ref\": \"#/definitions/Welcome10\",\n    \"definitions\": {\n        \"Welcome10\": {\n            \"type\": \"object\",\n            \"additionalProperties\": false,\n            \"properties\": {\n                \"symbol\": {\n                    \"type\": \"string\"\n                },\n                \"currency\": {\n                    \"type\": \"string\"\n                },\n                \"price\": {\n                    \"type\": \"number\"\n                }\n            },\n            \"required\": [\n                \"currency\",\n                \"price\",\n                \"symbol\"\n            ],\n            \"title\": \"Welcome10\"\n        }\n    }\n}"
+		}
+	]
+}

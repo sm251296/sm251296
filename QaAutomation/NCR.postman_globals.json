@@ -1,14 +1,130 @@
 {
-	"id": "f809acde-14a6-4337-8921-cc1e9a249f52",
+	"id": "41d11ded-39f8-475b-87b6-18a83b69e84e",
 	"values": [
 		{
+			"key": "authorization",
+			"value": "() => {\n    const global_var = pm.globals.toObject({\n        excludeDisabled: true\n    });\n    const authPayload = {\n        url: global_var.auth_url,\n        method: \"POST\",\n        header: {\n            \"Content-Type\": \"application/x-www-form-urlencoded\"\n        },\n        body: {\n            mode: \"x-www-form-urlencoded\",\n            raw: \"client_id=\" + global_var.client_id + \"&client_secret=\" + global_var.client_secret + \"&grant_type=\" + global_var.grant_type\n        }\n    };\n    pm.sendRequest(authPayload, (error, response) => {\n        if (error !== null) {\n            console.error('Error while generating a bearer token:', error);\n        } else {\n            pm.request.headers.add({ key: 'Authorization', value: response.json().token_type + ' ' + response.json().access_token });\n        }\n    });\n}",
+			"enabled": true
+		},
+		{
+			"key": "client_id",
+			"value": "7168155c594e45fbabf9e8fe1560aae6",
+			"enabled": true
+		},
+		{
+			"key": "client_secret",
+			"value": "4ce94149b9244c59811953477d4db499",
+			"enabled": true
+		},
+		{
+			"key": "grant_type",
+			"value": "client_credentials",
+			"enabled": true
+		},
+		{
+			"key": "auth_url",
+			"value": "https://ncrdev-dev.apigee.net/security/access-key-authentication/oauth2/token",
+			"enabled": true
+		},
+		{
+			"key": "verifyResponseTime",
+			"value": "() => {\n    const expectedTime = +environment[\"responseTime\"];\n    pm.test(`Verify response time is less than ${expectedTime} ms.`, function () {\n        pm.expect(pm.response.responseTime).to.be.below(expectedTime);\n    });\n}",
+			"enabled": true
+		},
+		{
+			"key": "verify403",
+			"value": "() => {\n    const expectedResponse = {\n        \"code\": \"403\",\n        \"message\": \"Forbidden\"\n    };\n    const actualResponse = pm.response.json();\n    pm.test(\"Verify schema\", () => {\n        pm.response.to.have.jsonSchema(JSON.parse(pm.globals.get(\"errorSchema\")));\n    });\n    pm.test(\"Verify response body\", () => {\n        pm.expect(actualResponse).to.include(expectedResponse);\n    });\n    pm.test(\"Status code is 403\", function () {\n        pm.response.to.have.status(403);\n        pm.response.to.be.clientError;\n        pm.response.to.be.forbidden;\n    });\n}\n",
+			"enabled": true
+		},
+		{
+			"key": "verify404",
+			"value": "(message) => {\n    const expectedResponse = {\n        \"code\": \"404\",\n        \"message\": message === undefined ? \"Not Found\" : message\n    };\n    const actualResponse = pm.response.json();\n    pm.test(\"Verify schema\", () => {\n        pm.response.to.have.jsonSchema(JSON.parse(pm.globals.get(\"errorSchema\")));\n    });\n    pm.test(\"Verify response body\", () => {\n        pm.expect(actualResponse).to.include(expectedResponse);\n    });\n    pm.test(\"Status code is 404\", function () {\n        pm.response.to.have.status(404);\n        pm.response.to.be.clientError;\n        pm.response.to.be.notFound;\n    });\n}",
+			"enabled": true
+		},
+		{
+			"key": "verify405",
+			"value": "(method) => {\n    const expectedResponse = {\n        \"code\": \"405\",\n        \"message\": \"Request method '\" + method + \"' not supported\"\n    };\n    const actualResponse = pm.response.json();\n    pm.test(\"Verify schema\", () => {\n        pm.response.to.have.jsonSchema(JSON.parse(pm.globals.get(\"errorSchema\")));\n    });\n    pm.test(\"Verify response body\", () => {\n        pm.expect(actualResponse).to.include(expectedResponse);\n    });\n    pm.test(\"Status code is 405\", function () {\n        pm.response.to.have.status(405);\n        pm.response.to.be.clientError;\n    });\n}",
+			"enabled": true
+		},
+		{
+			"key": "verify409",
+			"value": "(message) => {\n    const expectedResponse = {\n        \"code\": \"409\",\n        \"message\": \"The user already exists \"+message\n    };\n    const actualResponse = pm.response.json();\n    pm.test(\"Verify schema\", () => {\n        pm.response.to.have.jsonSchema(JSON.parse(pm.globals.get(\"errorSchema\")));\n    });\n    pm.test(\"Verify response body\", () => {\n        pm.expect(actualResponse).to.include(expectedResponse);\n    });\n    pm.test(\"Status code is 409\", function () {\n        pm.response.to.have.status(409);\n        pm.response.to.be.clientError;\n    });\n}",
+			"enabled": true
+		},
+		{
+			"key": "verifyResponseError",
+			"value": "(message) => {\n    const expectedResponse = {\n        \"code\": \"400\",\n        \"message\": message\n    };\n    const actualResponse = pm.response.json();\n    pm.test(\"Verify schema\", () => {\n        pm.response.to.have.jsonSchema(JSON.parse(pm.globals.get(\"errorSchema\")));\n    });\n    pm.test(\"Validate response body\", () => {\n        pm.expect(actualResponse).to.eql(expectedResponse);\n    });\n    pm.test(\"Status code is 400\", function () {\n        pm.response.to.have.status(400);\n        pm.response.to.be.clientError;\n        pm.response.to.be.badRequest;\n    });\n}",
+			"enabled": true
+		},
+		{
+			"key": "verifyInstitutionHeader",
+			"value": "() => {\n    eval(pm.globals.get(\"verifyResponseError\"))(\"Required request header 'x-institution-id' for method parameter type String is not present\");\n}",
+			"enabled": true
+		},
+		{
+			"key": "verifyRequestInvalid",
+			"value": "() => {\n    eval(pm.globals.get(\"verifyResponseError\"))(\"The request is invalid\");\n}",
+			"enabled": true
+		},
+		{
+			"key": "verifyNoContentType",
+			"value": "() => {\n    eval(pm.globals.get(\"verifyResponseError\"))(\"Content type 'application/octet-stream' not supported\");\n}",
+			"enabled": true
+		},
+		{
+			"key": "verifyMalformedRequest",
+			"value": "() => {\n    const actualResponse = pm.response.text();\n    const expectedMessage = \"Your client has issued a malformed or illegal request.\";\n\n    pm.test(\"Verify malformed request\", () => {\n        pm.expect(actualResponse).to.include(expectedMessage);\n    });\n\n    pm.test(\"Status code is 400\", function () {\n        pm.response.to.have.status(400);\n        pm.response.to.be.clientError;\n        pm.response.to.be.badRequest;\n    });\n}",
+			"enabled": true
+		},
+		{
 			"key": "errorKeywords",
-			"value": "java.~web.error.ErrorResponse~com.ncr.~server",
+			"value": "java.~web.error.ErrorResponse~com.ncr.",
+			"enabled": true
+		},
+		{
+			"key": "errorSchema",
+			"value": "{\n    \"type\": \"object\",\n    \"properties\": {\n        \"code\": { \"type\": \"string\" },\n        \"message\": { \"type\": \"string\" }\n    },\n    \"required\": [\n        \"code\",\n        \"message\"\n    ],\n    \"additionalPropertie\": false\n}",
+			"enabled": true
+		},
+		{
+			"key": "errorSchemaWithPath",
+			"value": "{\n    \"type\": \"object\",\n    \"properties\": {\n        \"timestamp\": { \"type\": \"string\" },\n        \"status\": { \"type\": \"integer\" },\n        \"error\": { \"type\": \"string\" },\n        \"path\": { \"type\": \"string\" }\n    },\n    \"required\": [\n        \"timestamp\",\n        \"status\",\n        \"error\",\n        \"path\"\n    ],\n    \"additionalProperties\": false\n}",
+			"enabled": true
+		},
+		{
+			"key": "getRandomString",
+			"value": "(numChars) => { return _.times(numChars, () => _.random(35).toString(36)).join('')}",
+			"enabled": true
+		},
+		{
+			"key": "verifyStackTrace",
+			"value": "() => {\n    const possibleErrorKeywords = pm.globals.get(\"errorKeywords\").split(\"~\");\n    pm.test(\"Verify stack trace\", () => {\n        for (var i = 0; i < possibleErrorKeywords.length; i++) {\n            pm.expect(pm.response.text()).to.not.include(possibleErrorKeywords[i]);\n        }\n    });\n}",
+			"enabled": true
+		},
+		{
+			"key": "verify501",
+			"value": "(message) => {\n    const expectedResponse = {\n        \"code\": \"501\",\n        \"message\": message\n    };\n    const actualResponse = pm.response.json();\n    pm.test(\"Verify schema\", () => {\n        pm.response.to.have.jsonSchema(JSON.parse(pm.globals.get(\"errorSchema\")));\n    });\n    pm.test(\"Verify response body\", () => {\n        pm.expect(actualResponse).to.be.eql(expectedResponse);\n    });\n    pm.test(\"Status code is 501\", function () {\n        pm.response.to.have.status(501);\n        pm.response.to.be.serverError;\n    });\n}\n",
+			"enabled": true
+		},
+		{
+			"key": "verifyResponseUsingSchema",
+			"value": "(jsonSchema) => {\n  pm.test(\"Response Schema validation\", function() {\n    const responseJson = pm.response.json();\n    const schema = JSON.parse(jsonSchema);\n    var result = tv4.validateMultiple(responseJson, schema);\n    pm.expect(result.valid, JSON.stringify(result)).to.be.true;\n  });\n}",
+			"enabled": true
+		},
+		{
+			"key": "verifyCustomErrorMessageRegex",
+			"value": "(code, message) => {\n    const expectedResponse = {\n\t    \"code\": code,\n        \"message\": message\n    };\n    const actualResponse = pm.response.json();\n    pm.test(\"Verify schema\", () => {\n        pm.response.to.have.jsonSchema(JSON.parse(pm.globals.get(\"errorSchema\")));\n    });\n    pm.test(\"Verify RegEx error response message\", () => {\n        pm.expect(actualResponse.message).to.match(expectedResponse.message);\n    });\n    pm.test((\"Status code is \" + parseInt(code)), function () {\n        pm.response.to.have.status(parseInt(code));\n        pm.response.to.be.clientError;\n    });\n}",
+			"enabled": true
+		},
+		{
+			"key": "getSchemaByName",
+			"value": "(schemaName)=>{  \nvar schema = pm.collectionVariables.get(schemaName + pm.environment.get(\"provider\"));\nif(schema == undefined){\t\n\tschema = pm.collectionVariables.get(schemaName);\n\tif(schema == undefined){\n\t\tif(pm.environment.get(\"provider\") !== undefined){\n\t\t\tconsole.log('Unable to locate schema with name \\'' + schemaName + pm.environment.get(\"provider\") + '\\' or with name \\'' + schemaName +'\\'');\n\t\t} else {\n\t\t\tconsole.log('Unable to locate schema with name \\'' + schemaName +'\\'');\n\t\t}\n\t}\n}\nreturn schema; \n}",
+			"type": "default",
 			"enabled": true
 		}
 	],
 	"name": "Globals",
 	"_postman_variable_scope": "globals",
-	"_postman_exported_at": "2021-11-17T21:16:32.386Z",
-	"_postman_exported_using": "Postman/9.1.3"
+	"_postman_exported_at": "2022-01-18T17:01:58.447Z",
+	"_postman_exported_using": "Postman/9.8.3"
 }

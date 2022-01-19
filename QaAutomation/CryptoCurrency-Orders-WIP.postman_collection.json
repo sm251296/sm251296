@@ -1,0 +1,729 @@
+{
+	"info": {
+		"_postman_id": "032f3eab-0c7e-4244-86ec-47679dfcd7e6",
+		"name": "CryptoCurrency-Orders-WIP",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Order",
+			"item": [
+				{
+					"name": "Success",
+					"item": [
+						{
+							"name": "Get",
+							"item": [
+								{
+									"name": "WIPGetOrders",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{externalLoadBalancer}}/v1/orders?accountId=300001383987&status=open&fromDate=2021-10-21T11:02:10.79Z&toDate=2021-10-21T11:02:10.79Z",
+											"host": [
+												"{{externalLoadBalancer}}"
+											],
+											"path": [
+												"v1",
+												"orders"
+											],
+											"query": [
+												{
+													"key": "accountId",
+													"value": "300001383987"
+												},
+												{
+													"key": "status",
+													"value": "open"
+												},
+												{
+													"key": "fromDate",
+													"value": "2021-10-21T11:02:10.79Z"
+												},
+												{
+													"key": "toDate",
+													"value": "2021-10-21T11:02:10.79Z"
+												}
+											]
+										}
+									},
+									"response": []
+								}
+							],
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"type": "text/javascript",
+										"exec": [
+											"const ordersSchema = {",
+											"    \"$schema\": \"http://json-schema.org/draft-06/schema#\",",
+											"    \"$ref\": \"#/definitions/Welcome7\",",
+											"    \"definitions\": {",
+											"        \"Welcome7\": {",
+											"            \"type\": \"object\",",
+											"            \"additionalProperties\": false,",
+											"            \"properties\": {",
+											"                \"results\": {",
+											"                    \"type\": \"array\",",
+											"                    \"items\": {",
+											"                        \"$ref\": \"#/definitions/Result\"",
+											"                    }",
+											"                }",
+											"            },",
+											"            \"required\": [",
+											"                \"results\"",
+											"            ],",
+											"            \"title\": \"Welcome7\"",
+											"        },",
+											"        \"Result\": {",
+											"            \"type\": \"object\",",
+											"            \"additionalProperties\": false,",
+											"            \"properties\": {",
+											"                \"id\": {",
+											"                    \"type\": \"string\"",
+											"                },",
+											"                \"accountId\": {",
+											"                    \"type\": \"string\",",
+											"                    \"format\": \"uuid\"",
+											"                },",
+											"                \"userId\": {",
+											"                    \"type\": \"string\",",
+											"                    \"format\": \"uuid\"",
+											"                },",
+											"                \"created\": {",
+											"                    \"type\": \"string\",",
+											"                    \"format\": \"date-time\"",
+											"                },",
+											"                \"status\": {",
+											"                    \"type\": \"string\"",
+											"                },",
+											"                \"symbol\": {",
+											"                    \"type\": \"string\"",
+											"                },",
+											"                \"side\": {",
+											"                    \"type\": \"string\"",
+											"                },",
+											"                \"quantity\": {",
+											"                    \"type\": \"number\"",
+											"                },",
+											"                \"requestedAt\": {",
+											"                    \"type\": \"string\",",
+											"                    \"format\": \"date-time\"",
+											"                },",
+											"                \"lastUpdated\": {",
+											"                    \"type\": \"string\",",
+											"                    \"format\": \"date-time\"",
+											"                }",
+											"            },",
+											"            \"required\": [",
+											"                \"accountId\",",
+											"                \"created\",",
+											"                \"id\",",
+											"                \"lastUpdated\",",
+											"                \"quantity\",",
+											"                \"requestedAt\",",
+											"                \"side\",",
+											"                \"status\",",
+											"                \"symbol\",",
+											"                \"userId\"",
+											"            ],",
+											"            \"title\": \"Result\"",
+											"        }",
+											"    }",
+											"};",
+											"",
+											"const orderSchema = {",
+											"    \"$schema\": \"http://json-schema.org/draft-06/schema#\",",
+											"    \"$ref\": \"#/definitions/Welcome4\",",
+											"    \"definitions\": {",
+											"        \"Welcome4\": {",
+											"            \"type\": \"object\",",
+											"            \"additionalProperties\": false,",
+											"            \"properties\": {",
+											"                \"id\": {",
+											"                    \"type\": \"string\"",
+											"                },",
+											"                \"accountId\": {",
+											"                    \"type\": \"string\",",
+											"                    \"format\": \"uuid\"",
+											"                },",
+											"                \"userId\": {",
+											"                    \"type\": \"string\",",
+											"                    \"format\": \"uuid\"",
+											"                },",
+											"                \"created\": {",
+											"                    \"type\": \"string\",",
+											"                    \"format\": \"date-time\"",
+											"                },",
+											"                \"status\": {",
+											"                    \"type\": \"string\"",
+											"                },",
+											"                \"symbol\": {",
+											"                    \"type\": \"string\"",
+											"                },",
+											"                \"side\": {",
+											"                    \"type\": \"string\"",
+											"                },",
+											"                \"quantity\": {",
+											"                    \"type\": \"number\"",
+											"                },",
+											"                \"requestedAt\": {",
+											"                    \"type\": \"string\",",
+											"                    \"format\": \"date-time\"",
+											"                },",
+											"                \"lastUpdated\": {",
+											"                    \"type\": \"string\",",
+											"                    \"format\": \"date-time\"",
+											"                }",
+											"            },",
+											"            \"required\": [",
+											"                \"accountId\",",
+											"                \"created\",",
+											"                \"id\",",
+											"                \"lastUpdated\",",
+											"                \"quantity\",",
+											"                \"requestedAt\",",
+											"                \"side\",",
+											"                \"status\",",
+											"                \"symbol\",",
+											"                \"userId\"",
+											"            ],",
+											"            \"title\": \"Welcome4\"",
+											"        }",
+											"    }",
+											"};"
+										]
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"type": "text/javascript",
+										"exec": [
+											""
+										]
+									}
+								}
+							]
+						},
+						{
+							"name": "Create",
+							"item": [
+								{
+									"name": "PostOrderSell_USD",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"accountId\": \"{{orders_AccountId}}\",\r\n    \"userId\": \"{{orders_UserId}}\",\r\n    \"side\": \"sell\",\r\n    \"symbol\": \"usd\",\r\n    \"quantity\": 1000\r\n}"
+										},
+										"url": {
+											"raw": "{{externalLoadBalancer}}/v1/orders",
+											"host": [
+												"{{externalLoadBalancer}}"
+											],
+											"path": [
+												"v1",
+												"orders"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "PostOrderBuy_USD",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"accountId\": \"c61d27c1-bda3-49e1-882d-2d20b4dd63b8\",\r\n    \"userId\": \"5dd01804-e34e-4ab1-adda-a494dacbec79\",\r\n    \"side\": \"buy\",\r\n    \"symbol\": \"usd\",\r\n    \"amount\": 1000.00\r\n}"
+										},
+										"url": {
+											"raw": "{{externalLoadBalancer}}/v1/orders",
+											"host": [
+												"{{externalLoadBalancer}}"
+											],
+											"path": [
+												"v1",
+												"orders"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "Errors",
+					"item": [
+						{
+							"name": "PostOrderBuyZeroUnits_400USD",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"eval(pm.globals.get(\"verifyResponseError\"))(\"The request is invalid quantity:must be greater than 0\");"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"accountId\": \"c61d27c1-bda3-49e1-882d-2d20b4dd63b8\",\r\n    \"userId\": \"5dd01804-e34e-4ab1-adda-a494dacbec79\",\r\n    \"side\": \"buy\",\r\n    \"symbol\": \"usd\",\r\n    \"quantity\": 0.0\r\n}"
+								},
+								"url": {
+									"raw": "{{externalLoadBalancer}}/v1/orders",
+									"host": [
+										"{{externalLoadBalancer}}"
+									],
+									"path": [
+										"v1",
+										"orders"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "PostOrderSellZeroUnits_400USD",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"eval(pm.globals.get(\"verifyResponseError\"))(\"The request is invalid quantity:must be greater than 0\");"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"accountId\": \"{{orders_AccountId}}\",\r\n    \"userId\": \"{{orders_UserId}}\",\r\n    \"side\": \"sell\",\r\n    \"symbol\": \"usd\",\r\n    \"amount\": 0\r\n}"
+								},
+								"url": {
+									"raw": "{{externalLoadBalancer}}/v1/orders",
+									"host": [
+										"{{externalLoadBalancer}}"
+									],
+									"path": [
+										"v1",
+										"orders"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GetOrdersWithIncorrectDate Copy",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"eval(pm.variables.get(\"verifyResponseError\"))(\"No valid Status enum values found for: unknown.\");"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{externalLoadBalancer}}/v1/orders?fromDate=2022-11-08T21:00:34Z&toDate=2021-11-08T21:00:34Z&status=booked&accountId={{orders_AccountId}}",
+									"host": [
+										"{{externalLoadBalancer}}"
+									],
+									"path": [
+										"v1",
+										"orders"
+									],
+									"query": [
+										{
+											"key": "fromDate",
+											"value": "2022-11-08T21:00:34Z"
+										},
+										{
+											"key": "toDate",
+											"value": "2021-11-08T21:00:34Z"
+										},
+										{
+											"key": "whatever",
+											"value": "test",
+											"disabled": true
+										},
+										{
+											"key": "status",
+											"value": "booked"
+										},
+										{
+											"key": "accountId",
+											"value": "{{orders_AccountId}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GetOrdersById_404",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"eval(pm.globals.get(\"verifyResponseError\"))(\"Entity validation failed\");\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"// This is invalid od-01fneg6fteq40msnjx7yg9786"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{externalLoadBalancer}}/v1/orders/od-01fneg6fteq40msnjx7yg97861",
+									"host": [
+										"{{externalLoadBalancer}}"
+									],
+									"path": [
+										"v1",
+										"orders",
+										"od-01fneg6fteq40msnjx7yg97861"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GetOrdersWithIncorrectDate",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{externalLoadBalancer}}/v1/orders?fromDate=%&status=closed&accountId={{orders_AccountId}}",
+									"host": [
+										"{{externalLoadBalancer}}"
+									],
+									"path": [
+										"v1",
+										"orders"
+									],
+									"query": [
+										{
+											"key": "fromDate",
+											"value": "%"
+										},
+										{
+											"key": "toDate",
+											"value": "2021-11-08T21:00:34Z",
+											"disabled": true
+										},
+										{
+											"key": "whatever",
+											"value": "test",
+											"disabled": true
+										},
+										{
+											"key": "status",
+											"value": "closed"
+										},
+										{
+											"key": "accountId",
+											"value": "{{orders_AccountId}}"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Execute",
+			"item": [
+				{
+					"name": "Success",
+					"item": [
+						{
+							"name": "Create",
+							"item": [
+								{
+									"name": "PostOrderExecuteSellUSD",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"eval(pm.globals.get(\"validateResponseUsingSchema\"))(pm.variables.get(\"orderSchema\"));"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"accountId\": \"{{orders_AccountId}}\",\r\n    \"userId\": \"{{orders_UserId}}\",\r\n    \"userInfo\": {\r\n        \"name\": \"Jane Edwörd Sçott Odínson\",\r\n        \"address\": {\r\n            \"line1\": \"123 Main St\",\r\n            \"city\": \"New York\",\r\n            \"stateProvinceRegion\": \"NY\",\r\n            \"zipCode\": \"10092\",\r\n            \"country\": \"US\"\r\n        }\r\n    }\r\n}"
+										},
+										"url": {
+											"raw": "{{externalLoadBalancer}}/v1/orders/{{Orders_SellUSDOrderToExecute}}/execute",
+											"host": [
+												"{{externalLoadBalancer}}"
+											],
+											"path": [
+												"v1",
+												"orders",
+												"{{Orders_SellUSDOrderToExecute}}",
+												"execute"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "PostOrderExecuteBuyUSD",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"eval(pm.globals.get(\"validateResponseUsingSchema\"))(pm.variables.get(\"orderSchema\"));"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"accountId\": \"{{orders_AccountId}}\",\r\n    \"userId\": \"{{orders_UserId}}\",\r\n    \"userInfo\": {\r\n        \"name\": \"Jane Edwörd Sçott Odínson\",\r\n        \"address\": {\r\n            \"line1\": \"123 Main St\",\r\n            \"city\": \"New York\",\r\n            \"stateProvinceRegion\": \"NY\",\r\n            \"zipCode\": \"10092\",\r\n            \"country\": \"US\"\r\n        }\r\n    }\r\n}"
+										},
+										"url": {
+											"raw": "{{externalLoadBalancer}}/v1/orders/{{Orders_BuyUSDOrderToExecute}}/execute",
+											"host": [
+												"{{externalLoadBalancer}}"
+											],
+											"path": [
+												"v1",
+												"orders",
+												"{{Orders_BuyUSDOrderToExecute}}",
+												"execute"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "Errors",
+					"item": [
+						{
+							"name": "PostOrderExecute_409",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"accountId\": \"9b76397f-d14c-4243-a2f8-e1e43e751320\",\r\n    \"userId\": \"0be2c66c-561f-4670-81ef-c6f9b20c1962\",\r\n    \"userInfo\": {\r\n        \"name\": \"Jonâthan Edwörd Sçott Odínson\",\r\n        \"address\": {\r\n            \"line1\": \"123 Main St\",\r\n            \"city\": \"New York\",\r\n            \"stateProvinceRegion\": \"NY\",\r\n            \"zipCode\": \"10092\",\r\n            \"country\": \"US\"\r\n        }\r\n    }\r\n}"
+								},
+								"url": {
+									"raw": "{{externalLoadBalancer}}/v1/orders/oq-01fqkwkr825y4zs8vejrmtrdsy/execute",
+									"host": [
+										"{{externalLoadBalancer}}"
+									],
+									"path": [
+										"v1",
+										"orders",
+										"oq-01fqkwkr825y4zs8vejrmtrdsy",
+										"execute"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "PostOrderExecute_MissingorderId",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"//eval(pm.globals.get(\"verify409\"))('order for quote with order_quote=[0-9]* already exists');\r",
+											"//Need to find a way to validate with RegEx\r",
+											"\r",
+											"    const expectedResponse = {\r",
+											"        \"code\": \"409\",\r",
+											"        \"message\": null \r",
+											"    };\r",
+											"\r",
+											"    const actualResponse = pm.response.json();\r",
+											"\r",
+											"    pm.test(\"Verify schema\", () => {\r",
+											"        pm.response.to.have.jsonSchema(JSON.parse(pm.globals.get(\"errorSchema\")));\r",
+											"    });\r",
+											"\r",
+											"    pm.test(\"Verify response body\", () => {\r",
+											"        pm.expect(_.omit(actualResponse, ['message'])).to.include(_.omit(expectedResponse, ['message']));\r",
+											"    });\r",
+											"\r",
+											"    pm.test(\"Status code is 409\", function () {\r",
+											"        pm.response.to.have.status(409);\r",
+											"        pm.response.to.be.clientError;\r",
+											"    });"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"accountId\": \"{{orders_AccountId}}\",\r\n    \"userId\": \"{{orders_UserId}}\",\r\n    \"userInfo\": {\r\n        \"name\": \"Jane Edwörd Sçott Odínson\",\r\n        \"address\": {\r\n            \"line1\": \"123 Main St\",\r\n            \"city\": \"New York\",\r\n            \"stateProvinceRegion\": \"NY\",\r\n            \"zipCode\": \"10092\",\r\n            \"country\": \"US\"\r\n        }\r\n    }\r\n}\r\n"
+								},
+								"url": {
+									"raw": "{{externalLoadBalancer}}/v1/orders//execute",
+									"host": [
+										"{{externalLoadBalancer}}"
+									],
+									"path": [
+										"v1",
+										"orders",
+										"",
+										"execute"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					"const authPayload = {",
+					"    url: \"https://ncrdev-dev.apigee.net/security/access-key-authentication/oauth2/token\",",
+					"    method: \"POST\",",
+					"    header: {",
+					"            \"Content-Type\": \"application/x-www-form-urlencoded\"",
+					"        },",
+					"    body: {",
+					"        mode: \"x-www-form-urlencoded\",",
+					"        raw: \"client_id=7168155c594e45fbabf9e8fe1560aae6&client_secret=4ce94149b9244c59811953477d4db499&grant_type=client_credentials\"",
+					"        }",
+					"    };",
+					"",
+					"pm.sendRequest(authPayload, (error, response) => {",
+					"    console.log(error ? error : response.json());",
+					"    var responseJson = response.json();",
+					"    var authorization = responseJson.token_type + ' ' + responseJson.access_token;",
+					"    pm.request.headers.add({ key: 'Authorization', value: authorization",
+					"        });",
+					"    });",
+					"",
+					"pm.request.headers.add({ key: 'x-institution-id', value: pm.environment.get('x-institution-id') });"
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					"eval(pm.globals.get(\"verifyResponseTime\"))();",
+					"eval(pm.globals.get(\"verifyStackTrace\"))();"
+				]
+			}
+		}
+	]
+}

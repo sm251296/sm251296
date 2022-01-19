@@ -1,0 +1,1868 @@
+{
+	"info": {
+		"_postman_id": "a2633259-0fab-4806-8c66-51bfcf897fd8",
+		"name": "CryptoCurrency-Orders",
+		"description": "Contains **Orders** related endpoint. The collection can be run independently but should follow the order with in the collection.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Order",
+			"item": [
+				{
+					"name": "Success",
+					"item": [
+						{
+							"name": "Get",
+							"item": [
+								{
+									"name": "GetOrdersById",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"const schema =  eval(pm.globals.get(\"getSchemaByName\"))(\"orderSchema\");\r",
+													"eval(pm.globals.get(\"verifyResponseUsingSchema\"))(schema);\r",
+													"\r",
+													"const responseJson = pm.response.json();\r",
+													"pm.test(\"Verify content matches orderId\", () => {\r",
+													"    pm.expect(responseJson).to.contain({ \"id\": pm.environment.get(\"order_OrderIdWithReceipt\") });\r",
+													"});\r",
+													""
+												],
+												"type": "text/javascript"
+											}
+										},
+										{
+											"listen": "prerequest",
+											"script": {
+												"exec": [
+													"// I am validating with receipt as mandatory"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json",
+												"type": "default"
+											}
+										],
+										"url": {
+											"raw": "{{externalLoadBalancer}}/v1/orders/{{order_OrderIdWithReceipt}}",
+											"host": [
+												"{{externalLoadBalancer}}"
+											],
+											"path": [
+												"v1",
+												"orders",
+												"{{order_OrderIdWithReceipt}}"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "GetOrdersById_NoReceipt",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"const schema =  eval(pm.globals.get(\"getSchemaByName\"))(\"canceledOrderSchema\");\r",
+													"eval(pm.globals.get(\"verifyResponseUsingSchema\"))(schema);\r",
+													"\r",
+													"const responseJson = pm.response.json();\r",
+													"pm.test(\"Verify content matches orderId\", () => {\r",
+													"    pm.expect(responseJson).to.contain({ \"id\": pm.environment.get(\"Orders_OrderIdCanceled\") });\r",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json",
+												"type": "default"
+											}
+										],
+										"url": {
+											"raw": "{{externalLoadBalancer}}/v1/orders/{{Orders_OrderIdCanceled}}",
+											"host": [
+												"{{externalLoadBalancer}}"
+											],
+											"path": [
+												"v1",
+												"orders",
+												"{{Orders_OrderIdCanceled}}"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "GetAllOrders",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"const schema =  eval(pm.globals.get(\"getSchemaByName\"))(\"ordersSchema\");\r",
+													"eval(pm.globals.get(\"verifyResponseUsingSchema\"))(schema);\r",
+													"\r",
+													"const responseJson = pm.response.json();\r",
+													"\r",
+													"pm.test(\"Verify all orders have same accountNumber\", () => {\r",
+													"   var expectedAccountId = pm.environment.get(\"orders_AccountId\");\r",
+													"   for (var i = 0; i < (responseJson.results).length; i++) \r",
+													"    {\r",
+													"        var accountId = responseJson.results[i].accountId;\r",
+													"        pm.expect(accountId).to.equal(expectedAccountId);\r",
+													"    }\r",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{externalLoadBalancer}}/v1/orders?accountId={{orders_AccountId}}",
+											"host": [
+												"{{externalLoadBalancer}}"
+											],
+											"path": [
+												"v1",
+												"orders"
+											],
+											"query": [
+												{
+													"key": "fromDate",
+													"value": "2021-11-26T15:46:12Z",
+													"disabled": true
+												},
+												{
+													"key": "toDate",
+													"value": "2021-11-26T15:49:40Z",
+													"disabled": true
+												},
+												{
+													"key": "accountId",
+													"value": "{{orders_AccountId}}"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "GetOrdersWithDateFilter",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"const schema =  eval(pm.globals.get(\"getSchemaByName\"))(\"ordersSchema\");\r",
+													"eval(pm.globals.get(\"verifyResponseUsingSchema\"))(schema);\r",
+													"\r",
+													"const responseJson = pm.response.json();\r",
+													"pm.test(\"Verify all orders have same accountId and with in the date\", () => {\r",
+													"   var expectedAccountId = pm.environment.get(\"orders_AccountId\");\r",
+													"   for (var i = 0; i < (responseJson.results).length; i++) \r",
+													"    {\r",
+													"        var accountId = responseJson.results[i].accountId;\r",
+													"        pm.expect(accountId).to.equal(expectedAccountId);\r",
+													"    }\r",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{externalLoadBalancer}}/v1/orders?fromDate=2021-11-26T16:09:43Z&toDate=2025-11-26T16:10:33Z&accountId={{orders_AccountId}}",
+											"host": [
+												"{{externalLoadBalancer}}"
+											],
+											"path": [
+												"v1",
+												"orders"
+											],
+											"query": [
+												{
+													"key": "fromDate",
+													"value": "2021-11-26T16:09:43Z"
+												},
+												{
+													"key": "toDate",
+													"value": "2025-11-26T16:10:33Z"
+												},
+												{
+													"key": "accountId",
+													"value": "{{orders_AccountId}}"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "GetRejectedOrders",
+									"event": [
+										{
+											"listen": "prerequest",
+											"script": {
+												"exec": [
+													""
+												],
+												"type": "text/javascript"
+											}
+										},
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"const schema =  eval(pm.globals.get(\"getSchemaByName\"))(\"ordersSchema\");\r",
+													"eval(pm.globals.get(\"verifyResponseUsingSchema\"))(schema);\r",
+													"\r",
+													"const responseJson = pm.response.json();\r",
+													"pm.test(\"Verify all orders are rejected and have same accountId\", () => {\r",
+													"    var expectedAccountId = pm.environment.get(\"orders_AccountId\");\r",
+													"   for (var i = 0; i < (responseJson.results).length; i++) \r",
+													"    {\r",
+													"        var orderType = responseJson.results[i].status;\r",
+													"        pm.expect(orderType).to.equal(\"rejected\");\r",
+													"\r",
+													"        var accountId = responseJson.results[i].accountId;\r",
+													"        pm.expect(accountId).to.equal(expectedAccountId);\r",
+													"    }\r",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{externalLoadBalancer}}/v1/orders?status=rejected&accountId={{orders_AccountId}}",
+											"host": [
+												"{{externalLoadBalancer}}"
+											],
+											"path": [
+												"v1",
+												"orders"
+											],
+											"query": [
+												{
+													"key": "fromDate",
+													"value": "2021-11-26T15:46:12Z",
+													"disabled": true
+												},
+												{
+													"key": "toDate",
+													"value": "2021-11-26T15:49:40Z",
+													"disabled": true
+												},
+												{
+													"key": "status",
+													"value": "rejected"
+												},
+												{
+													"key": "accountId",
+													"value": "{{orders_AccountId}}"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "GetQuoteOrders",
+									"event": [
+										{
+											"listen": "prerequest",
+											"script": {
+												"exec": [
+													""
+												],
+												"type": "text/javascript"
+											}
+										},
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"const schema =  eval(pm.globals.get(\"getSchemaByName\"))(\"ordersSchema\");\r",
+													"eval(pm.globals.get(\"verifyResponseUsingSchema\"))(schema);\r",
+													"\r",
+													"const responseJson = pm.response.json();\r",
+													"\r",
+													"pm.test(\"Verify all orders are quote type and have same accountId\", () => {\r",
+													"   var expectedAccountId = pm.environment.get(\"orders_AccountId\");\r",
+													"   for (var i = 0; i < responseJson.results.length; i++) \r",
+													"    {\r",
+													"        var orderType = responseJson.results[i].status;\r",
+													"        pm.expect(orderType).to.equal(\"quote\");\r",
+													"        var accountId = responseJson.results[i].accountId;\r",
+													"        pm.expect(accountId).to.equal(expectedAccountId);\r",
+													"    }\r",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{externalLoadBalancer}}/v1/orders?status=quote&accountId={{orders_AccountId}}",
+											"host": [
+												"{{externalLoadBalancer}}"
+											],
+											"path": [
+												"v1",
+												"orders"
+											],
+											"query": [
+												{
+													"key": "fromDate",
+													"value": "2021-11-26T15:46:12Z",
+													"disabled": true
+												},
+												{
+													"key": "toDate",
+													"value": "2021-11-26T15:49:40Z",
+													"disabled": true
+												},
+												{
+													"key": "status",
+													"value": "quote"
+												},
+												{
+													"key": "accountId",
+													"value": "{{orders_AccountId}}"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "GetFilledOrders",
+									"event": [
+										{
+											"listen": "prerequest",
+											"script": {
+												"exec": [
+													""
+												],
+												"type": "text/javascript"
+											}
+										},
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"const responseJson = pm.response.json();\r",
+													"\r",
+													"const schema =  eval(pm.globals.get(\"getSchemaByName\"))(\"ordersSchema\");\r",
+													"eval(pm.globals.get(\"verifyResponseUsingSchema\"))(schema);\r",
+													"\r",
+													"pm.test(\"Verify all orders are filled type and have same accountId\", () => {\r",
+													"   var expectedAccountId = pm.environment.get(\"orders_AccountId\");\r",
+													"   for (var i = 0; i < (responseJson.results).length; i++) \r",
+													"    {\r",
+													"        var orderType = responseJson.results[i].status;\r",
+													"        pm.expect(orderType).to.equal(\"filled\");\r",
+													"\r",
+													"        var accountId = responseJson.results[i].accountId;\r",
+													"        pm.expect(accountId).to.equal(expectedAccountId);\r",
+													"    }\r",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{externalLoadBalancer}}/v1/orders?status=filled&accountId={{orders_AccountId}}",
+											"host": [
+												"{{externalLoadBalancer}}"
+											],
+											"path": [
+												"v1",
+												"orders"
+											],
+											"query": [
+												{
+													"key": "fromDate",
+													"value": "2021-11-26T15:46:12Z",
+													"disabled": true
+												},
+												{
+													"key": "toDate",
+													"value": "2021-11-26T15:49:40Z",
+													"disabled": true
+												},
+												{
+													"key": "status",
+													"value": "filled"
+												},
+												{
+													"key": "accountId",
+													"value": "{{orders_AccountId}}"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "GetPendingOrders",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"const schema =  eval(pm.globals.get(\"getSchemaByName\"))(\"ordersSchema\");\r",
+													"eval(pm.globals.get(\"verifyResponseUsingSchema\"))(schema);\r",
+													"\r",
+													"const responseJson = pm.response.json();\r",
+													"pm.test(\"Verify all orders are pending type and have same accountId\", () => {\r",
+													"   var expectedAccountId = pm.environment.get(\"orders_AccountId\");\r",
+													"   for (var i = 0; i < (responseJson.results).length; i++) \r",
+													"    {\r",
+													"        var orderType = responseJson.results[i].status;\r",
+													"        pm.expect(orderType).to.equal(\"pending\");\r",
+													"        \r",
+													"        var accountId = responseJson.results[i].accountId;\r",
+													"        pm.expect(accountId).to.equal(expectedAccountId);\r",
+													"    }\r",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{externalLoadBalancer}}/v1/orders?status=pending&accountId={{orders_AccountId}}",
+											"host": [
+												"{{externalLoadBalancer}}"
+											],
+											"path": [
+												"v1",
+												"orders"
+											],
+											"query": [
+												{
+													"key": "fromDate",
+													"value": "2021-11-26T15:46:12Z",
+													"disabled": true
+												},
+												{
+													"key": "toDate",
+													"value": "2021-11-26T15:49:40Z",
+													"disabled": true
+												},
+												{
+													"key": "status",
+													"value": "pending"
+												},
+												{
+													"key": "accountId",
+													"value": "{{orders_AccountId}}"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "GetCanceledOrders",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"const schema =  eval(pm.globals.get(\"getSchemaByName\"))(\"ordersSchema\");\r",
+													"eval(pm.globals.get(\"verifyResponseUsingSchema\"))(schema);\r",
+													"\r",
+													"const responseJson = pm.response.json();\r",
+													"pm.test(\"Verify all orders are canceled type and have same accountId\", () => {\r",
+													"   var expectedAccountId = pm.environment.get(\"orders_AccountId\");\r",
+													"   for (var i = 0; i < (responseJson.results).length; i++) \r",
+													"    {\r",
+													"        var orderType = responseJson.results[i].status;\r",
+													"        pm.expect(orderType).to.equal(\"canceled\");\r",
+													"\r",
+													"        var accountId = responseJson.results[i].accountId;\r",
+													"        pm.expect(accountId).to.equal(expectedAccountId);\r",
+													"    }\r",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{externalLoadBalancer}}/v1/orders?status=canceled&accountId={{orders_AccountId}}",
+											"host": [
+												"{{externalLoadBalancer}}"
+											],
+											"path": [
+												"v1",
+												"orders"
+											],
+											"query": [
+												{
+													"key": "fromDate",
+													"value": "2021-11-26T15:46:12Z",
+													"disabled": true
+												},
+												{
+													"key": "toDate",
+													"value": "2021-11-26T15:49:40Z",
+													"disabled": true
+												},
+												{
+													"key": "status",
+													"value": "canceled"
+												},
+												{
+													"key": "accountId",
+													"value": "{{orders_AccountId}}"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "GetBookedOrders",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"const schema =  eval(pm.globals.get(\"getSchemaByName\"))(\"ordersSchema\");\r",
+													"eval(pm.globals.get(\"verifyResponseUsingSchema\"))(schema);\r",
+													"\r",
+													"const responseJson = pm.response.json();\r",
+													"pm.test(\"Verify all orders are booked type and have same accountId\", () => {\r",
+													"   var expectedAccountId = pm.environment.get(\"orders_AccountId\");\r",
+													"   for (var i = 0; i < (responseJson.results).length; i++) \r",
+													"    {\r",
+													"        var orderType = responseJson.results[i].status;\r",
+													"        pm.expect(orderType).to.equal(\"booked\");\r",
+													"\r",
+													"        var accountId = responseJson.results[i].accountId;\r",
+													"        pm.expect(accountId).to.equal(expectedAccountId);\r",
+													"    }\r",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{externalLoadBalancer}}/v1/orders?status=booked&accountId={{orders_AccountId}}",
+											"host": [
+												"{{externalLoadBalancer}}"
+											],
+											"path": [
+												"v1",
+												"orders"
+											],
+											"query": [
+												{
+													"key": "fromDate",
+													"value": "2021-11-26T15:46:12Z",
+													"disabled": true
+												},
+												{
+													"key": "toDate",
+													"value": "2021-11-26T15:49:40Z",
+													"disabled": true
+												},
+												{
+													"key": "status",
+													"value": "booked"
+												},
+												{
+													"key": "accountId",
+													"value": "{{orders_AccountId}}"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "GetFailedOrders",
+									"event": [
+										{
+											"listen": "prerequest",
+											"script": {
+												"exec": [
+													""
+												],
+												"type": "text/javascript"
+											}
+										},
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"const schema =  eval(pm.globals.get(\"getSchemaByName\"))(\"ordersSchema\");\r",
+													"eval(pm.globals.get(\"verifyResponseUsingSchema\"))(schema);\r",
+													"\r",
+													"const responseJson = pm.response.json();\r",
+													"pm.test(\"Verify all orders are failed type and have same accountId\", () => {\r",
+													"   var expectedAccountId = pm.environment.get(\"orders_AccountId\");\r",
+													"   for (var i = 0; i < (responseJson.results).length; i++) \r",
+													"    {\r",
+													"        var orderType = responseJson.results[i].status;\r",
+													"        pm.expect(orderType).to.equal(\"failed\");\r",
+													"\r",
+													"        var accountId = responseJson.results[i].accountId;\r",
+													"        pm.expect(accountId).to.equal(expectedAccountId);\r",
+													"    }\r",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{externalLoadBalancer}}/v1/orders?status=failed&accountId={{orders_AccountId}}",
+											"host": [
+												"{{externalLoadBalancer}}"
+											],
+											"path": [
+												"v1",
+												"orders"
+											],
+											"query": [
+												{
+													"key": "fromDate",
+													"value": "2021-11-26T15:46:12Z",
+													"disabled": true
+												},
+												{
+													"key": "toDate",
+													"value": "2021-11-26T15:49:40Z",
+													"disabled": true
+												},
+												{
+													"key": "status",
+													"value": "failed"
+												},
+												{
+													"key": "accountId",
+													"value": "{{orders_AccountId}}"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "GetExpiredOrders",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"const schema =  eval(pm.globals.get(\"getSchemaByName\"))(\"ordersSchema\");\r",
+													"eval(pm.globals.get(\"verifyResponseUsingSchema\"))(schema);\r",
+													"\r",
+													"const responseJson = pm.response.json();\r",
+													"pm.test(\"Verify all orders are expired type and have same accountId\", () => {\r",
+													"   var expectedAccountId = pm.environment.get(\"orders_AccountId\");\r",
+													"   for (var i = 0; i < (responseJson.results).length; i++) \r",
+													"    {\r",
+													"        var orderType = responseJson.results[i].status;\r",
+													"        pm.expect(orderType).to.equal(\"expired\");\r",
+													"\r",
+													"        var accountId = responseJson.results[i].accountId;\r",
+													"        pm.expect(accountId).to.equal(expectedAccountId);\r",
+													"    }\r",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{externalLoadBalancer}}/v1/orders?status=expired&accountId={{orders_AccountId}}",
+											"host": [
+												"{{externalLoadBalancer}}"
+											],
+											"path": [
+												"v1",
+												"orders"
+											],
+											"query": [
+												{
+													"key": "fromDate",
+													"value": "2021-11-26T15:46:12Z",
+													"disabled": true
+												},
+												{
+													"key": "toDate",
+													"value": "2021-11-26T15:49:40Z",
+													"disabled": true
+												},
+												{
+													"key": "status",
+													"value": "expired"
+												},
+												{
+													"key": "accountId",
+													"value": "{{orders_AccountId}}"
+												}
+											]
+										}
+									},
+									"response": []
+								}
+							],
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"type": "text/javascript",
+										"exec": [
+											""
+										]
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"type": "text/javascript",
+										"exec": [
+											""
+										]
+									}
+								}
+							]
+						},
+						{
+							"name": "Create",
+							"item": [
+								{
+									"name": "PostOrderBuy",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"const response = pm.response.json();\r",
+													"const requstBody = JSON.parse(pm.request.body);\r",
+													"pm.environment.set('Orders_BuyUSDOrderToExecute', response.id); \r",
+													"\r",
+													"const schema =  eval(pm.globals.get(\"getSchemaByName\"))(\"postOrderSchema\");\r",
+													"eval(pm.globals.get(\"verifyResponseUsingSchema\"))(schema);\r",
+													"\r",
+													"pm.test(\"Verify request body is part of reponse\", () => {\r",
+													"    pm.expect(_.isMatch(response, requstBody)).is.true;\r",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"accountId\": \"{{orders_AccountId}}\",\r\n    \"userId\": \"{{orders_UserId}}\",\r\n    \"side\": \"buy\",\r\n    \"symbol\": \"btc\",\r\n    \"quantity\": 1.00000000\r\n}"
+										},
+										"url": {
+											"raw": "{{externalLoadBalancer}}/v1/orders",
+											"host": [
+												"{{externalLoadBalancer}}"
+											],
+											"path": [
+												"v1",
+												"orders"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "PostOrderSell",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"const response = pm.response.json();\r",
+													"const requstBody = JSON.parse(pm.request.body);\r",
+													"pm.environment.set('Orders_SellUSDOrderToExecute', response.id); \r",
+													"\r",
+													"const schema =  eval(pm.globals.get(\"getSchemaByName\"))(\"postOrderSchema\");\r",
+													"eval(pm.globals.get(\"verifyResponseUsingSchema\"))(schema);\r",
+													"\r",
+													"pm.test(\"Verify request body is part of reponse\", () => {\r",
+													"    pm.expect(_.isMatch(response, requstBody)).is.true;\r",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"accountId\": \"{{orders_AccountId}}\",\r\n    \"userId\": \"{{orders_UserId}}\",\r\n    \"side\": \"sell\",\r\n    \"symbol\": \"btc\",\r\n    \"quantity\": 0.01\r\n}"
+										},
+										"url": {
+											"raw": "{{externalLoadBalancer}}/v1/orders",
+											"host": [
+												"{{externalLoadBalancer}}"
+											],
+											"path": [
+												"v1",
+												"orders"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "Errors",
+					"item": [
+						{
+							"name": "PostOrderBuyZeroUnits_400",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"eval(pm.globals.get(\"verifyResponseError\"))(\"The request is invalid quantity:must be greater than 0\");"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"accountId\": \"{{orders_AccountId}}\",\r\n    \"userId\": \"{{orders_UserId}}\",\r\n    \"side\": \"buy\",\r\n    \"symbol\": \"btc\",\r\n    \"quantity\": 0.0\r\n}"
+								},
+								"url": {
+									"raw": "{{externalLoadBalancer}}/v1/orders",
+									"host": [
+										"{{externalLoadBalancer}}"
+									],
+									"path": [
+										"v1",
+										"orders"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "PostOrderSellZeroUnits_400",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"eval(pm.globals.get(\"verifyResponseError\"))(\"The request is invalid quantity:must be greater than 0\");"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"accountId\": \"{{orders_AccountId}}\",\r\n    \"userId\": \"{{orders_UserId}}\",\r\n    \"side\": \"sell\",\r\n    \"symbol\": \"btc\",\r\n    \"quantity\": 0.0\r\n}"
+								},
+								"url": {
+									"raw": "{{externalLoadBalancer}}/v1/orders",
+									"host": [
+										"{{externalLoadBalancer}}"
+									],
+									"path": [
+										"v1",
+										"orders"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "PostOrderBuyRestricted",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"eval(pm.globals.get(\"verifyCustomErrorMessageRegex\"))(\"403\", /Account is restricted from performing buy orders/);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"accountId\": \"{{accountWithBuyRestriction}}\",\r\n    \"userId\": \"{{accountWithBuyRestriction_UserId}}\",\r\n    \"side\": \"buy\",\r\n    \"symbol\": \"btc\",\r\n    \"quantity\": 1.00000000\r\n}"
+								},
+								"url": {
+									"raw": "{{externalLoadBalancer}}/v1/orders",
+									"host": [
+										"{{externalLoadBalancer}}"
+									],
+									"path": [
+										"v1",
+										"orders"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "PostOrderSellRestricted",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"eval(pm.globals.get(\"verifyCustomErrorMessageRegex\"))(\"403\", /Account is restricted from performing sell orders/);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"accountId\": \"{{accountWithSellRestriction}}\",\r\n    \"userId\": \"{{accountWithSellRestriction_UserId}}\",\r\n    \"side\": \"sell\",\r\n    \"symbol\": \"btc\",\r\n    \"quantity\": 0.01\r\n}"
+								},
+								"url": {
+									"raw": "{{externalLoadBalancer}}/v1/orders",
+									"host": [
+										"{{externalLoadBalancer}}"
+									],
+									"path": [
+										"v1",
+										"orders"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "PostOrder_400",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"eval(pm.globals.get(\"verifyResponseError\"))(\"The request is invalid quantity:must be greater than 0\");"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"accountId\": \"{{orders_AccountId}}\",\r\n    \"userId\": \"{{orders_UserId}}\",\r\n    \"side\": \"buy\",\r\n    \"symbol\": \"btc\",\r\n    \"quantity\": 0.0\r\n}"
+								},
+								"url": {
+									"raw": "{{externalLoadBalancer}}/v1/orders",
+									"host": [
+										"{{externalLoadBalancer}}"
+									],
+									"path": [
+										"v1",
+										"orders"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "PostOrder_403",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"eval(pm.globals.get(\"verifyResponseError\"))(\"The request is invalid quantity:must be greater than 0\");"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"accountId\": \"{{orders_AccountId}}\",\r\n    \"userId\": \"{{orders_UserId}}\",\r\n    \"side\": \"buy\",\r\n    \"symbol\": \"btc\",\r\n    \"quantity\": 0.0\r\n}"
+								},
+								"url": {
+									"raw": "{{externalLoadBalancer}}/v1/orders",
+									"host": [
+										"{{externalLoadBalancer}}"
+									],
+									"path": [
+										"v1",
+										"orders"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "PostOrder_404",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"eval(pm.variables.get(\"verify404\"))(\"Account not found\");"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"accountId\": \"{{orders_AccountId}}1\",\r\n    \"userId\": \"{{orders_UserId}}\",\r\n    \"side\": \"buy\",\r\n    \"symbol\": \"btc\",\r\n    \"quantity\": 0.01\r\n}"
+								},
+								"url": {
+									"raw": "{{externalLoadBalancer}}/v1/orders",
+									"host": [
+										"{{externalLoadBalancer}}"
+									],
+									"path": [
+										"v1",
+										"orders"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GetOrdersById_400",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"eval(pm.globals.get(\"verifyResponseError\"))(\"Entity validation failed\");\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"// This is invalid od-01fneg6fteq40msnjx7yg9786"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{externalLoadBalancer}}/v1/orders/od-01fneg6fteq40msnjx7yg9786",
+									"host": [
+										"{{externalLoadBalancer}}"
+									],
+									"path": [
+										"v1",
+										"orders",
+										"od-01fneg6fteq40msnjx7yg9786"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GetOrdersById_403",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"pm.request.headers.remove('Authorization');"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"eval(pm.globals.get(\"verify403\"))();"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{externalLoadBalancer}}/v1/orders?accountId=ad5b3c95-b04a-4b01-9b78-60be5e7611b6",
+									"host": [
+										"{{externalLoadBalancer}}"
+									],
+									"path": [
+										"v1",
+										"orders"
+									],
+									"query": [
+										{
+											"key": "fromDate",
+											"value": "2021-11-26T15:46:12Z",
+											"disabled": true
+										},
+										{
+											"key": "toDate",
+											"value": "2021-11-26T15:49:40Z",
+											"disabled": true
+										},
+										{
+											"key": "status",
+											"value": "canceled",
+											"disabled": true
+										},
+										{
+											"key": "accountId",
+											"value": "ad5b3c95-b04a-4b01-9b78-60be5e7611b6"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GetOrdersWithUnknownStatus",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"eval(pm.variables.get(\"verifyResponseError\"))(\"No valid Status enum values found for: unknown.\");"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{externalLoadBalancer}}/v1/orders?status=unknown&accountId={{orders_AccountId}}",
+									"host": [
+										"{{externalLoadBalancer}}"
+									],
+									"path": [
+										"v1",
+										"orders"
+									],
+									"query": [
+										{
+											"key": "status",
+											"value": "unknown"
+										},
+										{
+											"key": "accountId",
+											"value": "{{orders_AccountId}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GetAllOrders_400",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"eval(pm.variables.get(\"verifyResponseError\"))(\"No valid Status enum values found for: unknown.\");"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{externalLoadBalancer}}/v1/orders?status=unknown&accountId={{orders_AccountId}}",
+									"host": [
+										"{{externalLoadBalancer}}"
+									],
+									"path": [
+										"v1",
+										"orders"
+									],
+									"query": [
+										{
+											"key": "fromDate",
+											"value": "2021-11-26T15:46:12Z",
+											"disabled": true
+										},
+										{
+											"key": "toDate",
+											"value": "2021-11-26T15:49:40Z",
+											"disabled": true
+										},
+										{
+											"key": "status",
+											"value": "unknown"
+										},
+										{
+											"key": "accountId",
+											"value": "{{orders_AccountId}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GetAllOrders_403",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"eval(pm.globals.get(\"verify403\"))();"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"pm.request.headers.remove('Authorization');"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{externalLoadBalancer}}/v1/orders?accountId={{orders_AccountId}}",
+									"host": [
+										"{{externalLoadBalancer}}"
+									],
+									"path": [
+										"v1",
+										"orders"
+									],
+									"query": [
+										{
+											"key": "fromDate",
+											"value": "2021-11-26T15:46:12Z",
+											"disabled": true
+										},
+										{
+											"key": "toDate",
+											"value": "2021-11-26T15:49:40Z",
+											"disabled": true
+										},
+										{
+											"key": "accountId",
+											"value": "{{orders_AccountId}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GetAllOrders_404",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"eval(pm.variables.get(\"verify404\"))(\"Account not found\");"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{externalLoadBalancer}}/v1/orders?fromDate=2021-11-26T15:46:12Z&accountId={{orders_AccountIdInvalid}}",
+									"host": [
+										"{{externalLoadBalancer}}"
+									],
+									"path": [
+										"v1",
+										"orders"
+									],
+									"query": [
+										{
+											"key": "fromDate",
+											"value": "2021-11-26T15:46:12Z"
+										},
+										{
+											"key": "toDate",
+											"value": "2021-11-26T15:49:40Z",
+											"disabled": true
+										},
+										{
+											"key": "accountId",
+											"value": "{{orders_AccountIdInvalid}}"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "Execute",
+			"item": [
+				{
+					"name": "Success",
+					"item": [
+						{
+							"name": "Create",
+							"item": [
+								{
+									"name": "PostOrderExecuteBuy",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"var response = pm.response.json();\r",
+													"var actualBody = { \"accountId\": pm.environment.get('orders_AccountId'),\r",
+													"                    \"userId\": pm.environment.get('orders_UserId')\r",
+													"}\r",
+													"pm.environment.set('receipts_BuyOrderID', response.id); \r",
+													"\r",
+													"const schema =  eval(pm.globals.get(\"getSchemaByName\"))(\"executeOrderSchema\");\r",
+													"eval(pm.globals.get(\"verifyResponseUsingSchema\"))(schema);\r",
+													"\r",
+													"pm.test(\"Verify request body is part of reponse\", () => {\r",
+													"    pm.expect(_.isMatch(response, actualBody)).is.true;\r",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										},
+										{
+											"listen": "prerequest",
+											"script": {
+												"exec": [
+													"// This request is dependend on PostOrderBuy"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"accountId\": \"{{orders_AccountId}}\",\r\n    \"userId\": \"{{orders_UserId}}\",\r\n    \"source\": \"Checking *12345\",\r\n    \"userInfo\": {\r\n        \"name\": \"Jane Edwörd Sçott Odínson\",\r\n        \"address\": {\r\n            \"line1\": \"123 Main St\",\r\n            \"city\": \"New York\",\r\n            \"stateProvinceRegion\": \"NY\",\r\n            \"zipCode\": \"10092\",\r\n            \"country\": \"US\"\r\n        }\r\n    }\r\n}"
+										},
+										"url": {
+											"raw": "{{externalLoadBalancer}}/v1/orders/{{Orders_BuyUSDOrderToExecute}}/execute",
+											"host": [
+												"{{externalLoadBalancer}}"
+											],
+											"path": [
+												"v1",
+												"orders",
+												"{{Orders_BuyUSDOrderToExecute}}",
+												"execute"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "PostOrderExecuteSell",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"var response = pm.response.json();\r",
+													"var actualBody = { \"accountId\": pm.environment.get('orders_AccountId'),\r",
+													"                    \"userId\": pm.environment.get('orders_UserId')\r",
+													"}\r",
+													"pm.environment.set('receipts_SellOrderID', response.id); \r",
+													"\r",
+													"const schema =  eval(pm.globals.get(\"getSchemaByName\"))(\"executeOrderSchema\");\r",
+													"eval(pm.globals.get(\"verifyResponseUsingSchema\"))(schema);\r",
+													"\r",
+													"pm.test(\"Verify request body is part of reponse\", () => {\r",
+													"    pm.expect(_.isMatch(response, actualBody)).is.true;\r",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										},
+										{
+											"listen": "prerequest",
+											"script": {
+												"exec": [
+													"// This request is dependend on PostOrderSell"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"accountId\": \"{{orders_AccountId}}\",\r\n    \"userId\": \"{{orders_UserId}}\",\r\n    \"source\": \"Save\",\r\n    \"userInfo\": {\r\n        \"name\": \"Jane Edwörd Sçott Odínson\",\r\n        \"address\": {\r\n            \"line1\": \"123 Main St\",\r\n            \"city\": \"New York\",\r\n            \"stateProvinceRegion\": \"NY\",\r\n            \"zipCode\": \"10092\",\r\n            \"country\": \"US\"\r\n        }\r\n    }\r\n}"
+										},
+										"url": {
+											"raw": "{{externalLoadBalancer}}/v1/orders/{{Orders_SellUSDOrderToExecute}}/execute",
+											"host": [
+												"{{externalLoadBalancer}}"
+											],
+											"path": [
+												"v1",
+												"orders",
+												"{{Orders_SellUSDOrderToExecute}}",
+												"execute"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "Errors",
+					"item": [
+						{
+							"name": "PostOrderExecute_400",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"//Order Id belongs to different account"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"eval(pm.variables.get(\"verifyResponseError\"))(\"Entity validation failed\");"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"accountId\": \"{{orders_AccountId}}\",\r\n    \"userId\": \"{{orders_UserId}}\",\r\n    \"source\": \"Checking *12345\",\r\n    \"userInfo\": {\r\n        \"name\": \"Jane Edwörd Sçott Odínson\",\r\n        \"address\": {\r\n            \"line1\": \"123 Main St\",\r\n            \"city\": \"New York\",\r\n            \"stateProvinceRegion\": \"NY\",\r\n            \"zipCode\": \"10092\",\r\n            \"country\": \"US\"\r\n        }\r\n    }\r\n}"
+								},
+								"url": {
+									"raw": "{{externalLoadBalancer}}/v1/orders/abc/execute",
+									"host": [
+										"{{externalLoadBalancer}}"
+									],
+									"path": [
+										"v1",
+										"orders",
+										"abc",
+										"execute"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "PostOrderExecute_403",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"pm.request.headers.remove('Authorization');"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"eval(pm.globals.get(\"verify403\"))();"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"accountId\": \"{{orders_AccountId}}\",\r\n    \"userId\": \"{{orders_UserId}}\",\r\n    \"source\": \"Checking *12345\",\r\n    \"userInfo\": {\r\n        \"name\": \"Jane Edwörd Sçott Odínson\",\r\n        \"address\": {\r\n            \"line1\": \"123 Main St\",\r\n            \"city\": \"New York\",\r\n            \"stateProvinceRegion\": \"NY\",\r\n            \"zipCode\": \"10092\",\r\n            \"country\": \"US\"\r\n        }\r\n    }\r\n}"
+								},
+								"url": {
+									"raw": "{{externalLoadBalancer}}/v1/orders/oq-01fqkwkr825y4zs8vejrmtrdsy/execute",
+									"host": [
+										"{{externalLoadBalancer}}"
+									],
+									"path": [
+										"v1",
+										"orders",
+										"oq-01fqkwkr825y4zs8vejrmtrdsy",
+										"execute"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "PostOrderExecute_404",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"eval(pm.variables.get(\"verify404\"))(\"An entity with the specified identifier cannot be found\");"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"accountId\": \"{{orders_AccountId}}\",\r\n    \"userId\": \"{{orders_UserId}}\",\r\n    \"source\": \"Checking *12345\",\r\n    \"userInfo\": {\r\n        \"name\": \"Jane Edwörd Sçott Odínson\",\r\n        \"address\": {\r\n            \"line1\": \"123 Main St\",\r\n            \"city\": \"New York\",\r\n            \"stateProvinceRegion\": \"NY\",\r\n            \"zipCode\": \"10092\",\r\n            \"country\": \"US\"\r\n        }\r\n    }\r\n}"
+								},
+								"url": {
+									"raw": "{{externalLoadBalancer}}/v1/orders/oq-01fqkwkr825y4zs8vejrmtrdsy/execute",
+									"host": [
+										"{{externalLoadBalancer}}"
+									],
+									"path": [
+										"v1",
+										"orders",
+										"oq-01fqkwkr825y4zs8vejrmtrdsy",
+										"execute"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "PostOrderExecute_409",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"eval(pm.globals.get(\"verifyCustomErrorMessageRegex\"))(\"409\", /order for quote with order_quote=[0-9]* already exists/);\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"accountId\": \"{{orders_AccountId}}\",\r\n    \"userId\": \"{{orders_UserId}}\",\r\n    \"source\": \"Checking *12345\",\r\n    \"userInfo\": {\r\n        \"name\": \"Jane Edwörd Sçott Odínson\",\r\n        \"address\": {\r\n            \"line1\": \"123 Main St\",\r\n            \"city\": \"New York\",\r\n            \"stateProvinceRegion\": \"NY\",\r\n            \"zipCode\": \"10092\",\r\n            \"country\": \"US\"\r\n        }\r\n    }\r\n}"
+								},
+								"url": {
+									"raw": "{{externalLoadBalancer}}/v1/orders/{{Orders_BuyUSDOrderToExecute}}/execute",
+									"host": [
+										"{{externalLoadBalancer}}"
+									],
+									"path": [
+										"v1",
+										"orders",
+										"{{Orders_BuyUSDOrderToExecute}}",
+										"execute"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					"const authPayload = {",
+					"    url: \"https://ncrdev-dev.apigee.net/security/access-key-authentication/oauth2/token\",",
+					"    method: \"POST\",",
+					"    header: {",
+					"            \"Content-Type\": \"application/x-www-form-urlencoded\"",
+					"        },",
+					"    body: {",
+					"        mode: \"x-www-form-urlencoded\",",
+					"        raw: \"client_id=7168155c594e45fbabf9e8fe1560aae6&client_secret=4ce94149b9244c59811953477d4db499&grant_type=client_credentials\"",
+					"        }",
+					"    };",
+					"",
+					"pm.sendRequest(authPayload, (error, response) => {",
+					"    console.log(error ? error : response.json());",
+					"    var responseJson = response.json();",
+					"    var authorization = responseJson.token_type + ' ' + responseJson.access_token;",
+					"    pm.request.headers.add({ key: 'Authorization', value: authorization",
+					"        });",
+					"    });",
+					"",
+					"pm.request.headers.add({ key: 'x-institution-id', value: pm.environment.get('x-institution-id') });"
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					"eval(pm.globals.get(\"verifyResponseTime\"))();",
+					"eval(pm.globals.get(\"verifyStackTrace\"))();"
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "orderSchema",
+			"value": "{\n    \"$schema\": \"http://json-schema.org/draft-06/schema#\",\n    \"$ref\": \"#/definitions/Welcome3\",\n    \"definitions\": {\n        \"Welcome3\": {\n            \"type\": \"object\",\n            \"additionalProperties\": false,\n            \"properties\": {\n                \"id\": {\n                    \"type\": \"string\"\n                },\n                \"accountId\": {\n                    \"type\": \"string\",\n                    \"format\": \"uuid\"\n                },\n                \"userId\": {\n                    \"type\": \"string\",\n                    \"format\": \"uuid\"\n                },\n                \"created\": {\n                    \"type\": \"string\",\n                    \"format\": \"date-time\"\n                },\n                \"status\": {\n                    \"type\": \"string\"\n                },\n                \"symbol\": {\n                    \"type\": \"string\"\n                },\n                \"side\": {\n                    \"type\": \"string\"\n                },\n                \"price\": {\n                    \"type\": \"number\"\n                },\n                \"quantity\": {\n                    \"type\": \"number\"\n                },\n                \"notional\": {\n                    \"$ref\": \"#/definitions/Notional\"\n                },\n                \"receipt\": {\n                    \"$ref\": \"#/definitions/Receipt\"\n                },\n                \"requestedAt\": {\n                    \"type\": \"string\",\n                    \"format\": \"date-time\"\n                },\n                \"lastUpdated\": {\n                    \"type\": \"string\",\n                    \"format\": \"date-time\"\n                }\n            },\n            \"required\": [\n                \"accountId\",\n                \"created\",\n                \"id\",\n                \"lastUpdated\",\n                \"notional\",\n                \"price\",\n                \"quantity\",\n                \"receipt\",\n                \"requestedAt\",\n                \"side\",\n                \"status\",\n                \"symbol\",\n                \"userId\"\n            ],\n            \"title\": \"Welcome3\"\n        },\n        \"Notional\": {\n            \"type\": \"object\",\n            \"additionalProperties\": false,\n            \"properties\": {\n                \"currency\": {\n                    \"type\": \"string\"\n                },\n                \"amount\": {\n                    \"type\": \"number\"\n                }\n            },\n            \"required\": [\n                \"amount\",\n                \"currency\"\n            ],\n            \"title\": \"Notional\"\n        },\n        \"Receipt\": {\n            \"type\": \"object\",\n            \"additionalProperties\": false,\n            \"properties\": {\n                \"subtotal\": {\n                    \"type\": \"number\"\n                },\n                \"fee\": {\n                    \"type\": \"number\"\n                },\n                \"total\": {\n                    \"type\": \"number\"\n                }\n            },\n            \"required\": [\n                \"fee\",\n                \"subtotal\",\n                \"total\"\n            ],\n            \"title\": \"Receipt\"\n        }\n    }\n}\n",
+			"type": "string"
+		},
+		{
+			"key": "ordersSchema",
+			"value": "{\n    \"$schema\": \"http://json-schema.org/draft-06/schema#\",\n    \"$ref\": \"#/definitions/Welcome5\",\n    \"definitions\": {\n        \"Welcome5\": {\n            \"type\": \"object\",\n            \"additionalProperties\": false,\n            \"properties\": {\n                \"results\": {\n                    \"type\": \"array\",\n                    \"items\": {\n                        \"$ref\": \"#/definitions/Result\"\n                    }\n                }\n            },\n            \"required\": [\n                \"results\"\n            ],\n            \"title\": \"Welcome5\"\n        },\n        \"Result\": {\n            \"type\": \"object\",\n            \"additionalProperties\": false,\n            \"properties\": {\n                \"id\": {\n                    \"type\": \"string\"\n                },\n                \"accountId\": {\n                    \"type\": \"string\",\n                    \"format\": \"uuid\"\n                },\n                \"userId\": {\n                    \"type\": \"string\",\n                    \"format\": \"uuid\"\n                },\n                \"created\": {\n                    \"type\": \"string\",\n                    \"format\": \"date-time\"\n                },\n                \"status\": {\n                    \"$ref\": \"#/definitions/Status\"\n                },\n                \"symbol\": {\n                    \"$ref\": \"#/definitions/Symbol\"\n                },\n                \"side\": {\n                    \"$ref\": \"#/definitions/Side\"\n                },\n                \"price\": {\n                    \"type\": \"number\"\n                },\n                \"quantity\": {\n                    \"type\": \"number\"\n                },\n                \"notional\": {\n                    \"$ref\": \"#/definitions/Notional\"\n                },\n                \"receipt\": {\n                    \"$ref\": \"#/definitions/Receipt\"\n                },\n                \"requestedAt\": {\n                    \"type\": \"string\",\n                    \"format\": \"date-time\"\n                },\n                \"lastUpdated\": {\n                    \"type\": \"string\",\n                    \"format\": \"date-time\"\n                }\n            },\n            \"required\": [\n                \"accountId\",\n                \"created\",\n                \"id\",\n                \"lastUpdated\",\n                \"notional\",\n                \"quantity\",\n                \"requestedAt\",\n                \"side\",\n                \"status\",\n                \"symbol\",\n                \"userId\"\n            ],\n            \"title\": \"Result\"\n        },\n        \"Notional\": {\n            \"type\": \"object\",\n            \"additionalProperties\": false,\n            \"properties\": {\n                \"currency\": {\n                    \"$ref\": \"#/definitions/Symbol\"\n                },\n                \"amount\": {\n                    \"type\": \"number\"\n                }\n            },\n            \"required\": [\n                \"amount\",\n                \"currency\"\n            ],\n            \"title\": \"Notional\"\n        },\n        \"Receipt\": {\n            \"type\": \"object\",\n            \"additionalProperties\": false,\n            \"properties\": {\n                \"subtotal\": {\n                    \"type\": \"number\"\n                },\n                \"fee\": {\n                    \"type\": \"number\"\n                },\n                \"total\": {\n                    \"type\": \"number\"\n                }\n            },\n            \"required\": [\n                \"fee\",\n                \"subtotal\",\n                \"total\"\n            ],\n            \"title\": \"Receipt\"\n        },\n        \"Symbol\": {\n            \"type\": \"string\",\n            \"enum\": [\n                \"btc\"\n            ],\n            \"title\": \"Symbol\"\n        },\n        \"Side\": {\n            \"type\": \"string\",\n            \"enum\": [\n                \"sell\",\n                \"buy\"\n            ],\n            \"title\": \"Side\"\n        },\n        \"Status\": {\n            \"type\": \"string\",\n            \"enum\": [\n\t\t\t\t\"quote\", \n\t\t\t\t\"pending\", \n\t\t\t\t\"filled\", \n\t\t\t\t\"booked\", \n\t\t\t\t\"canceled\", \n\t\t\t\t\"rejected\", \n\t\t\t\t\"failed\", \n\t\t\t\t\"expired\"\n            ],\n            \"title\": \"Status\"\n        }\n    }\n}\n",
+			"type": "string"
+		},
+		{
+			"key": "postOrderSchema",
+			"value": "{\n    \"$schema\": \"http://json-schema.org/draft-06/schema#\",\n    \"$ref\": \"#/definitions/Welcome3\",\n    \"definitions\": {\n        \"Welcome3\": {\n            \"type\": \"object\",\n            \"additionalProperties\": false,\n            \"properties\": {\n                \"id\": {\n                    \"type\": \"string\"\n                },\n                \"accountId\": {\n                    \"type\": \"string\",\n                    \"format\": \"uuid\"\n                },\n                \"userId\": {\n                    \"type\": \"string\",\n                    \"format\": \"uuid\"\n                },\n                \"created\": {\n                    \"type\": \"string\",\n                    \"format\": \"date-time\"\n                },\n                \"expiration\": {\n                    \"type\": \"string\",\n                    \"format\": \"date-time\"\n                },\n                \"status\": {\n                    \"type\": \"string\"\n                },\n                \"symbol\": {\n                    \"type\": \"string\"\n                },\n                \"side\": {\n                    \"type\": \"string\"\n                },\n                \"price\": {\n                    \"type\": \"number\"\n                },\n                \"quantity\": {\n                    \"type\": \"number\"\n                },\n                \"notional\": {\n                    \"$ref\": \"#/definitions/Notional\"\n                },\n                \"receipt\": {\n                    \"$ref\": \"#/definitions/Receipt\"\n                },\n                \"requestedAt\": {\n                    \"type\": \"string\",\n                    \"format\": \"date-time\"\n                }\n            },\n            \"required\": [\n                \"accountId\",\n                \"created\",\n                \"expiration\",\n                \"id\",\n                \"notional\",\n                \"price\",\n                \"quantity\",\n                \"receipt\",\n                \"requestedAt\",\n                \"side\",\n                \"status\",\n                \"symbol\",\n                \"userId\"\n            ],\n            \"title\": \"Welcome3\"\n        },\n        \"Notional\": {\n            \"type\": \"object\",\n            \"additionalProperties\": false,\n            \"properties\": {\n                \"currency\": {\n                    \"type\": \"string\"\n                },\n                \"amount\": {\n                    \"type\": \"number\"\n                }\n            },\n            \"required\": [\n                \"amount\",\n                \"currency\"\n            ],\n            \"title\": \"Notional\"\n        },\n        \"Receipt\": {\n            \"type\": \"object\",\n            \"additionalProperties\": false,\n            \"properties\": {\n                \"subtotal\": {\n                    \"type\": \"number\"\n                },\n                \"fee\": {\n                    \"type\": \"number\"\n                },\n                \"total\": {\n                    \"type\": \"number\"\n                }\n            },\n            \"required\": [\n                \"fee\",\n                \"subtotal\",\n                \"total\"\n            ],\n            \"title\": \"Receipt\"\n        }\n    }\n}\n",
+			"type": "string"
+		},
+		{
+			"key": "canceledOrderSchema",
+			"value": "{\n    \"$schema\": \"http://json-schema.org/draft-06/schema#\",\n    \"$ref\": \"#/definitions/Welcome1\",\n    \"definitions\": {\n        \"Welcome1\": {\n            \"type\": \"object\",\n            \"additionalProperties\": false,\n            \"properties\": {\n                \"id\": {\n                    \"type\": \"string\"\n                },\n                \"accountId\": {\n                    \"type\": \"string\",\n                    \"format\": \"uuid\"\n                },\n                \"userId\": {\n                    \"type\": \"string\",\n                    \"format\": \"uuid\"\n                },\n                \"created\": {\n                    \"type\": \"string\",\n                    \"format\": \"date-time\"\n                },\n                \"status\": {\n                    \"type\": \"string\"\n                },\n                \"symbol\": {\n                    \"type\": \"string\"\n                },\n                \"side\": {\n                    \"type\": \"string\"\n                },\n                \"quantity\": {\n                    \"type\": \"number\"\n                },\n                \"notional\": {\n                    \"$ref\": \"#/definitions/Notional\"\n                },\n                \"requestedAt\": {\n                    \"type\": \"string\",\n                    \"format\": \"date-time\"\n                },\n                \"lastUpdated\": {\n                    \"type\": \"string\",\n                    \"format\": \"date-time\"\n                }\n            },\n            \"required\": [\n                \"accountId\",\n                \"created\",\n                \"id\",\n                \"lastUpdated\",\n                \"notional\",\n                \"quantity\",\n                \"requestedAt\",\n                \"side\",\n                \"status\",\n                \"symbol\",\n                \"userId\"\n            ],\n            \"title\": \"Welcome1\"\n        },\n        \"Notional\": {\n            \"type\": \"object\",\n            \"additionalProperties\": false,\n            \"properties\": {\n                \"currency\": {\n                    \"type\": \"string\"\n                },\n                \"amount\": {\n                    \"type\": \"number\"\n                }\n            },\n            \"required\": [\n                \"amount\",\n                \"currency\"\n            ],\n            \"title\": \"Notional\"\n        }\n    }\n}\n",
+			"type": "string"
+		},
+		{
+			"key": "executeOrderSchema",
+			"value": "{\n    \"$schema\": \"http://json-schema.org/draft-06/schema#\",\n    \"$ref\": \"#/definitions/Welcome10\",\n    \"definitions\": {\n        \"Welcome10\": {\n            \"type\": \"object\",\n            \"additionalProperties\": false,\n            \"properties\": {\n                \"id\": {\n                    \"type\": \"string\"\n                },\n                \"accountId\": {\n                    \"type\": \"string\",\n                    \"format\": \"uuid\"\n                },\n                \"userId\": {\n                    \"type\": \"string\",\n                    \"format\": \"uuid\"\n                },\n                \"created\": {\n                    \"type\": \"string\",\n                    \"format\": \"date-time\"\n                },\n                \"status\": {\n                    \"type\": \"string\"\n                },\n                \"symbol\": {\n                    \"type\": \"string\"\n                },\n                \"side\": {\n                    \"type\": \"string\"\n                },\n                \"price\": {\n                    \"type\": \"number\"\n                },\n                \"quantity\": {\n                    \"type\": \"number\"\n                },\n                \"notional\": {\n                    \"$ref\": \"#/definitions/Notional\"\n                },\n                \"receipt\": {\n                    \"$ref\": \"#/definitions/Receipt\"\n                },\n                \"requestedAt\": {\n                    \"type\": \"string\",\n                    \"format\": \"date-time\"\n                },\n                \"lastUpdated\": {\n                    \"type\": \"string\",\n                    \"format\": \"date-time\"\n                }\n            },\n            \"required\": [\n                \"accountId\",\n                \"created\",\n                \"id\",\n                \"lastUpdated\",\n                \"notional\",\n                \"price\",\n                \"quantity\",\n                \"receipt\",\n                \"requestedAt\",\n                \"side\",\n                \"status\",\n                \"symbol\",\n                \"userId\"\n            ],\n            \"title\": \"Welcome10\"\n        },\n        \"Notional\": {\n            \"type\": \"object\",\n            \"additionalProperties\": false,\n            \"properties\": {\n                \"currency\": {\n                    \"type\": \"string\"\n                },\n                \"amount\": {\n                    \"type\": \"number\"\n                }\n            },\n            \"required\": [\n                \"amount\",\n                \"currency\"\n            ],\n            \"title\": \"Notional\"\n        },\n        \"Receipt\": {\n            \"type\": \"object\",\n            \"additionalProperties\": false,\n            \"properties\": {\n                \"subtotal\": {\n                    \"type\": \"number\"\n                },\n                \"fee\": {\n                    \"type\": \"number\"\n                },\n                \"total\": {\n                    \"type\": \"number\"\n                }\n            },\n            \"required\": [\n                \"fee\",\n                \"subtotal\",\n                \"total\"\n            ],\n            \"title\": \"Receipt\"\n        }\n    }\n}\n",
+			"type": "string"
+		}
+	]
+}

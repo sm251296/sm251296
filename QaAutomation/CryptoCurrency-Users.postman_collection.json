@@ -1,0 +1,3448 @@
+{
+	"info": {
+		"_postman_id": "927bd38f-6acc-463f-8685-f6a226a5c1d1",
+		"name": "CryptoCurrency-Users",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "UserRelationships",
+			"item": [
+				{
+					"name": "Error",
+					"item": [
+						{
+							"name": "GetInstitutionCryptoUserByIdMalformed_400",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"eval(pm.globals.get(\"verifyMalformedRequest\"))();"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\"TEST\":\"TEST\"}"
+								},
+								"url": {
+									"raw": "{{externalLoadBalancer}}/v1/user-relationships/institution-crypto-user/{{user_institutionCryptoUserId}}",
+									"host": [
+										"{{externalLoadBalancer}}"
+									],
+									"path": [
+										"v1",
+										"user-relationships",
+										"institution-crypto-user",
+										"{{user_institutionCryptoUserId}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GetAllInstitutionCryptoUserMalformed_400",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"eval(pm.globals.get(\"verifyMalformedRequest\"))();"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text",
+										"disabled": true
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\"TEST\":\"TEST\"}"
+								},
+								"url": {
+									"raw": "{{externalLoadBalancer}}/v1/user-relationships/institution-crypto-user",
+									"host": [
+										"{{externalLoadBalancer}}"
+									],
+									"path": [
+										"v1",
+										"user-relationships",
+										"institution-crypto-user"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GetInstitutionCryptoUserByProviderIdMalformed_400",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"eval(pm.globals.get(\"verifyMalformedRequest\"))();"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text",
+										"disabled": true
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\"TEST\":\"TEST\"}"
+								},
+								"url": {
+									"raw": "{{externalLoadBalancer}}/v1/user-relationships/institution-crypto-user?providerId=26f486b0-e513-4146-b2e7-73d928fab544",
+									"host": [
+										"{{externalLoadBalancer}}"
+									],
+									"path": [
+										"v1",
+										"user-relationships",
+										"institution-crypto-user"
+									],
+									"query": [
+										{
+											"key": "providerId",
+											"value": "26f486b0-e513-4146-b2e7-73d928fab544"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GetInstitutionCryptoUserByProviderIdNoInstitutionId_400",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"eval(pm.globals.get(\"verifyInstitutionHeader\"))();"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"pm.request.headers.remove('x-institution-id');"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text",
+										"disabled": true
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{externalLoadBalancer}}/v1/user-relationships/institution-crypto-user?providerId=26f486b0-e513-4146-b2e7-73d928fab544",
+									"host": [
+										"{{externalLoadBalancer}}"
+									],
+									"path": [
+										"v1",
+										"user-relationships",
+										"institution-crypto-user"
+									],
+									"query": [
+										{
+											"key": "providerId",
+											"value": "26f486b0-e513-4146-b2e7-73d928fab544"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GetAllInstitutionCryptoUserNoInstitutionId_400",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"eval(pm.globals.get(\"verifyInstitutionHeader\"))();"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"pm.request.headers.remove('x-institution-id');"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text",
+										"disabled": true
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{externalLoadBalancer}}/v1/user-relationships/institution-crypto-user",
+									"host": [
+										"{{externalLoadBalancer}}"
+									],
+									"path": [
+										"v1",
+										"user-relationships",
+										"institution-crypto-user"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GetInstitutionCryptoUserById_400",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"eval(pm.globals.get(\"verifyResponseError\"))(\"getInstitutionCryptoUserRelationship.id: Must be a valid UUID\");"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{externalLoadBalancer}}/v1/user-relationships/institution-crypto-user/fake",
+									"host": [
+										"{{externalLoadBalancer}}"
+									],
+									"path": [
+										"v1",
+										"user-relationships",
+										"institution-crypto-user",
+										"fake"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GetAllInstitutionCryptoUser_403",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"eval(pm.globals.get(\"verify403\"))();"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"pm.request.headers.remove('Authorization');"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text",
+										"disabled": true
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{externalLoadBalancer}}/v1/user-relationships/institution-crypto-user",
+									"host": [
+										"{{externalLoadBalancer}}"
+									],
+									"path": [
+										"v1",
+										"user-relationships",
+										"institution-crypto-user"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GetAllInstitutionCryptoUserExport_403",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"eval(pm.globals.get(\"verify403\"))();"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"pm.request.headers.remove('Authorization');"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text",
+										"disabled": true
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{externalLoadBalancer}}/v1/user-relationships/institution-crypto-user:export",
+									"host": [
+										"{{externalLoadBalancer}}"
+									],
+									"path": [
+										"v1",
+										"user-relationships",
+										"institution-crypto-user:export"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GetInstitutionCryptoUserByProviderId_403",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"eval(pm.globals.get(\"verify403\"))();"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"pm.request.headers.remove('Authorization');"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text",
+										"disabled": true
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{externalLoadBalancer}}/v1/user-relationships/institution-crypto-user?providerId=26f486b0-e513-4146-b2e7-73d928fab544",
+									"host": [
+										"{{externalLoadBalancer}}"
+									],
+									"path": [
+										"v1",
+										"user-relationships",
+										"institution-crypto-user"
+									],
+									"query": [
+										{
+											"key": "providerId",
+											"value": "26f486b0-e513-4146-b2e7-73d928fab544"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GetAllInstitutionCryptoUser_404",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"eval(pm.globals.get(\"verify404\"))();"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text",
+										"disabled": true
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{externalLoadBalancer}}/v1/user-relationships/institution-crypto-user_FAKE",
+									"host": [
+										"{{externalLoadBalancer}}"
+									],
+									"path": [
+										"v1",
+										"user-relationships",
+										"institution-crypto-user_FAKE"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GetAllInstitutionCryptoUserExport_404",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"eval(pm.globals.get(\"verify404\"))();"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text",
+										"disabled": true
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{externalLoadBalancer}}/v1/user-relationships/institution-crypto-user:export_FAKE",
+									"host": [
+										"{{externalLoadBalancer}}"
+									],
+									"path": [
+										"v1",
+										"user-relationships",
+										"institution-crypto-user:export_FAKE"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GetInstitutionCryptoUserByProviderId_404",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"eval(pm.globals.get(\"verify404\"))();"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text",
+										"disabled": true
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{externalLoadBalancer}}/v1/user-relationships/institution-crypto-user_FAKE?providerId=26f486b0-e513-4146-b2e7-73d928fab544",
+									"host": [
+										"{{externalLoadBalancer}}"
+									],
+									"path": [
+										"v1",
+										"user-relationships",
+										"institution-crypto-user_FAKE"
+									],
+									"query": [
+										{
+											"key": "providerId",
+											"value": "26f486b0-e513-4146-b2e7-73d928fab544"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GetInstitutionCryptoUserExportByProviderId_404",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"eval(pm.globals.get(\"verify404\"))();"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text",
+										"disabled": true
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{externalLoadBalancer}}/v1/user-relationships/institution-crypto-user:export_FAKE?providerId=26f486b0-e513-4146-b2e7-73d928fab544",
+									"host": [
+										"{{externalLoadBalancer}}"
+									],
+									"path": [
+										"v1",
+										"user-relationships",
+										"institution-crypto-user:export_FAKE"
+									],
+									"query": [
+										{
+											"key": "providerId",
+											"value": "26f486b0-e513-4146-b2e7-73d928fab544"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GetInstitutionCryptoUserUnsupportedMethod_405",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"eval(pm.globals.get(\"verify405\"))(\"POST\");"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{externalLoadBalancer}}/v1/user-relationships/institution-crypto-user",
+									"host": [
+										"{{externalLoadBalancer}}"
+									],
+									"path": [
+										"v1",
+										"user-relationships",
+										"institution-crypto-user"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Export",
+					"item": [
+						{
+							"name": "GetAllInstitutionCryptoUserExport",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text",
+										"disabled": true
+									}
+								],
+								"url": {
+									"raw": "{{externalLoadBalancer}}/v1/user-relationships/institution-crypto-user:export",
+									"host": [
+										"{{externalLoadBalancer}}"
+									],
+									"path": [
+										"v1",
+										"user-relationships",
+										"institution-crypto-user:export"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GetInstitutionCryptoUserExportByProviderId",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"eval(pm.collectionVariables.get(\"getUserRelationship\"))(pm.collectionVariables.get(\"user_userId\"));"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{externalLoadBalancer}}/v1/user-relationships/institution-crypto-user:export?providerId={{user_providerId}}",
+									"host": [
+										"{{externalLoadBalancer}}"
+									],
+									"path": [
+										"v1",
+										"user-relationships",
+										"institution-crypto-user:export"
+									],
+									"query": [
+										{
+											"key": "providerId",
+											"value": "{{user_providerId}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GetInstitutionCryptoUserExportByInstitutionUserId",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{externalLoadBalancer}}/v1/user-relationships/institution-crypto-user:export?institutionUserId={{user_institutionUserId}}",
+									"host": [
+										"{{externalLoadBalancer}}"
+									],
+									"path": [
+										"v1",
+										"user-relationships",
+										"institution-crypto-user:export"
+									],
+									"query": [
+										{
+											"key": "institutionUserId",
+											"value": "{{user_institutionUserId}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GetInstitutionCryptoUserExportByProviderUserId",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"eval(pm.collectionVariables.get(\"getUserRelationship\"))(pm.collectionVariables.get(\"user_userId\"));"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{externalLoadBalancer}}/v1/user-relationships/institution-crypto-user:export?providerUserId={{user_providerUserId}}",
+									"host": [
+										"{{externalLoadBalancer}}"
+									],
+									"path": [
+										"v1",
+										"user-relationships",
+										"institution-crypto-user:export"
+									],
+									"query": [
+										{
+											"key": "providerUserId",
+											"value": "{{user_providerUserId}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GetInstitutionCryptoUserExportByAllParameters",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"eval(pm.collectionVariables.get(\"getUserRelationship\"))(pm.collectionVariables.get(\"user_userId\"));"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{externalLoadBalancer}}/v1/user-relationships/institution-crypto-user:export?providerUserId={{user_providerUserId}}&institutionUserId={{user_institutionUserId}}&providerId={{user_providerId}}",
+									"host": [
+										"{{externalLoadBalancer}}"
+									],
+									"path": [
+										"v1",
+										"user-relationships",
+										"institution-crypto-user:export"
+									],
+									"query": [
+										{
+											"key": "providerUserId",
+											"value": "{{user_providerUserId}}"
+										},
+										{
+											"key": "institutionUserId",
+											"value": "{{user_institutionUserId}}"
+										},
+										{
+											"key": "providerId",
+											"value": "{{user_providerId}}"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"eval(pm.collectionVariables.get(\"createUser\"))();"
+								]
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var contentDispositionRegex = /^attachment; filename=[0-9A-F]{8}-[0-9A-F]{4}-[4][0-9A-F]{3}-[89AB][0-9A-F]{3}-[0-9A-F]{12}.csv$/i;",
+									"pm.test(\"Verify filename\", () => {",
+									"    const actualFileName = pm.response.headers.get(\"content-disposition\");",
+									"    console.log(\"File Name : \" + actualFileName);",
+									"    pm.expect(actualFileName).to.match(contentDispositionRegex);",
+									"});",
+									"",
+									"pm.test(\"Verify content type is 'application/octet-stream'\", () => {",
+									"    pm.expect(pm.response.headers.get(\"content-type\")).to.be.eql(\"application/octet-stream\");",
+									"});",
+									"",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"    pm.response.to.be.success;",
+									"    pm.response.to.be.ok;",
+									"});",
+									"",
+									"//Remove variables",
+									"pm.collectionVariables.unset(\"user_userId\");",
+									"pm.collectionVariables.unset(\"user_institutionUserId\");",
+									"pm.collectionVariables.unset(\"user_providerId\");",
+									"pm.collectionVariables.unset(\"user_providerUserId\");",
+									"pm.collectionVariables.unset(\"RandomUserBody\");"
+								]
+							}
+						}
+					]
+				},
+				{
+					"name": "MultipleResult",
+					"item": [
+						{
+							"name": "AllResults",
+							"item": [
+								{
+									"name": "GetAllInstitutionCryptoUser",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													""
+												],
+												"type": "text/javascript"
+											}
+										},
+										{
+											"listen": "prerequest",
+											"script": {
+												"exec": [
+													""
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{externalLoadBalancer}}/v1/user-relationships/institution-crypto-user",
+											"host": [
+												"{{externalLoadBalancer}}"
+											],
+											"path": [
+												"v1",
+												"user-relationships",
+												"institution-crypto-user"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "GetInstitutionCryptoUserByProviderId",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													""
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{externalLoadBalancer}}/v1/user-relationships/institution-crypto-user?providerId={{providerId}}",
+											"host": [
+												"{{externalLoadBalancer}}"
+											],
+											"path": [
+												"v1",
+												"user-relationships",
+												"institution-crypto-user"
+											],
+											"query": [
+												{
+													"key": "providerId",
+													"value": "{{providerId}}"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "GetInstitutionCryptoUserIgnoreIncorrectParameter",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													""
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{externalLoadBalancer}}/v1/user-relationships/institution-crypto-user?providerId_FAKE={{user_providerId}}",
+											"host": [
+												"{{externalLoadBalancer}}"
+											],
+											"path": [
+												"v1",
+												"user-relationships",
+												"institution-crypto-user"
+											],
+											"query": [
+												{
+													"key": "providerId_FAKE",
+													"value": "{{user_providerId}}"
+												}
+											]
+										}
+									},
+									"response": []
+								}
+							],
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"type": "text/javascript",
+										"exec": [
+											"eval(pm.variables.get(\"getProviderId\"))();"
+										]
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"type": "text/javascript",
+										"exec": [
+											"const expectedProviderId = { \"providerId\": pm.environment.get(\"providerId\") };",
+											"const actualResponse = pm.response.json();",
+											"",
+											"pm.test(\"Verify response body\", () => {",
+											"    _.each(actualResponse.results, (item) => {",
+											"        pm.expect(item).to.contain(expectedProviderId);",
+											"    })",
+											"});",
+											"",
+											"pm.test(\"Verify schema\", () => {",
+											"    pm.response.to.have.jsonSchema(JSON.parse(pm.collectionVariables.get(\"multiRelationshipSchema\")))",
+											"});",
+											"",
+											"pm.test(\"Status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"    pm.response.to.be.success;",
+											"    pm.response.to.be.ok;",
+											"});",
+											"",
+											"//Remove variables",
+											"pm.collectionVariables.unset(\"user_userId\");",
+											"pm.collectionVariables.unset(\"user_institutionUserId\");",
+											"pm.collectionVariables.unset(\"user_providerId\");",
+											"pm.collectionVariables.unset(\"user_providerUserId\");",
+											"pm.collectionVariables.unset(\"RandomUserBody\");"
+										]
+									}
+								}
+							]
+						},
+						{
+							"name": "OneResult",
+							"item": [
+								{
+									"name": "GetInstitutionCryptoUserByInstitutionUserId",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"const expectedInstitutionUserId = { \"institutionUserId\": pm.collectionVariables.get(\"user_institutionUserId\") };\r",
+													"eval(pm.collectionVariables.get(\"verifyOneUserRelationship\"))(expectedInstitutionUserId);\r",
+													"\r",
+													"//Remove variables\r",
+													"pm.collectionVariables.unset(\"user_userId\");\r",
+													"pm.collectionVariables.unset(\"user_institutionUserId\");\r",
+													"pm.collectionVariables.unset(\"user_providerId\");\r",
+													"pm.collectionVariables.unset(\"user_providerUserId\");"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{externalLoadBalancer}}/v1/user-relationships/institution-crypto-user?institutionUserId={{user_institutionUserId}}",
+											"host": [
+												"{{externalLoadBalancer}}"
+											],
+											"path": [
+												"v1",
+												"user-relationships",
+												"institution-crypto-user"
+											],
+											"query": [
+												{
+													"key": "institutionUserId",
+													"value": "{{user_institutionUserId}}"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "GetInstitutionCryptoUserByProviderUserId",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"const providerUserId = { \"providerUserId\": pm.collectionVariables.get(\"user_providerUserId\") };\r",
+													"eval(pm.collectionVariables.get(\"verifyOneUserRelationship\"))(providerUserId);\r",
+													"\r",
+													"//Remove variables\r",
+													"pm.collectionVariables.unset(\"user_userId\");\r",
+													"pm.collectionVariables.unset(\"user_institutionUserId\");\r",
+													"pm.collectionVariables.unset(\"user_providerId\");\r",
+													"pm.collectionVariables.unset(\"user_providerUserId\");"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{externalLoadBalancer}}/v1/user-relationships/institution-crypto-user?providerUserId={{user_providerUserId}}",
+											"host": [
+												"{{externalLoadBalancer}}"
+											],
+											"path": [
+												"v1",
+												"user-relationships",
+												"institution-crypto-user"
+											],
+											"query": [
+												{
+													"key": "providerUserId",
+													"value": "{{user_providerUserId}}"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "GetInstitutionCryptoUserByAllParameters",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"const expectedResult = {\r",
+													"    \"institutionUserId\": pm.collectionVariables.get(\"user_institutionUserId\"),\r",
+													"    \"providerUserId\": pm.collectionVariables.get(\"user_providerUserId\"),\r",
+													"    \"providerId\": pm.collectionVariables.get(\"user_providerId\")\r",
+													"}\r",
+													"eval(pm.collectionVariables.get(\"verifyOneUserRelationship\"))(expectedResult);\r",
+													"\r",
+													"//Remove variables\r",
+													"pm.collectionVariables.unset(\"user_userId\");\r",
+													"pm.collectionVariables.unset(\"user_institutionUserId\");\r",
+													"pm.collectionVariables.unset(\"user_providerId\");\r",
+													"pm.collectionVariables.unset(\"user_providerUserId\");"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{externalLoadBalancer}}/v1/user-relationships/institution-crypto-user?providerUserId={{user_providerUserId}}&institutionUserId={{user_institutionUserId}}&providerId={{user_providerId}}",
+											"host": [
+												"{{externalLoadBalancer}}"
+											],
+											"path": [
+												"v1",
+												"user-relationships",
+												"institution-crypto-user"
+											],
+											"query": [
+												{
+													"key": "providerUserId",
+													"value": "{{user_providerUserId}}"
+												},
+												{
+													"key": "institutionUserId",
+													"value": "{{user_institutionUserId}}"
+												},
+												{
+													"key": "providerId",
+													"value": "{{user_providerId}}"
+												}
+											]
+										}
+									},
+									"response": []
+								}
+							],
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"type": "text/javascript",
+										"exec": [
+											"eval(pm.collectionVariables.get(\"getUserRelationship\"))(pm.collectionVariables.get(\"user_userId\"));"
+										]
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"type": "text/javascript",
+										"exec": [
+											""
+										]
+									}
+								}
+							]
+						}
+					],
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.collectionVariables.set(\"user_providerId\", \"e4f26c6e-c8b8-482d-b51f-18301210c1a9\");",
+									"eval(pm.collectionVariables.get(\"createUser\"))();"
+								]
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						}
+					]
+				},
+				{
+					"name": "SingleResult",
+					"item": [
+						{
+							"name": "GetInstitutionCryptoUserById",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"const expectedResponse = {\r",
+											"    \"id\": pm.collectionVariables.get(\"user_userId\"),\r",
+											"    \"institutionUserId\": pm.collectionVariables.get(\"user_institutionUserId\")\r",
+											"};\r",
+											"eval(pm.collectionVariables.get(\"verifySingleRelationship\"))(expectedResponse);\r",
+											"\r",
+											"//Remove variables\r",
+											"pm.collectionVariables.unset(\"user_userId\");\r",
+											"pm.collectionVariables.unset(\"user_institutionUserId\");\r",
+											"pm.collectionVariables.unset(\"RandomUserBody\");"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"eval(pm.collectionVariables.get(\"createUser\"))();"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{externalLoadBalancer}}/v1/user-relationships/institution-crypto-user/{{user_userId}}",
+									"host": [
+										"{{externalLoadBalancer}}"
+									],
+									"path": [
+										"v1",
+										"user-relationships",
+										"institution-crypto-user",
+										"{{user_userId}}"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "Eligibility",
+			"item": [
+				{
+					"name": "EligibilityTrue",
+					"item": [
+						{
+							"name": "PostEligibility",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJFUzI1NiJ9.eyJtdGgiOlsiaW50ZXJuYWwtY2xpZW50LWNyZWRlbnRpYWxzIl0sInN1YiI6ImFjY3Q6ZGJrLWNyeXB0b0A4NzMxMzczYi1lODFhLTRlNTktYmQ1OS00ZDNkM2MxZDFiNTEiLCJuYmYiOjE2MzY2Mzk1MDYsIm9yZyI6Ii90ZWFtcy9pbnRlcm5hbC10ZWFtcy9kYmstY3J5cHRvLyIsImlzcyI6Ik5DUiIsInJscyI6ImVKd3o0SEowOGZYMDR3b05kZzBDQUJFK0F1MD0iLCJzayI6IjcxNjgxNTVjNTk0ZTQ1ZmJhYmY5ZThmZTE1NjBhYWU2IiwiZXhwIjoxNjM2NjQwNDA2LCJpYXQiOjE2MzY2Mzk1MDYsImp0aSI6IjdlOGNkMDYxLWU2MjgtNDdkZC1iYjFjLTFmNzY5ZTkyNmNlNyJ9.GuNTK9xy86xEFlJiCORVXezXEfKb-y3if08vmw0c-lQNeuNfrtSuw6hAKyuIk-QL_SPVTunLi3n3dAxoYBdtNg",
+										"type": "text",
+										"disabled": true
+									},
+									{
+										"key": "x-institution-id",
+										"value": "67890",
+										"type": "text",
+										"disabled": true
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"dob\": \"2000-01-01\",\r\n    \"stateProvinceRegion\": \"AR\",\r\n    \"ageCheckOverride\": false\r\n}"
+								},
+								"url": {
+									"raw": "{{externalLoadBalancer}}/v1/eligibility",
+									"host": [
+										"{{externalLoadBalancer}}"
+									],
+									"path": [
+										"v1",
+										"eligibility"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "PostEligibilityAgeCheckTrue",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJFUzI1NiJ9.eyJtdGgiOlsiaW50ZXJuYWwtY2xpZW50LWNyZWRlbnRpYWxzIl0sInN1YiI6ImFjY3Q6ZGJrLWNyeXB0b0A4NzMxMzczYi1lODFhLTRlNTktYmQ1OS00ZDNkM2MxZDFiNTEiLCJuYmYiOjE2MzY2Mzk1MDYsIm9yZyI6Ii90ZWFtcy9pbnRlcm5hbC10ZWFtcy9kYmstY3J5cHRvLyIsImlzcyI6Ik5DUiIsInJscyI6ImVKd3o0SEowOGZYMDR3b05kZzBDQUJFK0F1MD0iLCJzayI6IjcxNjgxNTVjNTk0ZTQ1ZmJhYmY5ZThmZTE1NjBhYWU2IiwiZXhwIjoxNjM2NjQwNDA2LCJpYXQiOjE2MzY2Mzk1MDYsImp0aSI6IjdlOGNkMDYxLWU2MjgtNDdkZC1iYjFjLTFmNzY5ZTkyNmNlNyJ9.GuNTK9xy86xEFlJiCORVXezXEfKb-y3if08vmw0c-lQNeuNfrtSuw6hAKyuIk-QL_SPVTunLi3n3dAxoYBdtNg",
+										"type": "text",
+										"disabled": true
+									},
+									{
+										"key": "x-institution-id",
+										"value": "67890",
+										"type": "text",
+										"disabled": true
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"dob\": \"2010-01-01\",\r\n    \"stateProvinceRegion\": \"AR\",\r\n    \"ageCheckOverride\": true\r\n}"
+								},
+								"url": {
+									"raw": "{{externalLoadBalancer}}/v1/eligibility",
+									"host": [
+										"{{externalLoadBalancer}}"
+									],
+									"path": [
+										"v1",
+										"eligibility"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "PostEligibilityAgeCheckTrueNoDob",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJFUzI1NiJ9.eyJtdGgiOlsiaW50ZXJuYWwtY2xpZW50LWNyZWRlbnRpYWxzIl0sInN1YiI6ImFjY3Q6ZGJrLWNyeXB0b0A4NzMxMzczYi1lODFhLTRlNTktYmQ1OS00ZDNkM2MxZDFiNTEiLCJuYmYiOjE2MzY2Mzk1MDYsIm9yZyI6Ii90ZWFtcy9pbnRlcm5hbC10ZWFtcy9kYmstY3J5cHRvLyIsImlzcyI6Ik5DUiIsInJscyI6ImVKd3o0SEowOGZYMDR3b05kZzBDQUJFK0F1MD0iLCJzayI6IjcxNjgxNTVjNTk0ZTQ1ZmJhYmY5ZThmZTE1NjBhYWU2IiwiZXhwIjoxNjM2NjQwNDA2LCJpYXQiOjE2MzY2Mzk1MDYsImp0aSI6IjdlOGNkMDYxLWU2MjgtNDdkZC1iYjFjLTFmNzY5ZTkyNmNlNyJ9.GuNTK9xy86xEFlJiCORVXezXEfKb-y3if08vmw0c-lQNeuNfrtSuw6hAKyuIk-QL_SPVTunLi3n3dAxoYBdtNg",
+										"type": "text",
+										"disabled": true
+									},
+									{
+										"key": "x-institution-id",
+										"value": "67890",
+										"type": "text",
+										"disabled": true
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"stateProvinceRegion\": \"AR\",\r\n    \"ageCheckOverride\": true\r\n}"
+								},
+								"url": {
+									"raw": "{{externalLoadBalancer}}/v1/eligibility",
+									"host": [
+										"{{externalLoadBalancer}}"
+									],
+									"path": [
+										"v1",
+										"eligibility"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"const expectedResponse = {",
+									"    \"eligible\": true,",
+									"    \"message\": \"User is eligible to perform crypto operations.\"",
+									"};",
+									"const actualResponse = pm.response.json();",
+									"pm.test(\"Verify schema\", () => {",
+									"    pm.response.to.have.jsonSchema(JSON.parse(pm.collectionVariables.get(\"eligibilitySchema\")));",
+									"});",
+									"pm.test(\"Verify response body\", () => {",
+									"    pm.expect(actualResponse).to.eql(expectedResponse);",
+									"});",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"    pm.response.to.be.success;",
+									"    pm.response.to.be.ok;",
+									"});"
+								]
+							}
+						}
+					]
+				},
+				{
+					"name": "EligibilityFalse",
+					"item": [
+						{
+							"name": "PostEligibilityFalseByDob",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"eval(pm.collectionVariables.get(\"verifyEligibilityFalse\"))(\"User's age does not meet requirements to perform crypto operations.\");"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJFUzI1NiJ9.eyJtdGgiOlsiaW50ZXJuYWwtY2xpZW50LWNyZWRlbnRpYWxzIl0sInN1YiI6ImFjY3Q6ZGJrLWNyeXB0b0A4NzMxMzczYi1lODFhLTRlNTktYmQ1OS00ZDNkM2MxZDFiNTEiLCJuYmYiOjE2MzY2Mzk1MDYsIm9yZyI6Ii90ZWFtcy9pbnRlcm5hbC10ZWFtcy9kYmstY3J5cHRvLyIsImlzcyI6Ik5DUiIsInJscyI6ImVKd3o0SEowOGZYMDR3b05kZzBDQUJFK0F1MD0iLCJzayI6IjcxNjgxNTVjNTk0ZTQ1ZmJhYmY5ZThmZTE1NjBhYWU2IiwiZXhwIjoxNjM2NjQwNDA2LCJpYXQiOjE2MzY2Mzk1MDYsImp0aSI6IjdlOGNkMDYxLWU2MjgtNDdkZC1iYjFjLTFmNzY5ZTkyNmNlNyJ9.GuNTK9xy86xEFlJiCORVXezXEfKb-y3if08vmw0c-lQNeuNfrtSuw6hAKyuIk-QL_SPVTunLi3n3dAxoYBdtNg",
+										"type": "text",
+										"disabled": true
+									},
+									{
+										"key": "x-institution-id",
+										"value": "67890",
+										"type": "text",
+										"disabled": true
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"dob\": \"2010-01-01\",\r\n    \"stateProvinceRegion\": \"AR\",\r\n    \"ageCheckOverride\": false\r\n}"
+								},
+								"url": {
+									"raw": "{{externalLoadBalancer}}/v1/eligibility",
+									"host": [
+										"{{externalLoadBalancer}}"
+									],
+									"path": [
+										"v1",
+										"eligibility"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "PostEligibilityFalseByState",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"eval(pm.collectionVariables.get(\"verifyEligibilityFalse\"))(\"user's state does not meet requirements to perform crypto operations.\");"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJFUzI1NiJ9.eyJtdGgiOlsiaW50ZXJuYWwtY2xpZW50LWNyZWRlbnRpYWxzIl0sInN1YiI6ImFjY3Q6ZGJrLWNyeXB0b0A4NzMxMzczYi1lODFhLTRlNTktYmQ1OS00ZDNkM2MxZDFiNTEiLCJuYmYiOjE2MzY2Mzk1MDYsIm9yZyI6Ii90ZWFtcy9pbnRlcm5hbC10ZWFtcy9kYmstY3J5cHRvLyIsImlzcyI6Ik5DUiIsInJscyI6ImVKd3o0SEowOGZYMDR3b05kZzBDQUJFK0F1MD0iLCJzayI6IjcxNjgxNTVjNTk0ZTQ1ZmJhYmY5ZThmZTE1NjBhYWU2IiwiZXhwIjoxNjM2NjQwNDA2LCJpYXQiOjE2MzY2Mzk1MDYsImp0aSI6IjdlOGNkMDYxLWU2MjgtNDdkZC1iYjFjLTFmNzY5ZTkyNmNlNyJ9.GuNTK9xy86xEFlJiCORVXezXEfKb-y3if08vmw0c-lQNeuNfrtSuw6hAKyuIk-QL_SPVTunLi3n3dAxoYBdtNg",
+										"type": "text",
+										"disabled": true
+									},
+									{
+										"key": "x-institution-id",
+										"value": "67890",
+										"type": "text",
+										"disabled": true
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"dob\": \"2000-01-01\",\r\n    \"stateProvinceRegion\": \"AS\",\r\n    \"ageCheckOverride\": false\r\n}"
+								},
+								"url": {
+									"raw": "{{externalLoadBalancer}}/v1/eligibility",
+									"host": [
+										"{{externalLoadBalancer}}"
+									],
+									"path": [
+										"v1",
+										"eligibility"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "PostEligibilityFalseByIncorrectState",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"eval(pm.collectionVariables.get(\"verifyEligibilityFalse\"))(\"user's state does not meet requirements to perform crypto operations.\");"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJFUzI1NiJ9.eyJtdGgiOlsiaW50ZXJuYWwtY2xpZW50LWNyZWRlbnRpYWxzIl0sInN1YiI6ImFjY3Q6ZGJrLWNyeXB0b0A4NzMxMzczYi1lODFhLTRlNTktYmQ1OS00ZDNkM2MxZDFiNTEiLCJuYmYiOjE2MzY2Mzk1MDYsIm9yZyI6Ii90ZWFtcy9pbnRlcm5hbC10ZWFtcy9kYmstY3J5cHRvLyIsImlzcyI6Ik5DUiIsInJscyI6ImVKd3o0SEowOGZYMDR3b05kZzBDQUJFK0F1MD0iLCJzayI6IjcxNjgxNTVjNTk0ZTQ1ZmJhYmY5ZThmZTE1NjBhYWU2IiwiZXhwIjoxNjM2NjQwNDA2LCJpYXQiOjE2MzY2Mzk1MDYsImp0aSI6IjdlOGNkMDYxLWU2MjgtNDdkZC1iYjFjLTFmNzY5ZTkyNmNlNyJ9.GuNTK9xy86xEFlJiCORVXezXEfKb-y3if08vmw0c-lQNeuNfrtSuw6hAKyuIk-QL_SPVTunLi3n3dAxoYBdtNg",
+										"type": "text",
+										"disabled": true
+									},
+									{
+										"key": "x-institution-id",
+										"value": "67890",
+										"type": "text",
+										"disabled": true
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"dob\": \"2000-01-01\",\r\n    \"stateProvinceRegion\": \"FAKE\",\r\n    \"ageCheckOverride\": false\r\n}"
+								},
+								"url": {
+									"raw": "{{externalLoadBalancer}}/v1/eligibility",
+									"host": [
+										"{{externalLoadBalancer}}"
+									],
+									"path": [
+										"v1",
+										"eligibility"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "PostEligibilityFalseAgeCheckTrueNoDob",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"eval(pm.collectionVariables.get(\"verifyEligibilityFalse\"))(\"user's state does not meet requirements to perform crypto operations.\");"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJFUzI1NiJ9.eyJtdGgiOlsiaW50ZXJuYWwtY2xpZW50LWNyZWRlbnRpYWxzIl0sInN1YiI6ImFjY3Q6ZGJrLWNyeXB0b0A4NzMxMzczYi1lODFhLTRlNTktYmQ1OS00ZDNkM2MxZDFiNTEiLCJuYmYiOjE2MzY2Mzk1MDYsIm9yZyI6Ii90ZWFtcy9pbnRlcm5hbC10ZWFtcy9kYmstY3J5cHRvLyIsImlzcyI6Ik5DUiIsInJscyI6ImVKd3o0SEowOGZYMDR3b05kZzBDQUJFK0F1MD0iLCJzayI6IjcxNjgxNTVjNTk0ZTQ1ZmJhYmY5ZThmZTE1NjBhYWU2IiwiZXhwIjoxNjM2NjQwNDA2LCJpYXQiOjE2MzY2Mzk1MDYsImp0aSI6IjdlOGNkMDYxLWU2MjgtNDdkZC1iYjFjLTFmNzY5ZTkyNmNlNyJ9.GuNTK9xy86xEFlJiCORVXezXEfKb-y3if08vmw0c-lQNeuNfrtSuw6hAKyuIk-QL_SPVTunLi3n3dAxoYBdtNg",
+										"type": "text",
+										"disabled": true
+									},
+									{
+										"key": "x-institution-id",
+										"value": "67890",
+										"type": "text",
+										"disabled": true
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"stateProvinceRegion\": \"AS\",\r\n    \"ageCheckOverride\": true\r\n}"
+								},
+								"url": {
+									"raw": "{{externalLoadBalancer}}/v1/eligibility",
+									"host": [
+										"{{externalLoadBalancer}}"
+									],
+									"path": [
+										"v1",
+										"eligibility"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Error",
+					"item": [
+						{
+							"name": "PostEligibilityOnlyState_400",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"eval(pm.globals.get(\"verifyResponseError\"))(\"dob must be provided when ageCheckOverride is false.\");"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJFUzI1NiJ9.eyJtdGgiOlsiaW50ZXJuYWwtY2xpZW50LWNyZWRlbnRpYWxzIl0sInN1YiI6ImFjY3Q6ZGJrLWNyeXB0b0A4NzMxMzczYi1lODFhLTRlNTktYmQ1OS00ZDNkM2MxZDFiNTEiLCJuYmYiOjE2MzY2Mzk1MDYsIm9yZyI6Ii90ZWFtcy9pbnRlcm5hbC10ZWFtcy9kYmstY3J5cHRvLyIsImlzcyI6Ik5DUiIsInJscyI6ImVKd3o0SEowOGZYMDR3b05kZzBDQUJFK0F1MD0iLCJzayI6IjcxNjgxNTVjNTk0ZTQ1ZmJhYmY5ZThmZTE1NjBhYWU2IiwiZXhwIjoxNjM2NjQwNDA2LCJpYXQiOjE2MzY2Mzk1MDYsImp0aSI6IjdlOGNkMDYxLWU2MjgtNDdkZC1iYjFjLTFmNzY5ZTkyNmNlNyJ9.GuNTK9xy86xEFlJiCORVXezXEfKb-y3if08vmw0c-lQNeuNfrtSuw6hAKyuIk-QL_SPVTunLi3n3dAxoYBdtNg",
+										"type": "text",
+										"disabled": true
+									},
+									{
+										"key": "x-institution-id",
+										"value": "67890",
+										"type": "text",
+										"disabled": true
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"stateProvinceRegion\": \"AR\"\r\n}"
+								},
+								"url": {
+									"raw": "{{externalLoadBalancer}}/v1/eligibility",
+									"host": [
+										"{{externalLoadBalancer}}"
+									],
+									"path": [
+										"v1",
+										"eligibility"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "PostEligibilityIncorrectDob_400",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"eval(pm.globals.get(\"verifyResponseError\"))(\"dob has not a valid value: FAKE. It should be a valid ISO-8601 date.\");"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"dob\": \"FAKE\",\r\n    \"stateProvinceRegion\": \"AR\",\r\n    \"ageCheckOverride\": false\r\n}"
+								},
+								"url": {
+									"raw": "{{externalLoadBalancer}}/v1/eligibility",
+									"host": [
+										"{{externalLoadBalancer}}"
+									],
+									"path": [
+										"v1",
+										"eligibility"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "PostEligibilityIncorrectStateParameterName_400",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"eval(pm.globals.get(\"verifyResponseError\"))(\"The request is invalid stateProvinceRegion:must not be blank\");"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"dob\": \"2000-01-01\",\r\n    \"stateProvinceRegion_FAKE\": \"AR\",\r\n    \"ageCheckOverride\": false\r\n}"
+								},
+								"url": {
+									"raw": "{{externalLoadBalancer}}/v1/eligibility",
+									"host": [
+										"{{externalLoadBalancer}}"
+									],
+									"path": [
+										"v1",
+										"eligibility"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "PostEligibilityNoBody_400",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"eval(pm.globals.get(\"verifyRequestInvalid\"))();"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{externalLoadBalancer}}/v1/eligibility",
+									"host": [
+										"{{externalLoadBalancer}}"
+									],
+									"path": [
+										"v1",
+										"eligibility"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "PostEligibilityNoContentType_400",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"eval(pm.globals.get(\"verifyNoContentType\"))();"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disabledSystemHeaders": {
+									"content-type": true
+								}
+							},
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/octet-stream",
+										"type": "text",
+										"disabled": true
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"dob\": \"2000-01-01\",\r\n    \"stateProvinceRegion\": \"AR\",\r\n    \"ageCheckOverride\": false\r\n}",
+									"options": {
+										"raw": {
+											"language": "text"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{externalLoadBalancer}}/v1/eligibility",
+									"host": [
+										"{{externalLoadBalancer}}"
+									],
+									"path": [
+										"v1",
+										"eligibility"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "PostEligibilityNoInstitutionId_400",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"eval(pm.globals.get(\"verifyInstitutionHeader\"))();"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"pm.request.headers.remove('x-institution-id');"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"dob\": \"2000-01-01\",\r\n    \"stateProvinceRegion\": \"AR\",\r\n    \"ageCheckOverride\": false\r\n}"
+								},
+								"url": {
+									"raw": "{{externalLoadBalancer}}/v1/eligibility",
+									"host": [
+										"{{externalLoadBalancer}}"
+									],
+									"path": [
+										"v1",
+										"eligibility"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "PostEligibilityUnsupportedMethod_405",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"eval(pm.globals.get(\"verify405\"))(\"PUT\");"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJFUzI1NiJ9.eyJtdGgiOlsiaW50ZXJuYWwtY2xpZW50LWNyZWRlbnRpYWxzIl0sInN1YiI6ImFjY3Q6ZGJrLWNyeXB0b0A4NzMxMzczYi1lODFhLTRlNTktYmQ1OS00ZDNkM2MxZDFiNTEiLCJuYmYiOjE2MzY2Mzk1MDYsIm9yZyI6Ii90ZWFtcy9pbnRlcm5hbC10ZWFtcy9kYmstY3J5cHRvLyIsImlzcyI6Ik5DUiIsInJscyI6ImVKd3o0SEowOGZYMDR3b05kZzBDQUJFK0F1MD0iLCJzayI6IjcxNjgxNTVjNTk0ZTQ1ZmJhYmY5ZThmZTE1NjBhYWU2IiwiZXhwIjoxNjM2NjQwNDA2LCJpYXQiOjE2MzY2Mzk1MDYsImp0aSI6IjdlOGNkMDYxLWU2MjgtNDdkZC1iYjFjLTFmNzY5ZTkyNmNlNyJ9.GuNTK9xy86xEFlJiCORVXezXEfKb-y3if08vmw0c-lQNeuNfrtSuw6hAKyuIk-QL_SPVTunLi3n3dAxoYBdtNg",
+										"type": "text",
+										"disabled": true
+									},
+									{
+										"key": "x-institution-id",
+										"value": "67890",
+										"type": "text",
+										"disabled": true
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"dob\": \"2000-01-01\",\r\n    \"stateProvinceRegion\": \"AR\",\r\n    \"ageCheckOverride\": false\r\n}"
+								},
+								"url": {
+									"raw": "{{externalLoadBalancer}}/v1/eligibility",
+									"host": [
+										"{{externalLoadBalancer}}"
+									],
+									"path": [
+										"v1",
+										"eligibility"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "PostEligibility_403",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"eval(pm.globals.get(\"verify403\"))();"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"pm.request.headers.remove('Authorization');"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"dob\": \"2000-01-01\",\r\n    \"stateProvinceRegion\": \"AR\",\r\n    \"ageCheckOverride\": false\r\n}"
+								},
+								"url": {
+									"raw": "{{externalLoadBalancer}}/v1/eligibility",
+									"host": [
+										"{{externalLoadBalancer}}"
+									],
+									"path": [
+										"v1",
+										"eligibility"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "PostEligibility_404",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"eval(pm.globals.get(\"verify404\"))();"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"dob\": \"2000-01-01\",\r\n    \"stateProvinceRegion\": \"AR\",\r\n    \"ageCheckOverride\": false\r\n}"
+								},
+								"url": {
+									"raw": "{{externalLoadBalancer}}/v1/eligibilityFAKE",
+									"host": [
+										"{{externalLoadBalancer}}"
+									],
+									"path": [
+										"v1",
+										"eligibilityFAKE"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Users",
+			"item": [
+				{
+					"name": "Error",
+					"item": [
+						{
+							"name": "PostUsersInvalidBody_400",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"eval(pm.globals.get(\"verifyRequestInvalid\"))();"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disabledSystemHeaders": {
+									"content-type": true
+								}
+							},
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"institutionUserId\": \"1234567890\",\r\n    \"legalName\": \"Jonâthan Edwörd Sçott Odínson\"\r\n    \"address\": {\r\n        \"line1\": \"123 Main St\",\r\n        \"city\": \"New York\",\r\n        \"stateProvinceRegion\": \"NY\",\r\n        \"country\": \"US\"\r\n    },\r\n    \"phone\": \"+19049055000\"\r\n}"
+								},
+								"url": {
+									"raw": "{{externalLoadBalancer}}/v1/users",
+									"host": [
+										"{{externalLoadBalancer}}"
+									],
+									"path": [
+										"v1",
+										"users"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "PostUsersNoContentType_400",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"eval(pm.globals.get(\"verifyNoContentType\"))();"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disabledSystemHeaders": {
+									"content-type": true
+								}
+							},
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text",
+										"disabled": true
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"institutionUserId\": \"1234567890\",\r\n    \"legalName\": \"Jonâthan Edwörd Sçott Odínson\",\r\n    \"address\": {\r\n        \"line1\": \"123 Main St\",\r\n        \"city\": \"New York\",\r\n        \"stateProvinceRegion\": \"NY\",\r\n        \"country\": \"US\"\r\n    },\r\n    \"phone\": \"+19049055000\"\r\n}"
+								},
+								"url": {
+									"raw": "{{externalLoadBalancer}}/v1/users",
+									"host": [
+										"{{externalLoadBalancer}}"
+									],
+									"path": [
+										"v1",
+										"users"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "PostUsersWithholdingTrue_400",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"eval(pm.globals.get(\"verifyResponseError\"))(\"Cannot create a customer who is subject to backup withholding\");"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disabledSystemHeaders": {
+									"content-type": true
+								}
+							},
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"institutionUserId\": \"1234567890\",\r\n    \"legalName\": \"Jonâthan Edwörd Sçott Odínson\",\r\n    \"preferredName\": \"Jon\",\r\n    \"taxWithholding\": true,\r\n    \"address\": {\r\n        \"line1\": \"123 Main St\",\r\n        \"city\": \"New York\",\r\n        \"stateProvinceRegion\": \"NY\",\r\n        \"zipCode\": \"10092\",\r\n        \"country\": \"US\"     \r\n    },\r\n    \"email\": \"jon-odin+35@example.com\",\r\n    \"phone\": \"+19049055000\"\r\n}"
+								},
+								"url": {
+									"raw": "{{externalLoadBalancer}}/v1/users",
+									"host": [
+										"{{externalLoadBalancer}}"
+									],
+									"path": [
+										"v1",
+										"users"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "PostUsersBlankRequiredFields_400",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"eval(pm.globals.get(\"verifyResponseError\"))(\"The request is invalid legalName:must not be blank, address:must not be null, phone:must not be blank, institutionUserId:must not be blank\");"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disabledSystemHeaders": {
+									"content-type": true
+								}
+							},
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"test\":\"test\"\r\n}"
+								},
+								"url": {
+									"raw": "{{externalLoadBalancer}}/v1/users",
+									"host": [
+										"{{externalLoadBalancer}}"
+									],
+									"path": [
+										"v1",
+										"users"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "PostUsersInstitutionWithMoreThan45Chars_400",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"eval(pm.globals.get(\"verifyResponseError\"))(\"The request is invalid institutionUserId:size must be between 1 and 45\");\r",
+											"pm.collectionVariables.unset(\"randomInstitutionUserId\");"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"pm.collectionVariables.set(\"randomInstitutionUserId\", eval(pm.globals.get(\"getRandomString\"))(46));"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"institutionUserId\": \"{{randomInstitutionUserId}}\",\r\n    \"legalName\": \"Jonâthan Edwörd Sçott Odínson\",\r\n    \"preferredName\": \"Jon\",\r\n    \"taxWithholding\": false,\r\n    \"address\": {\r\n        \"line1\": \"123 Main St\",\r\n        \"city\": \"New York\",\r\n        \"stateProvinceRegion\": \"NY\",\r\n        \"zipCode\": \"10092\",\r\n        \"country\": \"US\"\r\n    },\r\n    \"email\": \"jon-odin+35@example.com\",\r\n    \"phone\": \"+19049055000\"\r\n}"
+								},
+								"url": {
+									"raw": "{{externalLoadBalancer}}/v1/users",
+									"host": [
+										"{{externalLoadBalancer}}"
+									],
+									"path": [
+										"v1",
+										"users"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "PostUsersMalformedRequest_400",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"eval(pm.globals.get(\"verifyMalformedRequest\"))();"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true,
+								"disabledSystemHeaders": {
+									"content-type": true
+								}
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"institutionUserId\": \"1234567890\",\r\n    \"legalName\": \"Jonâthan Edwörd Sçott Odínson\",\r\n    \"address\": {\r\n        \"line1\": \"123 Main St\",\r\n        \"city\": \"New York\",\r\n        \"stateProvinceRegion\": \"NY\",\r\n        \"country\": \"US\"\r\n    },\r\n    \"phone\": \"+19049055000\"\r\n}"
+								},
+								"url": {
+									"raw": "{{externalLoadBalancer}}/v1/users",
+									"host": [
+										"{{externalLoadBalancer}}"
+									],
+									"path": [
+										"v1",
+										"users"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "PostUsersDuplicatedUser_409",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"eval(pm.globals.get(\"verify409\"))(pm.collectionVariables.get(\"user_institutionUserId\"));\r",
+											"//Remove variables\r",
+											"pm.collectionVariables.unset(\"user_userId\");\r",
+											"pm.collectionVariables.unset(\"user_institutionUserId\");\r",
+											"pm.collectionVariables.unset(\"RandomUserBody\");"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"eval(pm.collectionVariables.get(\"createUser\"))();"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disabledSystemHeaders": {
+									"content-type": true
+								}
+							},
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"institutionUserId\": \"{{user_institutionUserId}}\",\r\n    \"legalName\": \"Jonâthan Edwörd Sçott Odínson\",\r\n    \"preferredName\": \"Jon\",\r\n    \"taxWithholding\": false,\r\n    \"address\": {\r\n        \"line1\": \"123 Main St\",\r\n        \"city\": \"New York\",\r\n        \"stateProvinceRegion\": \"NY\",\r\n        \"zipCode\": \"10092\",\r\n        \"country\": \"US\"     \r\n    },\r\n    \"email\": \"jon-odin+35@example.com\",\r\n    \"phone\": \"+19049055000\"\r\n}"
+								},
+								"url": {
+									"raw": "{{externalLoadBalancer}}/v1/users",
+									"host": [
+										"{{externalLoadBalancer}}"
+									],
+									"path": [
+										"v1",
+										"users"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "PostUsersNoInstitutionId_400",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"eval(pm.globals.get(\"verifyInstitutionHeader\"))();"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"pm.request.headers.remove('x-institution-id');"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disabledSystemHeaders": {
+									"content-type": true
+								}
+							},
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"institutionUserId\": \"1234567890\",\r\n    \"legalName\": \"Jonâthan Edwörd Sçott Odínson\",\r\n    \"address\": {\r\n        \"line1\": \"123 Main St\",\r\n        \"city\": \"New York\",\r\n        \"stateProvinceRegion\": \"NY\",\r\n        \"country\": \"US\"\r\n    },\r\n    \"phone\": \"+19049055000\"\r\n}"
+								},
+								"url": {
+									"raw": "{{externalLoadBalancer}}/v1/users",
+									"host": [
+										"{{externalLoadBalancer}}"
+									],
+									"path": [
+										"v1",
+										"users"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "PostUsers_403",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"eval(pm.globals.get(\"verify403\"))();"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"pm.request.headers.remove('Authorization');"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disabledSystemHeaders": {
+									"content-type": true
+								}
+							},
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"institutionUserId\": \"1234567890\",\r\n    \"legalName\": \"Jonâthan Edwörd Sçott Odínson\",\r\n    \"address\": {\r\n        \"line1\": \"123 Main St\",\r\n        \"city\": \"New York\",\r\n        \"stateProvinceRegion\": \"NY\",\r\n        \"country\": \"US\"\r\n    },\r\n    \"phone\": \"+19049055000\"\r\n}"
+								},
+								"url": {
+									"raw": "{{externalLoadBalancer}}/v1/users",
+									"host": [
+										"{{externalLoadBalancer}}"
+									],
+									"path": [
+										"v1",
+										"users"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "PostUsers_405",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"eval(pm.globals.get(\"verify405\"))(\"PUT\");"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disabledSystemHeaders": {
+									"content-type": true
+								}
+							},
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"institutionUserId\": \"1234567890\",\r\n    \"legalName\": \"Jonâthan Edwörd Sçott Odínson\",\r\n    \"address\": {\r\n        \"line1\": \"123 Main St\",\r\n        \"city\": \"New York\",\r\n        \"stateProvinceRegion\": \"NY\",\r\n        \"country\": \"US\"\r\n    },\r\n    \"phone\": \"+19049055000\"\r\n}"
+								},
+								"url": {
+									"raw": "{{externalLoadBalancer}}/v1/users",
+									"host": [
+										"{{externalLoadBalancer}}"
+									],
+									"path": [
+										"v1",
+										"users"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GetUsersIncorrectId_400",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"eval(pm.variables.get(\"verifyResponseError\"))(\"Must be a valid UUID\");"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJFUzI1NiJ9.eyJtdGgiOlsiaW50ZXJuYWwtY2xpZW50LWNyZWRlbnRpYWxzIl0sInN1YiI6ImFjY3Q6ZGJrLWNyeXB0b0A4NzMxMzczYi1lODFhLTRlNTktYmQ1OS00ZDNkM2MxZDFiNTEiLCJuYmYiOjE2MzY2Mzk1MDYsIm9yZyI6Ii90ZWFtcy9pbnRlcm5hbC10ZWFtcy9kYmstY3J5cHRvLyIsImlzcyI6Ik5DUiIsInJscyI6ImVKd3o0SEowOGZYMDR3b05kZzBDQUJFK0F1MD0iLCJzayI6IjcxNjgxNTVjNTk0ZTQ1ZmJhYmY5ZThmZTE1NjBhYWU2IiwiZXhwIjoxNjM2NjQwNDA2LCJpYXQiOjE2MzY2Mzk1MDYsImp0aSI6IjdlOGNkMDYxLWU2MjgtNDdkZC1iYjFjLTFmNzY5ZTkyNmNlNyJ9.GuNTK9xy86xEFlJiCORVXezXEfKb-y3if08vmw0c-lQNeuNfrtSuw6hAKyuIk-QL_SPVTunLi3n3dAxoYBdtNg",
+										"type": "text",
+										"disabled": true
+									},
+									{
+										"key": "x-institution-id",
+										"value": "67890",
+										"type": "text",
+										"disabled": true
+									}
+								],
+								"url": {
+									"raw": "{{externalLoadBalancer}}/v1/users/id=fake",
+									"host": [
+										"{{externalLoadBalancer}}"
+									],
+									"path": [
+										"v1",
+										"users",
+										"id=fake"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GetUsersIncorrectInstitutionUserId_404",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"eval(pm.variables.get(\"verify404\"))(\"User not found\");"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{externalLoadBalancer}}/v1/users/institutionUserId=fake",
+									"host": [
+										"{{externalLoadBalancer}}"
+									],
+									"path": [
+										"v1",
+										"users",
+										"institutionUserId=fake"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GetUsersNotFoundId_404",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"eval(pm.variables.get(\"verify404\"))(\"User not found\");"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJFUzI1NiJ9.eyJtdGgiOlsiaW50ZXJuYWwtY2xpZW50LWNyZWRlbnRpYWxzIl0sInN1YiI6ImFjY3Q6ZGJrLWNyeXB0b0A4NzMxMzczYi1lODFhLTRlNTktYmQ1OS00ZDNkM2MxZDFiNTEiLCJuYmYiOjE2MzY2Mzk1MDYsIm9yZyI6Ii90ZWFtcy9pbnRlcm5hbC10ZWFtcy9kYmstY3J5cHRvLyIsImlzcyI6Ik5DUiIsInJscyI6ImVKd3o0SEowOGZYMDR3b05kZzBDQUJFK0F1MD0iLCJzayI6IjcxNjgxNTVjNTk0ZTQ1ZmJhYmY5ZThmZTE1NjBhYWU2IiwiZXhwIjoxNjM2NjQwNDA2LCJpYXQiOjE2MzY2Mzk1MDYsImp0aSI6IjdlOGNkMDYxLWU2MjgtNDdkZC1iYjFjLTFmNzY5ZTkyNmNlNyJ9.GuNTK9xy86xEFlJiCORVXezXEfKb-y3if08vmw0c-lQNeuNfrtSuw6hAKyuIk-QL_SPVTunLi3n3dAxoYBdtNg",
+										"type": "text",
+										"disabled": true
+									},
+									{
+										"key": "x-institution-id",
+										"value": "67890",
+										"type": "text",
+										"disabled": true
+									}
+								],
+								"url": {
+									"raw": "{{externalLoadBalancer}}/v1/users/id=6674ad3a-ebb8-4dcb-b0ed-568f4b13c5f7",
+									"host": [
+										"{{externalLoadBalancer}}"
+									],
+									"path": [
+										"v1",
+										"users",
+										"id=6674ad3a-ebb8-4dcb-b0ed-568f4b13c5f7"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GetUsersNotFoundInstitutionUserId_404",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"eval(pm.variables.get(\"verify404\"))(\"User not found\");"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{externalLoadBalancer}}/v1/users/institutionUserId=6674ad3a-ebb8-4dcb-b0ed-568f4b13c5f7",
+									"host": [
+										"{{externalLoadBalancer}}"
+									],
+									"path": [
+										"v1",
+										"users",
+										"institutionUserId=6674ad3a-ebb8-4dcb-b0ed-568f4b13c5f7"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						}
+					]
+				},
+				{
+					"name": "Success",
+					"item": [
+						{
+							"name": "Get",
+							"item": [
+								{
+									"name": "GetUsersById",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													""
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJFUzI1NiJ9.eyJtdGgiOlsiaW50ZXJuYWwtY2xpZW50LWNyZWRlbnRpYWxzIl0sInN1YiI6ImFjY3Q6ZGJrLWNyeXB0b0A4NzMxMzczYi1lODFhLTRlNTktYmQ1OS00ZDNkM2MxZDFiNTEiLCJuYmYiOjE2MzY2Mzk1MDYsIm9yZyI6Ii90ZWFtcy9pbnRlcm5hbC10ZWFtcy9kYmstY3J5cHRvLyIsImlzcyI6Ik5DUiIsInJscyI6ImVKd3o0SEowOGZYMDR3b05kZzBDQUJFK0F1MD0iLCJzayI6IjcxNjgxNTVjNTk0ZTQ1ZmJhYmY5ZThmZTE1NjBhYWU2IiwiZXhwIjoxNjM2NjQwNDA2LCJpYXQiOjE2MzY2Mzk1MDYsImp0aSI6IjdlOGNkMDYxLWU2MjgtNDdkZC1iYjFjLTFmNzY5ZTkyNmNlNyJ9.GuNTK9xy86xEFlJiCORVXezXEfKb-y3if08vmw0c-lQNeuNfrtSuw6hAKyuIk-QL_SPVTunLi3n3dAxoYBdtNg",
+												"type": "text",
+												"disabled": true
+											},
+											{
+												"key": "x-institution-id",
+												"value": "67890",
+												"type": "text",
+												"disabled": true
+											}
+										],
+										"url": {
+											"raw": "{{externalLoadBalancer}}/v1/users/id={{user_userId}}",
+											"host": [
+												"{{externalLoadBalancer}}"
+											],
+											"path": [
+												"v1",
+												"users",
+												"id={{user_userId}}"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "GetUsersByInstitutionUserId",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													""
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{externalLoadBalancer}}/v1/users/institutionUserId={{user_institutionUserId}}",
+											"host": [
+												"{{externalLoadBalancer}}"
+											],
+											"path": [
+												"v1",
+												"users",
+												"institutionUserId={{user_institutionUserId}}"
+											]
+										}
+									},
+									"response": []
+								}
+							],
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"type": "text/javascript",
+										"exec": [
+											"eval(pm.collectionVariables.get(\"createUser\"))();"
+										]
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"type": "text/javascript",
+										"exec": [
+											"const actualResponse = pm.response.json();",
+											"pm.test(\"Verify content\", () => {",
+											"    pm.expect(actualResponse).to.contain({ \"id\": pm.collectionVariables.get(\"user_userId\") });",
+											"    pm.expect(actualResponse).to.contain({ \"taxWithholding\": false });",
+											"    pm.expect(actualResponse.address).to.contain({",
+											"        \"stateProvinceRegion\": pm.collectionVariables.get(\"stateProvinceRegion\")",
+											"    });",
+											"});",
+											"",
+											"pm.test(\"Verify schema\", () => { pm.response.to.have.jsonSchema(JSON.parse(pm.collectionVariables.get(\"userSchema\"))) });",
+											"",
+											"pm.test(\"Status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"    pm.response.to.be.success;",
+											"    pm.response.to.be.ok;",
+											"});",
+											"",
+											"//Remove variables",
+											"pm.collectionVariables.unset(\"user_userId\");",
+											"pm.collectionVariables.unset(\"user_institutionUserId\");",
+											"pm.collectionVariables.unset(\"RandomUserBody\");"
+										]
+									}
+								}
+							]
+						},
+						{
+							"name": "Create",
+							"item": [
+								{
+									"name": "PostUsers",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													""
+												],
+												"type": "text/javascript"
+											}
+										},
+										{
+											"listen": "prerequest",
+											"script": {
+												"exec": [
+													"pm.collectionVariables.set(\"uuid\", pm.variables.replaceIn('{{$guid}}'));"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"protocolProfileBehavior": {
+										"disabledSystemHeaders": {
+											"content-type": true
+										}
+									},
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"institutionUserId\": \"{{uuid}}\",\r\n    \"legalName\": \"Jonâthan Edwörd Sçott Odínson\",\r\n    \"preferredName\": \"Jon\",\r\n    \"taxWithholding\": false,\r\n    \"address\": {\r\n        \"line1\": \"123 Main St\",\r\n        \"city\": \"New York\",\r\n        \"stateProvinceRegion\": \"NY\",\r\n        \"zipCode\": \"10092\",\r\n        \"country\": \"US\"     \r\n    },\r\n    \"email\": \"jon-odin+35@example.com\",\r\n    \"phone\": \"+19049055000\"\r\n}"
+										},
+										"url": {
+											"raw": "{{externalLoadBalancer}}/v1/users",
+											"host": [
+												"{{externalLoadBalancer}}"
+											],
+											"path": [
+												"v1",
+												"users"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "PostUsersOnlyRequiredFields",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													""
+												],
+												"type": "text/javascript"
+											}
+										},
+										{
+											"listen": "prerequest",
+											"script": {
+												"exec": [
+													"pm.collectionVariables.set(\"uuid\", pm.variables.replaceIn('{{$guid}}'));"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"protocolProfileBehavior": {
+										"disabledSystemHeaders": {
+											"content-type": true
+										}
+									},
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"institutionUserId\": \"{{uuid}}\",\r\n    \"legalName\": \"Jonâthan Edwörd Sçott Odínson\",\r\n    \"address\": {\r\n        \"line1\": \"123 Main St\",\r\n        \"city\": \"New York\",\r\n        \"stateProvinceRegion\": \"NY\",\r\n        \"country\": \"US\"\r\n    },\r\n    \"phone\": \"+19049055000\"\r\n}"
+										},
+										"url": {
+											"raw": "{{externalLoadBalancer}}/v1/users",
+											"host": [
+												"{{externalLoadBalancer}}"
+											],
+											"path": [
+												"v1",
+												"users"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "PostUsersInstitutionWith45Chars",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.collectionVariables.unset(\"randomInstitutionUserId\");"
+												],
+												"type": "text/javascript"
+											}
+										},
+										{
+											"listen": "prerequest",
+											"script": {
+												"exec": [
+													"pm.collectionVariables.set(\"randomInstitutionUserId\", eval(pm.globals.get(\"getRandomString\"))(45));"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"institutionUserId\": \"{{randomInstitutionUserId}}\",\r\n    \"legalName\": \"Jonâthan Edwörd Sçott Odínson\",\r\n    \"preferredName\": \"Jon\",\r\n    \"taxWithholding\": false,\r\n    \"address\": {\r\n        \"line1\": \"123 Main St\",\r\n        \"city\": \"New York\",\r\n        \"stateProvinceRegion\": \"NY\",\r\n        \"zipCode\": \"10092\",\r\n        \"country\": \"US\"     \r\n    },\r\n    \"email\": \"jon-odin+35@example.com\",\r\n    \"phone\": \"+19049055000\"\r\n}"
+										},
+										"url": {
+											"raw": "{{externalLoadBalancer}}/v1/users",
+											"host": [
+												"{{externalLoadBalancer}}"
+											],
+											"path": [
+												"v1",
+												"users"
+											]
+										}
+									},
+									"response": []
+								}
+							],
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"type": "text/javascript",
+										"exec": [
+											""
+										]
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"type": "text/javascript",
+										"exec": [
+											"const actualResponse = pm.response.json();",
+											"",
+											"pm.test(\"Verify content\", () => {",
+											"    pm.expect(actualResponse).to.contain({ \"taxWithholding\": false });",
+											"    pm.expect(actualResponse.address).to.contain({",
+											"        \"stateProvinceRegion\": pm.collectionVariables.get(\"stateProvinceRegion\")",
+											"    });",
+											"});",
+											"",
+											"pm.test(\"Verify schema\", () => { pm.response.to.have.jsonSchema(JSON.parse(pm.collectionVariables.get(\"userSchema\"))) });",
+											"",
+											"pm.test(\"Status code is 201\", function () {",
+											"    pm.response.to.have.status(201);",
+											"    pm.response.to.be.success;",
+											"});",
+											"",
+											"pm.collectionVariables.unset(\"uuid\");"
+										]
+									}
+								}
+							]
+						},
+						{
+							"name": "Edit",
+							"item": [
+								{
+									"name": "PutUsers",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Status code is 200\", function () {\r",
+													"    pm.response.to.have.status(200);\r",
+													"    pm.response.to.be.success;\r",
+													"    pm.response.to.be.ok;\r",
+													"});\r",
+													"\r",
+													"//Remove variables\r",
+													"pm.collectionVariables.unset(\"user_userId\");\r",
+													"pm.collectionVariables.unset(\"user_institutionUserId\");\r",
+													"pm.collectionVariables.unset(\"RandomUserBody\");\r",
+													"pm.collectionVariables.unset(\"newBody\");"
+												],
+												"type": "text/javascript"
+											}
+										},
+										{
+											"listen": "prerequest",
+											"script": {
+												"exec": [
+													"let newBody = pm.collectionVariables.get(\"RandomUserBody\");\r",
+													"newBody.address.stateProvinceRegion = \"CT\";\r",
+													"\r",
+													"pm.collectionVariables.set(\"newBody\", JSON.stringify(newBody));"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"protocolProfileBehavior": {
+										"disabledSystemHeaders": {
+											"content-type": true
+										}
+									},
+									"request": {
+										"method": "PUT",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{{newBody}}"
+										},
+										"url": {
+											"raw": "{{externalLoadBalancer}}/v1/users/;id={{user_userId}}",
+											"host": [
+												"{{externalLoadBalancer}}"
+											],
+											"path": [
+												"v1",
+												"users",
+												";id={{user_userId}}"
+											]
+										}
+									},
+									"response": []
+								}
+							],
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"type": "text/javascript",
+										"exec": [
+											"eval(pm.collectionVariables.get(\"createUser\"))();"
+										]
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"type": "text/javascript",
+										"exec": [
+											""
+										]
+									}
+								}
+							]
+						}
+					],
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						}
+					]
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					"eval(pm.globals.get(\"authorization\"))();",
+					"pm.request.headers.add({ key: 'x-institution-id', value: pm.environment.get('x-institution-id') });"
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					"eval(pm.globals.get(\"verifyResponseTime\"))();",
+					"eval(pm.globals.get(\"verifyStackTrace\"))();"
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "userSchema",
+			"value": "{\n    \"type\": \"object\",\n    \"properties\": {\n        \"taxWithholding\": { \"type\": \"boolean\" },\n        \"address\": {\n            \"type\": \"object\",\n            \"properties\": {\n                \"stateProvinceRegion\": { \"type\": \"string\" }\n            }\n        },\n        \"id\": { \"type\": \"string\" },\n        \"created\": { \"type\": \"string\" }\n    },\n    \"required\": [\n        \"taxWithholding\",\n        \"address\",\n        \"id\",\n        \"created\"\n    ],\n    \"additionalProperties\": false\n}"
+		},
+		{
+			"key": "eligibilitySchema",
+			"value": "{\n    \"type\": \"object\",\n    \"properties\": {\n        \"eligible\": { \"type\": \"boolean\" },\n        \"message\": { \"type\": \"string\" }\n    },\n    \"required\": [\n        \"eligible\",\n        \"message\"\n    ],\n    \"additionalProperties\": false\n}"
+		},
+		{
+			"key": "multiRelationshipSchema",
+			"value": "{\n    \"type\": \"object\",\n    \"properties\": {\n        \"results\": {\n            \"type\": \"array\",\n            \"items\": {\n                \"type\": \"object\",\n                \"properties\": {\n                    \"id\": { \"type\": \"string\" },\n                    \"institutionUserId\": { \"type\": \"string\" },\n                    \"providerUserId\": { \"type\": \"string\" },\n                    \"providerId\": { \"type\": \"string\" }\n                },\n                \"required\": [\n                    \"id\",\n                    \"institutionUserId\",\n                    \"providerUserId\",\n                    \"providerId\"\n                ],\n                \"additionalProperties\": false\n            },\n            \"minItems\": 1,\n            \"uniqueItems\": true\n        }\n    },\n    \"required\": [\n        \"results\"\n    ],\n    \"additionalProperties\": false\n}"
+		},
+		{
+			"key": "singleRelationshipSchema",
+			"value": "{\n    \"type\": \"object\",\n    \"properties\": {\n        \"id\": { \"type\": \"string\" },\n        \"institutionUserId\": { \"type\": \"string\" },\n        \"providerUserId\": { \"type\": \"string\" },\n        \"providerId\": { \"type\": \"string\" }\n    },\n    \"required\": [\n        \"id\",\n        \"institutionUserId\",\n        \"providerUserId\",\n        \"providerId\"\n    ],\n    \"additionalProperties\": false\n}"
+		},
+		{
+			"key": "verifySingleRelationship",
+			"value": "(expectedResponse) => {\n    pm.test(\"Verify schema\", () => {\n        pm.response.to.have.jsonSchema(JSON.parse(pm.collectionVariables.get(\"singleRelationshipSchema\")))\n    });\n    const actualResponse = pm.response.json();\n    pm.test(\"Verify response body\", () => {\n        pm.expect(actualResponse).to.contain(expectedResponse);\n    });\n    pm.test(\"Status code is 200\", function () {\n        pm.response.to.have.status(200);\n        pm.response.to.be.success;\n        pm.response.to.be.ok;\n    });\n}"
+		},
+		{
+			"key": "verifyEligibilityFalse",
+			"value": "(message) => {\n    const expectedResponse = {\n        \"eligible\": false,\n        \"message\": message\n    };\n    const actualResponse = pm.response.json();\n    pm.test(\"Verify schema\", () => {\n        pm.response.to.have.jsonSchema(JSON.parse(pm.collectionVariables.get(\"eligibilitySchema\")));\n    });\n    pm.test(\"Validate response body\", () => {\n        pm.expect(actualResponse).to.eql(expectedResponse);\n    });\n    pm.test(\"Status code is 200\", function () {\n        pm.response.to.have.status(200);\n        pm.response.to.be.success;\n        pm.response.to.be.ok;\n    });\n}\n"
+		},
+		{
+			"key": "verifyOneUserRelationship",
+			"value": "(expectedResult) => {\n\n    const actualResponse = pm.response.json().results[0];\n\n    pm.test(\"Verify response body\", () => {\n        pm.expect(actualResponse).to.contain(expectedResult);\n    });\n\n    pm.test(\"Verify schema\", () => {\n        pm.response.to.have.jsonSchema(JSON.parse(pm.collectionVariables.get(\"multiRelationshipSchema\")))\n    });\n\n    pm.test(\"Status code is 200\", function () {\n        pm.response.to.have.status(200);\n        pm.response.to.be.success;\n        pm.response.to.be.ok;\n    });\n\n    //Remove variables\n    pm.collectionVariables.unset(\"userId\");\n    pm.collectionVariables.unset(\"institutionUserId\");\n    pm.collectionVariables.unset(\"RandomUserBody\");\n    pm.collectionVariables.unset(\"providerId\");\n    pm.collectionVariables.unset(\"providerUserId\");\n}"
+		},
+		{
+			"key": "stateProvinceRegion",
+			"value": "NY"
+		},
+		{
+			"key": "userPayload",
+			"value": "{\n        \"institutionUserId\": \"#institutionUserId\",\n        \"legalName\": \"Jonâthan Edwörd Sçott Odínson\",\n        \"address\": {\n            \"line1\": \"123 Main St\",\n            \"city\": \"New York\",\n            \"stateProvinceRegion\": \"#stateProvinceRegion\",\n            \"country\": \"US\"\n        },\n        \"phone\": \"+19049055000\"\n    }"
+		},
+		{
+			"key": "createUser",
+			"value": "() => {\n    const env_var = pm.environment.toObject({\n        excludeDisabled: true\n    });\n    var body = JSON.parse(pm.collectionVariables.get(\"userPayload\"));\n    body.institutionUserId = pm.variables.replaceIn('{{$guid}}');\n    body.address.stateProvinceRegion = pm.collectionVariables.get(\"stateProvinceRegion\");\n    const createUser = {\n        url: env_var.externalLoadBalancer + '/v1/users',\n        method: \"POST\",\n        header: {\n            \"Content-Type\": \"application/json\",\n            \"x-institution-id\": env_var['x-institution-id'],\n            \"Authorization\": pm.request.headers.get(\"Authorization\")\n        },\n        body: JSON.stringify(body)\n    };\n    pm.sendRequest(createUser, (error, response) => {\n        if (error !== null) {\n            console.error('Error while generating a User:', error);\n        } else {\n            pm.collectionVariables.set(\"user_institutionUserId\", body.institutionUserId);\n            pm.collectionVariables.set(\"user_userId\", response.json().id);\n            pm.collectionVariables.set(\"RandomUserBody\", body);\n        }\n    });\n}\n"
+		},
+		{
+			"key": "getUserRelationship",
+			"value": "(userId) => {\n    const env_var = pm.environment.toObject({\n        excludeDisabled: true\n    });\n    const getUserRelationship = {\n        url: env_var.externalLoadBalancer + '/v1/user-relationships/institution-crypto-user/' + userId,\n        method: \"GET\",\n        header: {\n            \"x-institution-id\": env_var['x-institution-id'],\n            \"Authorization\": pm.request.headers.get(\"Authorization\")\n        }\n    };\n    pm.sendRequest(getUserRelationship, (error, response) => {\n        if (error !== null) {\n            console.error('Error while getting a user relationship:', error);\n        } else {\n            pm.collectionVariables.set(\"user_providerUserId\", response.json().providerUserId);\n            pm.collectionVariables.set(\"user_providerId\", response.json().providerId);\n        }\n    });\n}"
+		}
+	]
+}
