@@ -1,0 +1,40 @@
+# This is a basic workflow to help you get started with Actions
+
+name: Perf Testing
+
+# Controls when the workflow will run
+on:
+  workflow_dispatch:
+    inputs:
+      testenvironment:
+        description: 'Environment (DEV/QA/PTE)'     
+        required: true
+        default: 'QA'
+      tags:
+        description: 'Test scenario tags'   
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "build"
+  build:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v2
+
+      - name: PerfAction for JMeter
+        # You may pin to the exact commit or the version.
+        # uses: QAInsights/PerfAction@e9460cd32edbd6686068034e4b2d5c0fa7a1568d
+        uses: QAInsights/PerfAction@3.0
+        with:
+          # jmeter test plan to execute
+          test-plan-path: './CryptoCurrency.jmx'
+      
+      - name: Upload Results
+        uses: actions/upload-artifact@v2
+        with:
+          name: jmeter-results
+          path: result.jtl
